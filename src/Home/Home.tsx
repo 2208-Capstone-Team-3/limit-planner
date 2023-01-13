@@ -6,9 +6,35 @@ import lightLogo from "../resources/logo.svg";
 import darkLogo from "../resources/ad-logo.svg";
 import useTheme from "@mui/material/styles/useTheme";
 import { Button } from "@mui/material";
+import lightBackground from "../resources/lightBackground.mp4";
+import darkBackground from "../resources/darkBackground.mp4";
 
 function Home() {
   const theme = useTheme();
+
+  const lightVideoComp = (
+    <video
+      className="background"
+      autoPlay
+      muted
+      loop
+      key={"lightBackground"}
+      id="lightBackground"
+      src={lightBackground}
+    ></video>
+  );
+
+  const darkVideoComp = (
+    <video
+      className="background"
+      autoPlay
+      muted
+      loop
+      key={"darkBackground"}
+      id="darkBackground"
+      src={darkBackground}
+    ></video>
+  );
 
   return (
     <Box
@@ -24,6 +50,7 @@ function Home() {
         flexDirection: "column",
       }}
     >
+      {theme.palette.mode === "dark" ? darkVideoComp : lightVideoComp}
       <img
         id="logo"
         className={"animate__bounce"}
