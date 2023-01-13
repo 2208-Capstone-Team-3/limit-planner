@@ -1,0 +1,39 @@
+.start-home-dark {
+  background-image: url(https://cvws.icloud-content.com/B/AW1T3vpifLUz4FTYZ1y3CKd5QVMLASV7x2skx09pbT7nZeNiwsxpbnnq/darkBackground.gif?o=Arxq_XxgUoOXr4KxWDhGLPkdqhaD3GnhlGniFn5H1qv_&v=1&x=3&a=CAoghHxYlmEx4uS6WxmwuWkk_boLU0wga0_jfK0xGBwwqlQSaxDx79nG2jAY8cy1yNowIgEAUgR5QVMLWgRpbnnqaiUo5lgH9DtJLPFq3_KhXFVpLvkgP8_mucjU_fIJXsD9hRHB_NsaciV5sv6bYPNjz-S4x1Y9rwEASqxXJix6Zx67ArKvaHSEOuyBOamj&e=1673578505&fl=&r=f1e59367-8c7a-4079-9da7-aa8e2d2cdf52-1&k=nqvDtDFCnkMF7r_t57bseA&ckc=com.apple.clouddocs&ckz=com.apple.CloudDocs&p=102&s=MdAIKIoLgt90RpspCMISqLSDtPg&cd=i);
+  background-position: center;
+  background-size: cover;
+}
+
+.start-home-light {
+  background-image: url(https://cvws.icloud-content.com/B/ATRLj2ieHnvZOrgWFX3aykBG5uhpAW0g0KAUn8k4DgtTOZwrDcs5PnEb/lightBackground.gif?o=AoLi63dAmIWmF6bsHP5mSLkdtG_ebPa4heQQ4lgJvbSW&v=1&x=3&a=CAogVB3oyQAILaTIbQIQn_6Rr9AX2ehoZ2Urs-LWQse64poSaxDr2dbG2jAY67ayyNowIgEAUgRG5uhpWgQ5PnEbaiWVIOmbWZBFoZErbbP1V-WMA4ePwUR7Q9vEOUt24cG7HF9WW6QhciXSVW9Rqdn0IaC49gpRZjQ3AAA3LzFWsDQalRIyy9V5wAnlwkss&e=1673578453&fl=&r=70d4a64a-1e1c-414d-ac51-5acb811cceb2-1&k=G8WTtaX325ReGpooi5Zqpg&ckc=com.apple.clouddocs&ckz=com.apple.CloudDocs&p=102&s=HFqxua0DuZxwul6nZRtFnpB12C8&cd=i);
+  background-position: center;
+  background-size: cover;
+}
+
+#logo {
+  width: 50vmin;
+  pointer-events: none;
+  user-select: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  #logo {
+    animation: logo-float infinite alternate 3s linear;
+  }
+}
+
+@keyframes logo-float {
+  from {
+    translate: 0% 0%;
+  }
+  to {
+    translate: 0% 8%;
+  }
+}
+
+/* #lightVideo {
+  position: fixed;
+  min-width: 100%;
+  min-height: 100%;
+  z-index: -1;
+} */
