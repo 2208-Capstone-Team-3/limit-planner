@@ -1,4 +1,4 @@
 // import db from ".";
-import User from "./User";
+import User from "./models/User.model";
 
 export default User;

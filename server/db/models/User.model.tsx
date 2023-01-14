@@ -1,48 +1,30 @@
-import db from "./db";
+import db from "../db";
 import bcrypt from "bcrypt";
-// import jwt from "jsonwebtoken";
-import {
-  AbstractDataTypeConstructor,
-  BOOLEAN,
-  DATE,
-  DateDataType,
-  InferAttributes,
-  InferCreationAttributes,
-  Model,
-  STRING,
-  UUID,
-  UUIDV4,
-  VIRTUAL,
-  VirtualDataType,
-} from "sequelize";
-// const JWT = process.env.JWT;
+import jwt from "jsonwebtoken";
+import { Model, DataType } from "sequelize-typescript";
 
-class UserModel extends Model<
-  InferAttributes<UserModel>,
-  InferCreationAttributes<UserModel>
-> {
+declare class UserModel extends Model {
   declare id: string;
   declare password: string;
   declare username: string;
   declare firstName: string;
   declare lastName: string;
-  declare fullName: VirtualDataType<AbstractDataTypeConstructor>;
+  declare fullName: string;
   declare phoneNum: number;
   declare email: string;
-  declare birthday: DateDataType;
+  declare birthday: Date;
   declare avatarUrl: string;
   declare isAdmin: boolean;
-  declare findByToken: AbstractDataTypeConstructor;
 }
 
 const User = db.define<UserModel>("user", {
   id: {
-    type: UUID,
+    type: DataType.UUID,
     primaryKey: true,
-    defaultValue: UUIDV4,
+    defaultValue: DataType.UUIDV4,
   },
   username: {
-    type: STRING,
+    type: DataType.STRING,
     allowNull: false,
     unique: true,
     validate: {
@@ -52,35 +34,35 @@ const User = db.define<UserModel>("user", {
       this.setDataValue("username", usernameInput.toLowerCase());
     },
     get() {
-      const username = this.getDataValue("username");
+      const username: string = this.getDataValue("username");
       const usernameArr = username.split("");
       usernameArr[0] = usernameArr[0].toUpperCase();
       return usernameArr.join("");
     },
   },
   password: {
-    type: STRING,
+    type: DataType.STRING,
     allowNull: false,
     validate: {
       notEmpty: true,
     },
   },
   firstName: {
-    type: STRING,
+    type: DataType.STRING,
     allowNull: false,
     validate: {
       notEmpty: true,
     },
   },
   lastName: {
-    type: STRING,
+    type: DataType.STRING,
     allowNull: false,
     validate: {
       notEmpty: true,
     },
   },
   fullName: {
-    type: VIRTUAL,
+    type: DataType.VIRTUAL,
     validate: {
       notEmpty: true,
     },
@@ -91,14 +73,14 @@ const User = db.define<UserModel>("user", {
     },
   },
   phoneNum: {
-    type: STRING,
+    type: DataType.STRING,
     allowNull: false,
     validate: {
       notEmpty: true,
     },
   },
   email: {
-    type: STRING,
+    type: DataType.STRING,
     allowNull: false,
     unique: true,
     validate: {
@@ -107,7 +89,7 @@ const User = db.define<UserModel>("user", {
     },
   },
   birthday: {
-    type: DATE,
+    type: DataType.DATE,
     allowNull: false,
     validate: {
       notEmpty: true,
@@ -115,12 +97,12 @@ const User = db.define<UserModel>("user", {
     },
   },
   avatarUrl: {
-    type: STRING,
+    type: DataType.STRING,
     allowNull: true,
     defaultValue: "/public/logo.svg",
   },
   isAdmin: {
-    type: BOOLEAN,
+    type: DataType.BOOLEAN,
     defaultValue: false,
   },
 });
@@ -131,40 +113,44 @@ User.addHook("beforeSave", async (user: UserModel) => {
   }
 });
 
-// User.findByToken = async function (token: string) {
-//   try {
-//     const { id } = jwt.verify(token, JWT);
-//     const user = await this.findByPk(id);
-//     if (user) {
-//       return user;
-//     } else {
-//       const error = new Error("user not found");
-//       throw error;
-//     }
-//   } catch (ex) {
-//     console.log(ex);
-//     const error = new Error("bad credentials");
-//     error.message = "401";
-//     throw error;
-//   }
-// };
+User.prototype.findByToken = async function (token: string) {
+  try {
+    const id = jwt.verify(token, "secret");
+    const user = await this.findByPk(id);
+    if (user) {
+      return user;
+    } else {
+      const error = new Error("user not found");
+      throw error;
+    }
+  } catch (ex) {
+    console.log(ex);
+    const error = new Error("bad credentials");
+    error.message = "401";
+    throw error;
+  }
+};
 
-// User.prototype.generateToken = function () {
-//   return jwt.sign({ id: this.id }, JWT);
-// };
+User.prototype.generateToken = function () {
+  return jwt.sign({ id: this.id }, "secret");
+};
 
-// User.authenticate = async function ({ username, password }) {
-//   const user = await this.findOne({
-//     where: {
-//       username,
-//     },
-//   });
-//   if (user && (await bcrypt.compare(password, user.password))) {
-//     return jwt.sign({ id: user.id }, JWT);
-//   }
-//   const error = new Error("bad credentials");
-//   error.message = "401";
-//   throw error;
-// };
+User.prototype.authenticate = async function (userAuth: {
+  username: string;
+  password: string;
+}) {
+  const { username, password } = userAuth;
+  const user = await this.findOne({
+    where: {
+      username,
+    },
+  });
+  if (user && (await bcrypt.compare(password, user.password))) {
+    return jwt.sign({ id: user.id }, "secret");
+  }
+  const error = new Error("bad credentials");
+  error.message = "401";
+  throw error;
+};
 
 export default User;

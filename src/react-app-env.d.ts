@@ -7,3 +7,12 @@ declare module "*.gif" {
   const src: string;
   export default src;
 }
+type Secret =
+  | string
+  | Buffer
+  | KeyObject
+  | {
+      key: string | Buffer;
+      passphrase: string;
+    };
+declare const JWT: Secret;

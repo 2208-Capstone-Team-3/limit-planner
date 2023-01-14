@@ -1,6 +1,6 @@
 import React from "react";
 import Box from "@mui/material/Box";
-import "./home.css";
+import "./landing.css";
 import "animate.css";
 import lightLogo from "../resources/logo.svg";
 import darkLogo from "../resources/ad-logo.svg";
@@ -9,7 +9,7 @@ import { Button } from "@mui/material";
 import lightBackground from "../resources/lightBackground.mp4";
 import darkBackground from "../resources/darkBackground.mp4";
 
-function Home() {
+function Landing() {
   const theme = useTheme();
 
   const lightVideoComp = (
@@ -39,9 +39,11 @@ function Home() {
   return (
     <Box
       className={
-        theme.palette.mode === "dark" ? "start-home-dark" : "start-home-light"
+        theme.palette.mode === "dark"
+          ? "start-landing-dark"
+          : "start-landing-light"
       }
-      key={"home-top-box"}
+      key={"landing-top-box"}
       minHeight="100vh"
       sx={{
         display: "flex",
@@ -64,4 +66,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default Landing;
