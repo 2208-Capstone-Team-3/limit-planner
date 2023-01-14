@@ -19,4 +19,9 @@ module.exports = {
   rules: {
     "prettier/prettier": "error",
   },
+  settings: {
+    react: {
+      version: "detect",
+    },
+  },
 };
