@@ -20,8 +20,13 @@
 }
 
 .background {
-  position: fixed;
-  min-width: 100%;
-  min-height: 100%;
+  position: absolute;
+  contain: content;
+  z-index: -1;
+}
+
+#secondBackground {
+  position: absolute;
+  contain: content;
   z-index: -1;
 }
