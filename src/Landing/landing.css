@@ -21,22 +21,5 @@
 
 .background {
   position: absolute;
-  contain: content;
   z-index: -1;
-}
-
-#secondBackground {
-  position: absolute;
-  contain: content;
-  z-index: -1;
-}
-
-.swiper {
-  width: 100%;
-  height: 100%;
-}
-
-.swiper-slide {
- height: 100vh;
- width: auto;
 }

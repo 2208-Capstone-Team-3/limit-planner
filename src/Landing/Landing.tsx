@@ -1,29 +1,31 @@
-import React from "react";
+import React, { Suspense } from "react";
 import Box from "@mui/material/Box";
 import "./landing.css";
 import "animate.css";
 import lightLogo from "../resources/logo.svg";
 import darkLogo from "../resources/ad-logo.svg";
 import useTheme from "@mui/material/styles/useTheme";
-import { Button, Grow, Paper, Typography } from "@mui/material";
+import {
+  Button,
+  CircularProgress,
+  Container,
+  Grow,
+  Paper,
+  Typography,
+} from "@mui/material";
 import lightBackground from "../resources/lightBackground.mp4";
 import darkBackground from "../resources/darkBackground.mp4";
 import summitWoman from "../resources/summitWoman.jpeg";
 import growMoney from "../resources/growMoney.jpeg";
+import techBackground from "../resources/techBackground.png";
 import { Swiper, SwiperSlide } from "swiper/react";
-import {
-  Mousewheel,
-  EffectFade,
-  Scrollbar,
-  Keyboard,
-  Manipulation,
-} from "swiper";
+import { Mousewheel, EffectFade, Keyboard, Navigation } from "swiper";
 import "swiper/css";
 import "swiper/css/effect-fade";
 import "swiper/css/mousewheel";
-import "swiper/css/scrollbar";
 import "swiper/css/keyboard";
-import "swiper/css/manipulation";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 
 function usePhotometer<Type>(lightRet: Type, darkRet: Type): Type {
   const theme = useTheme();
@@ -32,6 +34,7 @@ function usePhotometer<Type>(lightRet: Type, darkRet: Type): Type {
 }
 
 function Landing() {
+  const theme = useTheme();
   const lightVideoComp = (
     <video
       className="background"
@@ -57,29 +60,34 @@ function Landing() {
   );
 
   return (
-    <Box key={"landing-overall-box"} minHeight="100%">
+    <Suspense fallback={<CircularProgress />}>
       <Swiper
-        modules={[Mousewheel, EffectFade, Scrollbar, Keyboard, Manipulation]}
-        slidesPerView={1}
+        modules={[Mousewheel, EffectFade, Keyboard, Navigation]}
         direction="vertical"
         keyboard
-        navigation
-        scrollbar={{ draggable: true }}
+        navigation={{
+          nextEl: ".swiper-button-next",
+          prevEl: ".swiper-button-prev",
+        }}
         fadeEffect={{ crossFade: true }}
         mousewheel={{ thresholdDelta: 20 }}
         effect="fade"
         key="swiperGroup"
         autoHeight
+        roundLengths
+        speed={600}
+        createElements
       >
         <SwiperSlide tabIndex={0} key="slide1">
           <Box
             key={"landing-top-box"}
             minHeight="100vh"
+            maxHeight="100vh"
             sx={{
               display: "flex",
+              flexDirection: "column",
               placeContent: "center center",
               placeItems: "center center",
-              flexDirection: "column",
             }}
           >
             {usePhotometer(lightVideoComp, darkVideoComp)}
@@ -88,15 +96,21 @@ function Landing() {
               src={usePhotometer(lightLogo, darkLogo)}
               alt="Limit Icarus over sun backdrop"
             />
-            <Button variant="contained" sx={{ mt: 10 }}>
-              Log-in
-            </Button>
+            <KeyboardArrowDownIcon
+              className="swiper-button-next animate__animated animate__heartBeat animate__infinite"
+              sx={{
+                fontSize: "10vh",
+                position: "fixed",
+                top: "90vh",
+              }}
+            />
           </Box>
         </SwiperSlide>
         <SwiperSlide tabIndex={1} key="slide2">
           <Box
             key={"landing-second-box"}
             minHeight="100vh"
+            maxHeight="100vh"
             sx={{
               display: "flex",
               flexDirection: "row",
@@ -106,27 +120,45 @@ function Landing() {
               backgroundSize: "cover",
             }}
           >
+            <KeyboardArrowUpIcon
+              className="swiper-button-prev"
+              sx={{
+                fontSize: "10vh",
+                position: "fixed",
+                top: "1vh",
+              }}
+            />
             <Grow in {...{ timeout: 3000 }}>
-              <Paper
-                key={"second-box-content"}
-                variant="outlined"
-                sx={{
-                  placeSelf: "",
-                  display: "flex",
-                  placeContent: "center",
-                }}
-              >
-                <Typography variant="h2">
-                  Limit Your Stress! Not Your Goals.
-                </Typography>
-              </Paper>
+              <Container>
+                <Paper
+                  key={"second-box-content"}
+                  variant="outlined"
+                  sx={{
+                    display: "flex",
+                    placeContent: "center",
+                  }}
+                >
+                  <Typography variant="h2">
+                    Limit Your Stress! Not Your Goals.
+                  </Typography>
+                </Paper>
+              </Container>
             </Grow>
+            <KeyboardArrowDownIcon
+              className="swiper-button-next animate__animated animate__heartBeat animate__infinite"
+              sx={{
+                fontSize: "10vh",
+                position: "fixed",
+                top: "90vh",
+              }}
+            />
           </Box>
         </SwiperSlide>
         <SwiperSlide id="thirdSlide" tabIndex={2} key="slide3">
           <Box
             key={"landing-third-box"}
             minHeight="100vh"
+            maxHeight="100vh"
             sx={{
               display: "flex",
               flexDirection: "row",
@@ -137,24 +169,76 @@ function Landing() {
             }}
           >
             <Grow in {...{ timeout: 3000 }}>
-              <Paper
-                key={"third-box-content"}
-                variant="outlined"
-                sx={{
-                  placeSelf: "",
-                  display: "flex",
-                  placeContent: "center",
-                }}
-              >
-                <Typography variant="h2">
-                  Grow your finances to reach your goals!
-                </Typography>
-              </Paper>
+              <Container>
+                <Paper
+                  key={"third-box-content"}
+                  variant="outlined"
+                  sx={{
+                    display: "flex",
+                    placeContent: "center",
+                  }}
+                >
+                  <Typography variant="h2">
+                    Grow your finances to reach your goals!
+                  </Typography>
+                </Paper>
+              </Container>
             </Grow>
+            <KeyboardArrowDownIcon
+              className="swiper-button-next animate__animated animate__heartBeat animate__infinite"
+              sx={{
+                fontSize: "10vh",
+                position: "fixed",
+                top: "90vh",
+              }}
+            />
+          </Box>
+        </SwiperSlide>
+        <SwiperSlide id="fourthSlide" tabIndex={2} key="slide4">
+          <Box
+            key={"landing-fourth-box"}
+            minHeight="100vh"
+            maxHeight="100vh"
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              placeContent: "center center",
+              placeItems: "center center",
+              backgroundImage: `url(${techBackground})`,
+              backgroundSize: "cover",
+            }}
+          >
+            <Grow in {...{ timeout: 3000 }}>
+              <Container>
+                <Paper
+                  key={"fourth-box-content"}
+                  variant="outlined"
+                  sx={{
+                    display: "flex",
+                    placeContent: "center",
+                  }}
+                >
+                  <Typography variant="h2">
+                    Use advanced analytics to monitor your progress and reach
+                    your goal.
+                  </Typography>
+                </Paper>
+              </Container>
+            </Grow>
+            <Button
+              variant="contained"
+              sx={{
+                fontSize: "5vh",
+                position: "fixed",
+                top: "80vh",
+              }}
+            >
+              Sign-up Today!
+            </Button>
           </Box>
         </SwiperSlide>
       </Swiper>
-    </Box>
+    </Suspense>
   );
 }
 
