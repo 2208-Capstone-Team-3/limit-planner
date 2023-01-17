@@ -34,7 +34,6 @@ function usePhotometer<Type>(lightRet: Type, darkRet: Type): Type {
 }
 
 function Landing() {
-  const theme = useTheme();
   const lightVideoComp = (
     <video
       className="background"
@@ -168,6 +167,14 @@ function Landing() {
               backgroundSize: "cover",
             }}
           >
+            <KeyboardArrowUpIcon
+              className="swiper-button-prev"
+              sx={{
+                fontSize: "10vh",
+                position: "fixed",
+                top: "1vh",
+              }}
+            />
             <Grow in {...{ timeout: 3000 }}>
               <Container>
                 <Paper
@@ -208,6 +215,14 @@ function Landing() {
               backgroundSize: "cover",
             }}
           >
+            <KeyboardArrowUpIcon
+              className="swiper-button-prev"
+              sx={{
+                fontSize: "10vh",
+                position: "fixed",
+                top: "1vh",
+              }}
+            />
             <Grow in {...{ timeout: 3000 }}>
               <Container>
                 <Paper
