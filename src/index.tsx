@@ -6,7 +6,8 @@ import reportWebVitals from "./reportWebVitals";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./store/index";
-import Landing from "./Landing/Landing";
+import Landing from "./Components/Landing/Landing";
+import LoginPage from "./Components/Login/LoginPage";
 
 const router = createBrowserRouter([
   {
@@ -18,6 +19,10 @@ const router = createBrowserRouter([
         path: "/",
         element: <Landing />,
       },
+      {
+        path: "login",
+        element: <LoginPage />,
+      }
     ],
   },
 ]);

@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import { CssBaseline, IconButton } from "@mui/material/";
+import { Box, CssBaseline, IconButton } from "@mui/material/";
 import { Outlet } from "react-router-dom";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { Brightness4, Brightness7 } from "@mui/icons-material/";
@@ -49,14 +49,16 @@ function App() {
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
         <CssBaseline enableColorScheme={true} />
+        <Box>
         <IconButton
-          sx={{ ml: 1, position: "absolute", zIndex: 6 }}
+          sx={{ ml: 1, position: "fixed", zIndex: 6 }}
           onClick={colorMode.toggleColorMode}
           color="inherit"
         >
           {theme.palette.mode === "dark" ? <Brightness7 /> : <Brightness4 />}
         </IconButton>
-        <Outlet />
+          <Outlet />
+        </Box>
       </ThemeProvider>
     </ColorModeContext.Provider>
   );
