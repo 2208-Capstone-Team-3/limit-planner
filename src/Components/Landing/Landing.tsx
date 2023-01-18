@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React, { Suspense, useContext } from "react";
 import "./landing.css";
 import "animate.css";
 import lightLogo from "../../resources/logo.svg";
@@ -10,6 +10,7 @@ import {
   CircularProgress,
   Container,
   Grow,
+  IconButton,
   Paper,
   Typography,
 } from "@mui/material";
@@ -24,7 +25,8 @@ import "swiper/css";
 import "swiper/css/effect-fade";
 import "swiper/css/mousewheel";
 import "swiper/css/keyboard";
-import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material/";
+import { Brightness4, Brightness7, KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material/";
+import { ColorModeContext } from "../../App";
 
 function usePhotometer<Type>(lightRet: Type, darkRet: Type): Type {
   const theme = useTheme();
@@ -33,6 +35,9 @@ function usePhotometer<Type>(lightRet: Type, darkRet: Type): Type {
 }
 
 function Landing() {
+  const theme = useTheme();
+  const colorMode = useContext(ColorModeContext)
+
   const lightVideoComp = (
     <video
       className="background"
@@ -57,8 +62,16 @@ function Landing() {
     ></video>
   );
 
+
   return (
     <Suspense fallback={<CircularProgress />}>
+      <IconButton
+        sx={{ ml: 1, position: "absolute", zIndex: 6 }}
+        onClick={colorMode.toggleColorMode}
+        color="inherit"
+      >
+        {theme.palette.mode === "dark" ? <Brightness7 /> : <Brightness4 />}
+      </IconButton>
       <Swiper
         modules={[Mousewheel, EffectFade, Keyboard, Navigation]}
         direction="vertical"
