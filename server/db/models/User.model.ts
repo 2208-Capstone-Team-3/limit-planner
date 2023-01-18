@@ -1,4 +1,4 @@
-import db from "../db";
+import db from "../db.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { Model, DataType } from "sequelize-typescript";
@@ -66,7 +66,7 @@ const User = db.define<UserModel>("user", {
     validate: {
       notEmpty: true,
     },
-    get() {
+    get(): string {
       return `${this.getDataValue("firstName")} ${this.getDataValue(
         "lastName"
       )}`;
