@@ -1,5 +1,5 @@
-// eslint-disable-next-line no-undef
-module.exports = {
+// eslint-disable-next-line no-undef, import/no-anonymous-default-export
+export default {
   env: {
     browser: true,
     es2021: true,

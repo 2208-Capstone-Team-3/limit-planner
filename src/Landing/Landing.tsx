@@ -1,11 +1,11 @@
 import React, { Suspense } from "react";
-import Box from "@mui/material/Box";
 import "./landing.css";
 import "animate.css";
 import lightLogo from "../resources/logo.svg";
 import darkLogo from "../resources/ad-logo.svg";
-import useTheme from "@mui/material/styles/useTheme";
+import { useTheme } from "@mui/material/styles/";
 import {
+  Box,
   Button,
   CircularProgress,
   Container,
@@ -24,8 +24,7 @@ import "swiper/css";
 import "swiper/css/effect-fade";
 import "swiper/css/mousewheel";
 import "swiper/css/keyboard";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material/";
 
 function usePhotometer<Type>(lightRet: Type, darkRet: Type): Type {
   const theme = useTheme();
@@ -95,7 +94,7 @@ function Landing() {
               src={usePhotometer(lightLogo, darkLogo)}
               alt="Limit Icarus over sun backdrop"
             />
-            <KeyboardArrowDownIcon
+            <KeyboardArrowDown
               className="swiper-button-next animate__animated animate__heartBeat animate__infinite"
               sx={{
                 fontSize: "10vh",
@@ -119,7 +118,7 @@ function Landing() {
               backgroundSize: "cover",
             }}
           >
-            <KeyboardArrowUpIcon
+            <KeyboardArrowUp
               className="swiper-button-prev"
               sx={{
                 fontSize: "10vh",
@@ -143,7 +142,7 @@ function Landing() {
                 </Paper>
               </Container>
             </Grow>
-            <KeyboardArrowDownIcon
+            <KeyboardArrowDown
               className="swiper-button-next animate__animated animate__heartBeat animate__infinite"
               sx={{
                 fontSize: "10vh",
@@ -167,7 +166,7 @@ function Landing() {
               backgroundSize: "cover",
             }}
           >
-            <KeyboardArrowUpIcon
+            <KeyboardArrowUp
               className="swiper-button-prev"
               sx={{
                 fontSize: "10vh",
@@ -191,7 +190,7 @@ function Landing() {
                 </Paper>
               </Container>
             </Grow>
-            <KeyboardArrowDownIcon
+            <KeyboardArrowDown
               className="swiper-button-next animate__animated animate__heartBeat animate__infinite"
               sx={{
                 fontSize: "10vh",
@@ -215,7 +214,7 @@ function Landing() {
               backgroundSize: "cover",
             }}
           >
-            <KeyboardArrowUpIcon
+            <KeyboardArrowUp
               className="swiper-button-prev"
               sx={{
                 fontSize: "10vh",
