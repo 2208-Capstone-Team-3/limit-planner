@@ -1,8 +1,8 @@
 import React, { Suspense } from "react";
 import "./landing.css";
 import "animate.css";
-import lightLogo from "../resources/logo.svg";
-import darkLogo from "../resources/ad-logo.svg";
+import lightLogo from "../../resources/logo.svg";
+import darkLogo from "../../resources/ad-logo.svg";
 import { useTheme } from "@mui/material/styles/";
 import {
   Box,
@@ -13,11 +13,11 @@ import {
   Paper,
   Typography,
 } from "@mui/material";
-import lightBackground from "../resources/lightBackground.mp4";
-import darkBackground from "../resources/darkBackground.mp4";
-import summitWoman from "../resources/summitWoman.jpeg";
-import growMoney from "../resources/growMoney.jpeg";
-import techBackground from "../resources/techBackground.png";
+import lightBackground from "../../resources/lightBackground.mp4";
+import darkBackground from "../../resources/darkBackground.mp4";
+import summitWoman from "../../resources/summitWoman.jpeg";
+import growMoney from "../../resources/growMoney.jpeg";
+import techBackground from "../../resources/techBackground.png";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Mousewheel, EffectFade, Keyboard, Navigation } from "swiper";
 import "swiper/css";
