@@ -1,15 +1,13 @@
 import React from "react";
 import "./App.css";
-import CssBaseline from "@mui/material/CssBaseline";
+import { CssBaseline, IconButton } from "@mui/material/";
 import { Outlet } from "react-router-dom";
-import ThemeProvider from "@mui/material/styles/ThemeProvider";
-import createTheme from "@mui/material/styles/createTheme";
-import Brightness4Icon from "@mui/icons-material/Brightness4";
-import Brightness7Icon from "@mui/icons-material/Brightness7";
-import IconButton from "@mui/material/IconButton";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { Brightness4, Brightness7 } from "@mui/icons-material/";
 
 const ColorModeContext = React.createContext({
   toggleColorMode: () => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     true;
   },
 });
@@ -56,11 +54,7 @@ function App() {
           onClick={colorMode.toggleColorMode}
           color="inherit"
         >
-          {theme.palette.mode === "dark" ? (
-            <Brightness7Icon />
-          ) : (
-            <Brightness4Icon />
-          )}
+          {theme.palette.mode === "dark" ? <Brightness7 /> : <Brightness4 />}
         </IconButton>
         <Outlet />
       </ThemeProvider>

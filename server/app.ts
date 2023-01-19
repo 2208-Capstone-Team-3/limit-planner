@@ -1,8 +1,8 @@
 import express from "express";
-const app = express();
 import path from "path";
 import morgan from "morgan";
 import api from "./api/index.js";
+const app = express();
 
 // Set up middleware
 app.use(morgan("combined"));
