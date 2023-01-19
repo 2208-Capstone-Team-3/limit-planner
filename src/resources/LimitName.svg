@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 582.38 146.2">
+  <defs>
+    <style>
+      .cls-1, .cls-2 {
+        fill: #bdccd4;
+      }
+
+      .cls-2 {
+        fill-rule: evenodd;
+      }
+    </style>
+  </defs>
+  <polyline class="cls-2" points="35.45 122.81 137.89 121.54 138.13 143.94 1.54 145.63 0 2.26 34.15 1.83"/>
+  <polygon class="cls-2" points="163.72 145.09 163.72 1.24 149.66 1.11 149.66 144.96 163.72 145.09"/>
+  <path class="cls-1" d="m200.45,89.61v56.59h-24.85V62.72l24.85,26.88Zm-24.85-59.15l-.28-30.46,99.53,98.47L374.38,0v146.2h-24.85V55.58l-58.61,59.24-16.46,16.64-16.46-16.64L175.6,30.46Z"/>
+  <polygon class="cls-2" points="400.92 144.92 400.92 1.41 386.01 1.27 386.01 144.79 400.92 144.92"/>
+  <path class="cls-1" d="m411.54.41h59.63v17.92h-59.63V.41Zm66.48,0h104.36v17.92h-79.51v125.46h-24.85V.41Z"/>
+</svg>

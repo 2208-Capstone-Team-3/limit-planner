@@ -8,6 +8,7 @@ import { Provider } from "react-redux";
 import store from "./store/index";
 import Landing from "./Components/Landing/Landing";
 import LoginPage from "./Components/Login/LoginPage";
+import Home from "./Components/Home/Home";
 
 const router = createBrowserRouter([
   {
@@ -22,6 +23,11 @@ const router = createBrowserRouter([
       {
         path: "login",
         element: <LoginPage />,
+      },
+      {
+        path: "home",
+        element: <Home />,
+        children: [],
       }
     ],
   },
