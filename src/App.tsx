@@ -7,7 +7,6 @@ import createTheme from "@mui/material/styles/createTheme";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
 import IconButton from "@mui/material/IconButton";
-import { blueGrey } from "@mui/material/colors";
 
 const ColorModeContext = React.createContext({
   toggleColorMode: () => {
@@ -31,12 +30,18 @@ function App() {
       createTheme({
         palette: {
           mode,
-          primary: {
-            main: blueGrey[500],
-          },
-          secondary: {
-            main: blueGrey[50],
-          },
+          // primary: {
+          //   light: "#757ce8",
+          //   main: "#3f50b5",
+          //   dark: "#002884",
+          //   contrastText: "#fff",
+          // },
+          // secondary: {
+          //   light: "#ff7961",
+          //   main: "#f44336",
+          //   dark: "#ba000d",
+          //   contrastText: "#000",
+          // },
         },
       }),
     [mode]
@@ -47,7 +52,7 @@ function App() {
       <ThemeProvider theme={theme}>
         <CssBaseline enableColorScheme={true} />
         <IconButton
-          sx={{ ml: 1, position: "absolute" }}
+          sx={{ ml: 1, position: "absolute", zIndex: 6 }}
           onClick={colorMode.toggleColorMode}
           color="inherit"
         >
