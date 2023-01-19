@@ -1,30 +1,44 @@
 import db from "../db.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { Model, DataType } from "sequelize-typescript";
+import {
+  Model,
+  InferAttributes,
+  InferCreationAttributes,
+  UUID,
+  UUIDV4,
+  STRING,
+  BOOLEAN,
+  VIRTUAL,
+  DATE,
+} from "sequelize";
 
-declare class UserModel extends Model {
-  declare id: string;
-  declare password: string;
-  declare username: string;
-  declare firstName: string;
-  declare lastName: string;
-  declare fullName: string;
-  declare phoneNum: number;
-  declare email: string;
-  declare birthday: Date;
-  declare avatarUrl: string;
-  declare isAdmin: boolean;
-}
+export interface UserAttributes
+  extends Model<
+    InferAttributes<UserAttributes>,
+    InferCreationAttributes<UserAttributes>
+  > {
+    id: string;
+    password: string;
+    username: string;
+    firstName: string;
+    lastName: string;
+    fullName: string;
+    phoneNum: number;
+    email: string;
+    birthday: Date;
+    avatarUrl: string;
+    isAdmin: boolean;
+};
 
-const User = db.define<UserModel>("user", {
+const User = db.define<UserAttributes>("user", {
   id: {
-    type: DataType.UUID,
+    type: UUID,
     primaryKey: true,
-    defaultValue: DataType.UUIDV4,
+    defaultValue: UUIDV4,
   },
   username: {
-    type: DataType.STRING,
+    type: STRING,
     allowNull: false,
     unique: true,
     validate: {
@@ -41,28 +55,28 @@ const User = db.define<UserModel>("user", {
     },
   },
   password: {
-    type: DataType.STRING,
+    type: STRING,
     allowNull: false,
     validate: {
       notEmpty: true,
     },
   },
   firstName: {
-    type: DataType.STRING,
+    type: STRING,
     allowNull: false,
     validate: {
       notEmpty: true,
     },
   },
   lastName: {
-    type: DataType.STRING,
+    type: STRING,
     allowNull: false,
     validate: {
       notEmpty: true,
     },
   },
   fullName: {
-    type: DataType.VIRTUAL,
+    type: VIRTUAL,
     validate: {
       notEmpty: true,
     },
@@ -73,14 +87,14 @@ const User = db.define<UserModel>("user", {
     },
   },
   phoneNum: {
-    type: DataType.STRING,
+    type: STRING,
     allowNull: false,
     validate: {
       notEmpty: true,
     },
   },
   email: {
-    type: DataType.STRING,
+    type: STRING,
     allowNull: false,
     unique: true,
     validate: {
@@ -89,7 +103,7 @@ const User = db.define<UserModel>("user", {
     },
   },
   birthday: {
-    type: DataType.DATE,
+    type: DATE,
     allowNull: false,
     validate: {
       notEmpty: true,
@@ -97,17 +111,17 @@ const User = db.define<UserModel>("user", {
     },
   },
   avatarUrl: {
-    type: DataType.STRING,
+    type: STRING,
     allowNull: true,
     defaultValue: "/public/logo.svg",
   },
   isAdmin: {
-    type: DataType.BOOLEAN,
+    type: BOOLEAN,
     defaultValue: false,
   },
 });
 
-User.addHook("beforeSave", async (user: UserModel) => {
+User.addHook("beforeSave", async (user: UserAttributes) => {
   if (user.changed("password")) {
     user.password = await bcrypt.hash(user.password, 5);
   }

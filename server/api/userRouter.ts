@@ -1,5 +1,5 @@
 import express from "express";
-import User from "../db/index.js";
+import { User } from "../db/index.js";
 const router = express.Router();
 
 router.get("/", async (req, res, next) => {
