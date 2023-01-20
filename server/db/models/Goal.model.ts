@@ -19,10 +19,10 @@ export interface GoalAttributes
   > {
   id: string;
   name:string;
-  goalAmount: string;
-  startAmount: string;
+  goalAmount: number;
+  startAmount: number;
   startDate: string;
-  endDate: number;
+  endDate: string;
   victory:boolean;
 };
 
