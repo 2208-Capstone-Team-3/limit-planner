@@ -17,14 +17,14 @@ export interface GoalAttributes
     InferAttributes<GoalAttributes>,
     InferCreationAttributes<GoalAttributes>
   > {
-  id: string;
-  name:string;
+  id?: string;
+  name: string;
   goalAmount: number;
   startAmount: number;
-  startDate: string;
-  endDate: string;
-  victory:boolean;
-};
+  startDate: Date;
+  endDate: Date;
+  victory: boolean;
+}
 
 const Goal = db.define<GoalAttributes>("goal", {
   id: {
@@ -32,12 +32,9 @@ const Goal = db.define<GoalAttributes>("goal", {
     primaryKey: true,
     defaultValue: UUIDV4,
   },
-  name:{
+  name: {
     type: STRING,
-    allowNull:false,
-    validate:{
-        isEmpty:false
-    }
+    allowNull: false,
   },
   goalAmount: {
     type: FLOAT,
@@ -55,10 +52,10 @@ const Goal = db.define<GoalAttributes>("goal", {
     type: DATE,
     allowNull: false,
   },
-  victory:{
+  victory: {
     type: BOOLEAN,
-    allowNull:false,
-  }
+    allowNull: false,
+  },
 });
 
 export default Goal;

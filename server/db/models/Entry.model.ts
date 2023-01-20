@@ -17,15 +17,15 @@ export interface EntryAttributes
     InferAttributes<EntryAttributes>,
     InferCreationAttributes<EntryAttributes>
   > {
-  id: string;
+  id?: string;
   entryType: string;
-  date: string;
+  date: Date;
   creditDebit: string;
   amount: number;
   title: string;
   note: string;
-  frequency:string;
-};
+  frequency: string;
+}
 
 const Entry = db.define<EntryAttributes>("entry", {
   id: {
@@ -67,24 +67,24 @@ const Entry = db.define<EntryAttributes>("entry", {
     type: STRING,
     allowNull: false,
     validate: {
-        notEmpty: true,
-        },
+      notEmpty: true,
     },
+  },
   note: {
     type: STRING,
     allowNull: false,
     validate: {
-        notEmpty: true,
-        },
+      notEmpty: true,
     },
+  },
   frequency: {
     type: ENUM,
-    values: ["Weekly", "Biweekly","Monthly", "ByDate"],
+    values: ["Weekly", "Biweekly", "Monthly", "ByDate"],
     allowNull: false,
     validate: {
       notEmpty: true,
     },
-  }
+  },
 });
 
 export default Entry;

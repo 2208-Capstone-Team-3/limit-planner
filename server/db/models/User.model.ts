@@ -1,6 +1,6 @@
 import db from "../db.js";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 import {
   Model,
   InferAttributes,
@@ -11,25 +11,29 @@ import {
   BOOLEAN,
   VIRTUAL,
   DATE,
+  AbstractDataType,
+  Identifier,
 } from "sequelize";
+import { AccountAttributes } from "./Account.model.js";
 
 export interface UserAttributes
   extends Model<
     InferAttributes<UserAttributes>,
     InferCreationAttributes<UserAttributes>
   > {
-    id: string;
-    password: string;
-    username: string;
-    firstName: string;
-    lastName: string;
-    fullName: string;
-    phoneNum: number;
-    email: string;
-    birthday: Date;
-    avatarUrl: string;
-    isAdmin: boolean;
-};
+  addAccount(accountOne: AccountAttributes): unknown;
+  id?: string;
+  password: string;
+  username: string;
+  firstName: string;
+  lastName: string;
+  fullName?: AbstractDataType;
+  phoneNum: string;
+  email: string;
+  birthday: Date;
+  avatarUrl: string | null;
+  isAdmin: boolean;
+}
 
 const User = db.define<UserAttributes>("user", {
   id: {
@@ -129,8 +133,11 @@ User.addHook("beforeSave", async (user: UserAttributes) => {
 
 User.prototype.findByToken = async function (token: string) {
   try {
-    const id = jwt.verify(token, "secret");
-    const user = await this.findByPk(id);
+    const tokenId: JwtPayload = jwt.verify(token, "secret", {
+      complete: true,
+    });
+    const id: Identifier = tokenId.payload.id;
+    const user = await User.findByPk(id);
     if (user) {
       return user;
     } else {
@@ -154,7 +161,7 @@ User.prototype.authenticate = async function (userAuth: {
   password: string;
 }) {
   const { username, password } = userAuth;
-  const user = await this.findOne({
+  const user = await User.findOne({
     where: {
       username,
     },

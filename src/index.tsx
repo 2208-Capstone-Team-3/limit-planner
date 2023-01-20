@@ -9,6 +9,7 @@ import store from "./store/index";
 import Landing from "./Components/Landing/Landing";
 import LoginPage from "./Components/Login/LoginPage";
 import Home from "./Components/Home/Home";
+import CreateUserPage from "./Components/UserCreation/UserCreationPage";
 
 const router = createBrowserRouter([
   {
@@ -25,10 +26,14 @@ const router = createBrowserRouter([
         element: <LoginPage />,
       },
       {
+        path: "createuser",
+        element: <CreateUserPage />,
+      },
+      {
         path: "home",
         element: <Home />,
         children: [],
-      }
+      },
     ],
   },
 ]);

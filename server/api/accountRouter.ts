@@ -1,9 +1,9 @@
-import express,{ Request,Response,NextFunction } from "express";
+import express, { Request, Response, NextFunction } from "express";
 import { Account } from "../db/index.js";
 import { AccountAttributes } from "../db/models/Account.model.js";
 const router = express.Router();
 
-router.get("/", async (req:Request, res:Response, next:NextFunction) => {
+router.get("/", async (req: Request, res: Response, next: NextFunction) => {
   try {
     const accounts: AccountAttributes[] = await Account.findAll();
     res.send(accounts);
@@ -13,3 +13,4 @@ router.get("/", async (req:Request, res:Response, next:NextFunction) => {
   }
 });
 
+export default router;

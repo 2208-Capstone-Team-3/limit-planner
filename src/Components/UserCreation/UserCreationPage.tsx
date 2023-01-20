@@ -16,8 +16,10 @@ import { setUser } from "../../store/userSlice";
 import { RootState } from "../../store";
 
 const CreateUserPage = () => {
-  const userToCreate = useSelector((state: RootState) => state.userToCreate.userToCreate);
-  const [validity, setValidity] = useState({username: true, email: true});
+  const userToCreate = useSelector(
+    (state: RootState) => state.userToCreate.userToCreate
+  );
+  const [validity, setValidity] = useState({ username: false, email: false });
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const handleUserStateChange = (e: BaseSyntheticEvent) => {

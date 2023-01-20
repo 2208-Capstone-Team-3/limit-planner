@@ -4,8 +4,8 @@ import Account from "./models/Account.model.js";
 import Entry from "./models/Entry.model.js";
 import Goal from "./models/Goal.model.js";
 
-User.hasMany(Account)
-Account.belongsTo(User)
+User.hasMany(Account);
+Account.belongsTo(User);
 
 Account.hasMany(Entry);
 Entry.belongsTo(Account);

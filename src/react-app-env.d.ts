@@ -22,4 +22,4 @@ type Secret =
       key: string | Buffer;
       passphrase: string;
     };
-declare const JWT: Secret;
+declare const JWT: Secret = Secret(JWTBase);
