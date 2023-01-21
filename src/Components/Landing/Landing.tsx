@@ -1,4 +1,4 @@
-import React, { Suspense, useContext } from "react";
+import React, { useContext } from "react";
 import "./landing.css";
 import "animate.css";
 import lightLogo from "../../resources/logo.svg";
@@ -7,7 +7,6 @@ import { useTheme } from "@mui/material/styles/";
 import {
   Box,
   Button,
-  CircularProgress,
   Container,
   Grow,
   IconButton,
@@ -20,12 +19,17 @@ import summitWoman from "../../resources/summitWoman.jpeg";
 import growMoney from "../../resources/growMoney.jpeg";
 import techBackground from "../../resources/techBackground.png";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Mousewheel, EffectFade, Keyboard, Navigation } from "swiper";
+import { Mousewheel, EffectFade, Keyboard, Navigation, Lazy } from "swiper";
 import "swiper/css";
 import "swiper/css/effect-fade";
 import "swiper/css/mousewheel";
 import "swiper/css/keyboard";
-import { Brightness4, Brightness7, KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material/";
+import {
+  Brightness4,
+  Brightness7,
+  KeyboardArrowDown,
+  KeyboardArrowUp,
+} from "@mui/icons-material/";
 import { ColorModeContext } from "../../App";
 
 function usePhotometer<Type>(lightRet: Type, darkRet: Type): Type {
@@ -36,7 +40,7 @@ function usePhotometer<Type>(lightRet: Type, darkRet: Type): Type {
 
 function Landing() {
   const theme = useTheme();
-  const colorMode = useContext(ColorModeContext)
+  const colorMode = useContext(ColorModeContext);
 
   const lightVideoComp = (
     <video
@@ -62,18 +66,25 @@ function Landing() {
     ></video>
   );
 
-
   return (
-    <Suspense fallback={<CircularProgress />}>
+    <Box>
       <IconButton
-        sx={{ ml: 1, position: "absolute", zIndex: 6 }}
+        sx={{ position: "absolute", zIndex: 6, left: "1vw", top: "1vw" }}
         onClick={colorMode.toggleColorMode}
         color="inherit"
       >
         {theme.palette.mode === "dark" ? <Brightness7 /> : <Brightness4 />}
       </IconButton>
+      <Button
+      variant="contained"
+        sx={{ ml: 1, position: "absolute", zIndex: 6, right: "2vw", top: "2vw" }}
+        href="login"
+        color="inherit"
+      >
+        Login
+      </Button>
       <Swiper
-        modules={[Mousewheel, EffectFade, Keyboard, Navigation]}
+        modules={[Mousewheel, EffectFade, Keyboard, Navigation, Lazy]}
         direction="vertical"
         keyboard
         navigation={{
@@ -88,6 +99,7 @@ function Landing() {
         roundLengths
         speed={600}
         createElements
+        lazy
       >
         <SwiperSlide tabIndex={0} key="slide1">
           <Box
@@ -265,7 +277,7 @@ function Landing() {
           </Box>
         </SwiperSlide>
       </Swiper>
-    </Suspense>
+    </Box>
   );
 }
 

@@ -1,7 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { PlaceType } from "../Components/UserCreation/UserGoogleLocation";
 
-const initialState = {
-    userToCreate: {},
+interface initialStateType {
+  userToCreate: { address: PlaceType | null };
+}
+
+const initialState: initialStateType = {
+    userToCreate: { address: null },
 };
 
 export const createUserSlice = createSlice({

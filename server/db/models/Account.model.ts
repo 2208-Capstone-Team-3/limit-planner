@@ -10,6 +10,8 @@ import {
   //DATE,
   ENUM,
 } from "sequelize";
+import { EntryAttributes } from "./Entry.model.js";
+import { GoalAttributes } from "./Goal.model.js";
 
 // order of InferAttributes & InferCreationAttributes is important.
 export interface AccountAttributes
@@ -17,12 +19,14 @@ export interface AccountAttributes
     InferAttributes<AccountAttributes>,
     InferCreationAttributes<AccountAttributes>
   > {
-  id: string;
+  addGoal(goalFour: GoalAttributes): unknown;
+  addEntry(entryOne: EntryAttributes): unknown;
+  id?: string;
   accountType: string;
   accountName: string;
   institution: string;
   balance: number;
-};
+}
 
 const Account = db.define<AccountAttributes>("account", {
   id: {

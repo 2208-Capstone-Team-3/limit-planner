@@ -12,10 +12,6 @@ app.use(express.json());
 app.use("/api", api);
 
 // Pass back everything else / front-end
-app.use("/dist", express.static(path.join(import.meta.url, "../dist")));
-app.use("/static", express.static(path.join(import.meta.url, "../static")));
-app.get("/*", (req, res) =>
-  res.sendFile(path.join(import.meta.url, "../static/index.html"))
-);
+app.use("/public", express.static(path.join(import.meta.url, "../public")));
 
 export default app;
