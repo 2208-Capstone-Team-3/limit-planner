@@ -31,7 +31,7 @@ router.post("/", async (req: Request, res: Response, next: NextFunction): Promis
     try {
       const entryId: string = req.params.entryId
       //soimething weird happens since 
-      //accountId starts string but ends up number??
+      //entryId starts string but ends up number??
       //so TS forces it to be string idk
       const entryToDelete = await Entry.findByPk(entryId)
       entryToDelete?.destroy()
