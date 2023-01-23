@@ -4,7 +4,7 @@ import { AccountAttributes } from "../db/models/Account.model.js";
 const router = express.Router();
 
 
-router.get("/", async (req: Request, res: Response, next: NextFunction) => {
+router.get("/", async (req: Request, res: Response, next: NextFunction): Promise<void>=> {
   try {
     const accounts: AccountAttributes[] = await Account.findAll();
     res.send(accounts);
@@ -14,7 +14,7 @@ router.get("/", async (req: Request, res: Response, next: NextFunction) => {
   }
 });
 
-router.post("/", async (req: Request, res: Response, next: NextFunction) => {
+router.post("/", async (req: Request, res: Response, next: NextFunction): Promise<void>=> {
   try {
     const {accountType, accountName, institution, balance} : AccountAttributes = req.body
     // const createAccount = 
@@ -31,7 +31,7 @@ router.post("/", async (req: Request, res: Response, next: NextFunction) => {
   }
 });
 
-router.delete("/:accountId", async (req: Request, res: Response, next: NextFunction) => {
+router.delete("/:accountId", async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const accountId: string = req.params.accountId
     //soimething weird happens since 
