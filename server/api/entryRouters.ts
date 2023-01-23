@@ -16,7 +16,7 @@ router.get("/", async (req: Request, res: Response, next: NextFunction) : Promis
 router.post("/", async (req: Request, res: Response, next: NextFunction): Promise<void>=> {
     try {
       const {entryType, date, creditDebit, amount, title, note, frequency} : EntryAttributes = req.body
-      // const createEntry = 
+      // const createEntry= 
       await Entry.create({
         entryType, date, creditDebit, amount, title, note, frequency
       })
