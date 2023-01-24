@@ -1,7 +1,21 @@
 import React, { FC, useState, BaseSyntheticEvent } from "react";
-import { Box, Input, Select, MenuItem, SelectChangeEvent } from '@mui/material';
+import { Box, Input, Select, MenuItem, SelectChangeEvent, Button } from '@mui/material';
+import axios from "axios";
 
-export const Entry: FC = () => {
+
+export interface entryReqBody {
+    accountId: string,
+    entryType: string,
+    date: string,
+    creditDebit: string,
+    amount: number,
+    title: string,
+    note: string,
+    frequency: string
+
+}
+
+export const EntryComponent: FC = () => {
 
     const [entryType, setEntryType] = useState<string>("")
     const [date, setDate] = useState<string>("")
@@ -32,6 +46,30 @@ export const Entry: FC = () => {
     const handleFrequencyChange = (event: SelectChangeEvent<string> ) => {
         setFrequency(event.target.value)
     }
+     
+
+
+  
+
+    const handleSubmit = async (event: BaseSyntheticEvent) => {
+        event.preventDefault();
+        //how do i set this req.body as entryReqBody?
+        await axios.post("/api/entry", {
+            //need account redux state
+            accountId,
+            entryType,
+            date,
+            creditDebit,
+            amount,
+            title,
+            note,
+            frequency
+
+        });
+        
+      };
+
+
 
     return(
     <Box sx={{ display: "flex" }}>
@@ -57,6 +95,8 @@ export const Entry: FC = () => {
             <MenuItem value="Monthly">Monthly</MenuItem>
            
         </Select>
+         <Button onClick={handleSubmit}>Submit</Button>
+
     </Box>
     )
 }
