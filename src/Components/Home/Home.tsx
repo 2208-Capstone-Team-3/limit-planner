@@ -19,6 +19,7 @@ import React from "react";
 import { Outlet } from "react-router-dom";
 import LimitAppBar from "../AppBar/AppBar";
 import MedalIcon from '@mui/icons-material/WorkspacePremium';
+import Calendar from "./Calendar";
 
 const Home = () => {
   const [open, setOpen] = React.useState(true);
@@ -85,6 +86,7 @@ const Home = () => {
         >
           <Toolbar />
           <Outlet />
+          <Calendar/>
       </Box>
     </Box>
   );
