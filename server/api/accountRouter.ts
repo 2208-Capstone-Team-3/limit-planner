@@ -3,7 +3,7 @@ import { Account } from "../db/index.js";
 import { AccountAttributes } from "../db/models/Account.model.js";
 const router = express.Router();
 
-
+// GET  /api/accounts
 router.get("/", async (req: Request, res: Response, next: NextFunction): Promise<void>=> {
   try {
     const accounts: AccountAttributes[] = await Account.findAll();
@@ -14,6 +14,21 @@ router.get("/", async (req: Request, res: Response, next: NextFunction): Promise
   }
 });
 
+// GET  /api/accounts/:accountId   
+router.get("/accounts/:accountId", async (req: Request, res: Response, next: NextFunction): Promise<void>=> {
+  try {
+    // if (real user) {
+      const accountId : string = req.params.accountId
+      const foundAccount = await Account.findByPk(accountId);
+      res.send(foundAccount);
+    // }  otherwise throw error
+  } catch (err) {
+    res.sendStatus(404);
+    next(err);
+  }
+});
+
+// POST  /api/accounts
 router.post("/", async (req: Request, res: Response, next: NextFunction): Promise<void>=> {
   try {
     const {accountType, accountName, institution, balance} : AccountAttributes = req.body
@@ -31,6 +46,7 @@ router.post("/", async (req: Request, res: Response, next: NextFunction): Promis
   }
 });
 
+// DELETE  /api/:accountId
 router.delete("/:accountId", async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const accountId: string = req.params.accountId
