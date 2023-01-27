@@ -67,7 +67,7 @@ const Calendar:FC=()=>{
     setModalOpen(false);
   };
 
-  console.log(events)
+  console.log(INITIAL_EVENTS)
 
   return (
     <Box>
@@ -84,7 +84,7 @@ const Calendar:FC=()=>{
           selectable={true}
           selectMirror={true}
           dayMaxEvents={true}
-          //initialEvents={events}
+          initialEvents={INITIAL_EVENTS}
           eventClick={handleModalOpen}
           eventsSet={handleEvents} // called after events are initialized/added/changed/removed
           // eventAdd={function(){}}
