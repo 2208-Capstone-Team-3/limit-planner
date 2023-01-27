@@ -7,7 +7,7 @@ const router = express.Router();
 // GET  /api/accounts
 router.get("/", authenticateUser, async (req: Request, res: Response, next: NextFunction): Promise<void>=> {
   try {
-    const foundUserInfo = req.locals
+    const foundUserInfo = res.locals.user
     const userRouters = foundUserInfo.Router
     res.send(userRouters)
   } catch (err) {
@@ -22,7 +22,7 @@ router.get("/accounts/:accountId", authenticateUser, async (req: Request, res: R
     // if (real user) {
       const accountId : string = req.params.accountId
       const foundAccount = await Account.findByPk(accountId);
-      res.send(foundAccount);
+      res.send(foundAccount); 
     // }  otherwise throw error
   } catch (err) {
     res.sendStatus(404);

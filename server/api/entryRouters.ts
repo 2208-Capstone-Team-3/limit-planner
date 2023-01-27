@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.get("/", authenticateUser, async (req: Request, res: Response, next: NextFunction) : Promise<void>=> {
   try {
-    const foundUserInfo = req.locals
+    const foundUserInfo = res.locals.user
     const userEntries = foundUserInfo.Entry
     res.send(userEntries)
   } catch (err) {
