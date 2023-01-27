@@ -10,6 +10,7 @@ import Landing from "./Components/Landing/Landing";
 import LoginPage from "./Components/Login/LoginPage";
 import Home from "./Components/Home/Home";
 import CreateUserPage from "./Components/UserCreation/UserCreationPage";
+import Calendar from "./Components/Home/Calendar";
 
 const router = createBrowserRouter([
   {
@@ -32,6 +33,11 @@ const router = createBrowserRouter([
       {
         path: "home",
         element: <Home />,
+        children: [],
+      },
+      {
+        path: "calendar",
+        element: <Calendar />,
         children: [],
       },
     ],
