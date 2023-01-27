@@ -6,7 +6,7 @@ import { ThemeProvider, createTheme } from "@mui/material/styles";
 import axios from "axios";
 import { setUser } from "./store/userSlice";
 import { useDispatch } from "react-redux";
-import { amber, blueGrey, deepOrange, grey, orange, red } from "@mui/material/colors";
+import { blueGrey, deepOrange, grey } from "@mui/material/colors";
 
 export const ColorModeContext = React.createContext({
   toggleColorMode: () => {
