@@ -86,7 +86,6 @@ const Home = () => {
         >
           <Toolbar />
           <Outlet />
-          <Calendar/>
       </Box>
     </Box>
   );
