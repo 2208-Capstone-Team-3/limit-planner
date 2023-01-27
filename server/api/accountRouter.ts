@@ -1,13 +1,15 @@
 import express, { Request, Response, NextFunction } from "express";
 import { Account } from "../db/index.js";
 import { AccountAttributes } from "../db/models/Account.model.js";
+import { authenticateUser } from "./helpers/authUserMiddleware.js";
 const router = express.Router();
 
 // GET  /api/accounts
-router.get("/", async (req: Request, res: Response, next: NextFunction): Promise<void>=> {
+router.get("/", authenticateUser, async (req: Request, res: Response, next: NextFunction): Promise<void>=> {
   try {
-    const accounts: AccountAttributes[] = await Account.findAll();
-    res.send(accounts);
+    const foundUserInfo = req.locals
+    const userRouters = foundUserInfo.Router
+    res.send(userRouters)
   } catch (err) {
     res.sendStatus(404);
     next(err);
@@ -15,7 +17,7 @@ router.get("/", async (req: Request, res: Response, next: NextFunction): Promise
 });
 
 // GET  /api/accounts/:accountId   
-router.get("/accounts/:accountId", async (req: Request, res: Response, next: NextFunction): Promise<void>=> {
+router.get("/accounts/:accountId", authenticateUser, async (req: Request, res: Response, next: NextFunction): Promise<void>=> {
   try {
     // if (real user) {
       const accountId : string = req.params.accountId
@@ -29,7 +31,7 @@ router.get("/accounts/:accountId", async (req: Request, res: Response, next: Nex
 });
 
 // POST  /api/accounts
-router.post("/", async (req: Request, res: Response, next: NextFunction): Promise<void>=> {
+router.post("/", authenticateUser, async (req: Request, res: Response, next: NextFunction): Promise<void>=> {
   try {
     const {accountType, accountName, institution, balance} : AccountAttributes = req.body
     // const createAccount = 
@@ -47,7 +49,7 @@ router.post("/", async (req: Request, res: Response, next: NextFunction): Promis
 });
 
 // DELETE  /api/:accountId
-router.delete("/:accountId", async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+router.delete("/:accountId", authenticateUser, async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const accountId: string = req.params.accountId
     //soimething weird happens since 

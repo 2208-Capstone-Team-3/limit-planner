@@ -3,6 +3,7 @@ import { User } from "../db/index.js";
 import { authenticateUser } from "./helpers/authUserMiddleware.js";
 const router = express.Router();
 
+
 router.get(
   "/",
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {

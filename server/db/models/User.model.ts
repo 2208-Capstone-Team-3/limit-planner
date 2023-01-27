@@ -174,4 +174,5 @@ User.prototype.authenticate = async function (userAuth: {
   throw error;
 };
 
+
 export default User;

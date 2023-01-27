@@ -26,7 +26,7 @@ const Home = () => {
   const toggleDrawer = (): void => {
     setOpen(!open);
   };
-
+ 
   return (
     <Box>
       <LimitAppBar />
@@ -85,6 +85,7 @@ const Home = () => {
         >
           <Toolbar />
           <Outlet />
+          
       </Box>
     </Box>
   );
