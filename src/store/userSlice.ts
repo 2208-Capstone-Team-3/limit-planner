@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { PlaceType } from "../Components/UserCreation/UserGoogleLocation";
 
-interface initialStateType {
+export interface userInitialStateType {
   user: {
     username: string | null;
     address: PlaceType | null;
@@ -14,13 +14,13 @@ interface initialStateType {
     email: string | null;
     birthday: Date | null;
     avatarUrl: string | null;
-    isAdmin: true;
+    isAdmin: boolean | null;
     createdAt: string | null;
     updatedAt: string | null;
   };
 }
 
-const initialState: initialStateType = {
+const initialState: userInitialStateType = {
   user: {
     username: null,
     address: null,
@@ -44,7 +44,7 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     setUser: (state, action) => {
-      state.user = action.payload;
+      state.user = {...action.payload};
     },
     resetUser: (state) => {
       state.user = {
@@ -59,7 +59,7 @@ export const userSlice = createSlice({
         email: null,
         birthday: null,
         avatarUrl: null,
-        isAdmin: true,
+        isAdmin: false,
         createdAt: null,
         updatedAt: null,
       };

@@ -22,6 +22,7 @@ const CreateUserPage = () => {
   const [validity, setValidity] = useState({ username: false, email: false });
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const handleUserStateChange = (e: BaseSyntheticEvent) => {
     const target = e.target;
     const value = target.value;

@@ -11,18 +11,26 @@ import MenuItem from "@mui/material/MenuItem";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { RootState } from "../../store";
-import { resetUser } from "../../store/userSlice";
+import { resetUser, userInitialStateType } from "../../store/userSlice";
 import { useTheme } from "@mui/material";
 import lightLogo from "../../resources/LimitName.svg";
 import darkLogo from "../../resources/ad-logo.svg";
+import icarusLogo from "../../resources/logo.svg";
 import { ColorModeContext } from "../../App";
 import { Brightness4, Brightness7 } from "@mui/icons-material";
+import MenuIcon from "@mui/icons-material/Menu";
+import { setHomeDrawerOpen } from "../../store/themeSlice";
 
 function LimitAppBar() {
+  const homeDrawerOpen: boolean = useSelector(
+    (state: RootState) => state.theme.theme.homeDrawerOpen
+  );
   const colorMode = useContext(ColorModeContext);
   const theme = useTheme();
   const navigate = useNavigate();
-  const { user }: any = useSelector((state: RootState) => state.user);
+  const { user }: userInitialStateType = useSelector(
+    (state: RootState) => state.user
+  );
   const dispatch = useDispatch();
   const userSettings = ["Account", "Goals", "Logout"];
   const guestSettings = ["Login"];
@@ -65,7 +73,7 @@ function LimitAppBar() {
       navUserGoals();
     setAnchorElUser(null);
   };
-  console.log(user)
+  console.log(user);
 
   return (
     <AppBar
@@ -73,7 +81,16 @@ function LimitAppBar() {
       sx={{ display: "flex", height: "10vh", placeContent: "center" }}
       position="fixed"
     >
-      <Box sx={{ display: "flex", ml: "1vw", width: "100vw" }}>
+      <Box sx={{ display: "flex", ml: "1vw", width: "100%" }}>
+        <IconButton
+          color="inherit"
+          aria-label="open drawer"
+          onClick={() => dispatch(setHomeDrawerOpen(!homeDrawerOpen))}
+          edge="start"
+          sx={{ mr: 2, ...(homeDrawerOpen && { display: 'none' }) }}
+        >
+          <MenuIcon />
+        </IconButton>
         <Link href="/home">
           <Avatar
             variant="square"
@@ -81,7 +98,7 @@ function LimitAppBar() {
             sx={{
               mr: 10,
               height: "6vh",
-              width: "auto",
+              width: "80%",
             }}
           ></Avatar>
         </Link>
@@ -91,12 +108,16 @@ function LimitAppBar() {
             display: "flex",
             placeSelf: "center",
             placeItems: "center",
-            width: "25%",
+            width: "90%",
+            placeContent: "end"
           }}
         >
           <Tooltip title="Open settings">
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-              <Avatar alt={user?.fullName ?? "Guest"} src={user.avatarUrl} />
+              <Avatar
+                alt={user?.fullName ?? "Guest"}
+                src={user?.avatarUrl ?? icarusLogo}
+              />
             </IconButton>
           </Tooltip>
           <Menu

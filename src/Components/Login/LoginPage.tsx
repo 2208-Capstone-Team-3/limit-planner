@@ -1,4 +1,9 @@
-import React, { BaseSyntheticEvent, useContext, useState } from "react";
+import React, {
+  BaseSyntheticEvent,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../store/userSlice";
 import axios from "axios";
@@ -42,7 +47,6 @@ const LoginPage = () => {
           },
         });
         dispatch(setUser(response.data));
-        console.log(response.data)
 
         navigate("/home");
         window.location.reload();
@@ -69,9 +73,12 @@ const LoginPage = () => {
     }
   };
 
+  useEffect(() => {
+    window.localStorage.getItem("token") && loginWithToken();
+  }, [loginWithToken]);
+
   return (
     <Box>
-      {" "}
       <IconButton
         sx={{ position: "absolute", zIndex: 6, left: "1vw", top: "1vw" }}
         onClick={colorMode.toggleColorMode}
