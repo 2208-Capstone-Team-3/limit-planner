@@ -32,7 +32,7 @@ function LimitAppBar() {
     (state: RootState) => state.user
   );
   const dispatch = useDispatch();
-  const userSettings = ["Account", "Goals", "Logout"];
+  const userSettings = ["Account", "Subscription", "Logout"];
   const guestSettings = ["Login"];
 
   const logout = () => {
@@ -69,7 +69,7 @@ function LimitAppBar() {
       navDashboard();
     if (e.target.innerHTML === "Account" || e.target.id === "Account")
       navUserAccount();
-    if (e.target.innerHTML === "Goals" || e.target.id === "Goals")
+    if (e.target.innerHTML === "Subscription" || e.target.id === "Subscription")
       navUserGoals();
     setAnchorElUser(null);
   };
@@ -80,6 +80,7 @@ function LimitAppBar() {
       color="primary"
       sx={{ display: "flex", height: "10vh", placeContent: "center" }}
       position="fixed"
+      variant="outlined"
     >
       <Box sx={{ display: "flex", ml: "1vw", width: "100%" }}>
         <IconButton
@@ -87,7 +88,7 @@ function LimitAppBar() {
           aria-label="open drawer"
           onClick={() => dispatch(setHomeDrawerOpen(!homeDrawerOpen))}
           edge="start"
-          sx={{ mr: 2, ...(homeDrawerOpen && { display: 'none' }) }}
+          sx={{ mr: 2, ...(homeDrawerOpen && { display: "none" }) }}
         >
           <MenuIcon />
         </IconButton>
@@ -97,8 +98,8 @@ function LimitAppBar() {
             src={theme.palette.mode === "light" ? lightLogo : darkLogo}
             sx={{
               mr: 10,
-              height: "6vh",
-              width: "80%",
+              height: "9vh",
+              width: "max-content",
             }}
           ></Avatar>
         </Link>
@@ -109,7 +110,7 @@ function LimitAppBar() {
             placeSelf: "center",
             placeItems: "center",
             width: "90%",
-            placeContent: "end"
+            placeContent: "end",
           }}
         >
           <Tooltip title="Open settings">

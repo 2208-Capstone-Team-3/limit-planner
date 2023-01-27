@@ -1,5 +1,6 @@
 import React, {
   BaseSyntheticEvent,
+  useCallback,
   useContext,
   useEffect,
   useState,
@@ -37,7 +38,7 @@ const LoginPage = () => {
     setCredentials({ ...credentials, [ev.target.name]: ev.target.value });
   };
 
-  const loginWithToken = async () => {
+  const loginWithToken = useCallback(async () => {
     try {
       const token = window.localStorage.getItem("token");
       if (token) {
@@ -54,7 +55,7 @@ const LoginPage = () => {
     } catch (error) {
       console.error(error);
     }
-  };
+  }, [dispatch, navigate]);
 
   const attemptLogin = async (event: BaseSyntheticEvent) => {
     try {
@@ -68,6 +69,8 @@ const LoginPage = () => {
       window.localStorage.setItem("token", token);
 
       loginWithToken();
+      navigate("/home");
+      window.location.reload();
     } catch (error) {
       console.error(error);
     }
@@ -75,7 +78,7 @@ const LoginPage = () => {
 
   useEffect(() => {
     window.localStorage.getItem("token") && loginWithToken();
-  }, [loginWithToken]);
+  });
 
   return (
     <Box>
