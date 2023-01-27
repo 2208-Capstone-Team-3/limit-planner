@@ -1,14 +1,17 @@
 import express, { Request, Response, NextFunction } from "express";
-import { Entry } from "../db/index.js";
+import { Entry, User } from "../db/index.js";
 import { EntryAttributes } from "../db/models/Entry.model.js";
 import { authenticateUser } from "./helpers/authUserMiddleware.js";
 const router = express.Router();
 
 router.get("/", authenticateUser, async (req: Request, res: Response, next: NextFunction) : Promise<void>=> {
   try {
-    const foundUserInfo = res.locals.user
-    const userEntries = foundUserInfo.Entry
-    res.send(userEntries)
+    const userId = res.locals.user.id
+    const foundUserInfo = await User.findByPk(userId, {
+      include: [Entry]
+    })
+    const entryInfoOnly = foundUserInfo.Entry
+    res.send(entryInfoOnly)
   } catch (err) {
     res.sendStatus(404);
     next(err);

@@ -1,5 +1,5 @@
 import express, { Request, Response, NextFunction } from "express";
-import { Account } from "../db/index.js";
+import { Account, User } from "../db/index.js";
 import { AccountAttributes } from "../db/models/Account.model.js";
 import { authenticateUser } from "./helpers/authUserMiddleware.js";
 const router = express.Router();
@@ -7,9 +7,12 @@ const router = express.Router();
 // GET  /api/accounts
 router.get("/", authenticateUser, async (req: Request, res: Response, next: NextFunction): Promise<void>=> {
   try {
-    const foundUserInfo = res.locals.user
-    const userRouters = foundUserInfo.Router
-    res.send(userRouters)
+    const userId = res.locals.user.id
+    const foundUserInfo = await User.findByPk(userId, {
+      include: [Account]
+    })
+    const accountInfoOnly = foundUserInfo.Account
+    res.send(accountInfoOnly)
   } catch (err) {
     res.sendStatus(404);
     next(err);
