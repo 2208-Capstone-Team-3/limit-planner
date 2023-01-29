@@ -11,8 +11,9 @@ export const INITIAL_EVENTS: EventInput[] = [
   },
   {
     id: createEventId(),
-    title: 'Timed event',
-    start: new Date('2023-01-05').toISOString().replace(/T.*$/, '')
+    title: 'Vacation',
+    start: new Date('2023-01-05').toISOString().replace(/T.*$/, ''),
+    end: new Date('2023-01-10').toISOString().replace(/T.*$/, '')
   }
 ]
 

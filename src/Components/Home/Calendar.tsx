@@ -38,23 +38,24 @@ const months = {
 };
 
 const Calendar:FC=()=>{
-  const [date, setDate] = useState('');
-  const [title, setTitle] = useState('');
+  const [date, setDate] = useState<string>('');
+  const [title, setTitle] = useState<string>('');
   const [modalOpen, setModalOpen] = useState(false);
-  const [events, setEvents] = useState<EventInput[]>([]);
+  const [events, setEvents] = useState<EventApi[]>([]);
+  const [myEvents,setMyEvents] = useState<EventInput[]>([]);
 
-  const fetchGoals = async () => {
+  const fetchEvents = async () => {
     const response = await axios.get('/api/events');
-    setEvents(response.data);
+    setMyEvents(response.data);
   };
 
   useEffect(() => {
-    fetchGoals();
+    fetchEvents();
   }, []);
 
-  // const handleEvents = (events: EventApi[]) => {
-  //   setEvents(events);
-  // };
+  const handleEvents = (events: EventApi[]) => {
+    setEvents(events);
+  };
 
   const handleModalOpen = (selected: EventClickArg) => {
     setModalOpen(true);
@@ -66,7 +67,7 @@ const Calendar:FC=()=>{
     setModalOpen(false);
   };
 
-  console.log(events)
+  console.log(myEvents)
   console.log(INITIAL_EVENTS)
 
   return (
@@ -84,9 +85,9 @@ const Calendar:FC=()=>{
           selectable={true}
           selectMirror={true}
           dayMaxEvents={true}
-          initialEvents={events}
+          initialEvents={myEvents}
           eventClick={handleModalOpen}
-          //eventsSet={handleEvents} // called after events are initialized/added/changed/removed
+          eventsSet={handleEvents} // called after events are initialized/added/changed/removed
           // eventAdd={function(){}}
           // eventChange={function(){}}
           // eventRemove={function(){}}
