@@ -15,6 +15,7 @@ import {
   Identifier,
 } from "sequelize";
 import { AccountAttributes } from "./Account.model.js";
+import { PlaceType } from "../../../src/Components/UserCreation/UserGoogleLocation.js";
 
 export interface UserAttributes
   extends Model<
@@ -31,6 +32,7 @@ export interface UserAttributes
   phoneNum: string;
   email: string;
   birthday: Date;
+  address: PlaceType | string;
   avatarUrl: string | null;
   isAdmin: boolean;
 }
@@ -112,6 +114,13 @@ const User = db.define<UserAttributes>("user", {
     validate: {
       notEmpty: true,
       isDate: true,
+    },
+  },
+  address: {
+    type: STRING,
+    allowNull: false,
+    validate: {
+      notEmpty: true,
     },
   },
   avatarUrl: {
