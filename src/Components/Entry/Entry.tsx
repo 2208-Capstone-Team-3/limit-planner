@@ -1,6 +1,7 @@
 import React, { FC, useState, BaseSyntheticEvent } from "react";
 import { Box, Input, Select, MenuItem, SelectChangeEvent, Button } from '@mui/material';
 import axios from "axios";
+import userEvent from "@testing-library/user-event";
 
 
 export interface entryReqBody {
@@ -17,6 +18,7 @@ export interface entryReqBody {
 
 export const EntryComponent: FC = () => {
 
+    const [accountId, setAccountId] = useState<string>("")
     const [entryType, setEntryType] = useState<string>("")
     const [date, setDate] = useState<string>("")
     const [creditDebit, setCreditDebit] = useState<string>("")
@@ -25,6 +27,10 @@ export const EntryComponent: FC = () => {
     const [note, setNote] = useState<string>("")
     const [frequency, setFrequency] = useState<string>("")
 
+    
+    const handleAccountChange = (event: SelectChangeEvent<string> ) => {
+        setAccountId(event.target.value)
+    }
     const handleTypeChange = (event: SelectChangeEvent<string> ) => {
         setEntryType(event.target.value)
     }
@@ -73,6 +79,14 @@ export const EntryComponent: FC = () => {
 
     return(
     <Box sx={{ display: "flex" }}>
+         <Select value={accountId} style={{ marginTop: 100, marginLeft: 100 }} onChange={handleAccountChange}>
+        
+            {user.accounts.map(account => <MenuItem key={account.id}value={account.id}>{account.name}</MenuItem>)}
+
+            
+           
+        </Select>
+
         <Select value={entryType} style={{ marginTop: 100, marginLeft: 100 }} onChange={handleTypeChange}>
             <MenuItem value="User">User</MenuItem>
             <MenuItem value="API">API</MenuItem>
