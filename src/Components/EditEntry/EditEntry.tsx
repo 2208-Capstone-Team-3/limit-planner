@@ -1,24 +1,19 @@
 import React, { FC, useState, BaseSyntheticEvent } from "react";
+import { useDispatch } from "react-redux";
 import { Box, Input, Select, MenuItem, SelectChangeEvent, Button } from '@mui/material';
 import axios from "axios";
-import userEvent from "@testing-library/user-event";
+import singleEntrySlice from "../../store/singleEntrySlice";
 
 
-export interface entryReqBody {
-    accountId: string,
-    entryType: string,
-    date: string,
-    creditDebit: string,
-    amount: number,
-    title: string,
-    note: string,
-    frequency: string
 
-}
 
 export const EntryComponent: FC = () => {
 
-    const [accountId, setAccountId] = useState<string>("")
+    const dispatch = useDispatch();
+
+    
+
+    
     const [entryType, setEntryType] = useState<string>("")
     const [date, setDate] = useState<string>("")
     const [creditDebit, setCreditDebit] = useState<string>("")
@@ -28,9 +23,7 @@ export const EntryComponent: FC = () => {
     const [frequency, setFrequency] = useState<string>("")
 
     
-    const handleAccountChange = (event: SelectChangeEvent<string> ) => {
-        setAccountId(event.target.value)
-    }
+    const entryId = singleEntry.id
     const handleTypeChange = (event: SelectChangeEvent<string> ) => {
         setEntryType(event.target.value)
     }
@@ -62,7 +55,7 @@ export const EntryComponent: FC = () => {
         //how do i set this req.body as entryReqBody?
         await axios.post("/api/entry", {
             //need account redux state
-            accountId,
+            entryId,
             entryType,
             date,
             creditDebit,

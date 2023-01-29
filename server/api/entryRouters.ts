@@ -41,6 +41,22 @@ router.post("/", async (req: Request, res: Response, next: NextFunction): Promis
       next(err);
     }
   });
+
+  router.post("/entryId", async (req: Request, res: Response, next: NextFunction): Promise<void>=> {
+    try {
+      const entryId = req.params
+      const {entryType, date, creditDebit, amount, title, note, frequency} : EntryAttributes = req.body
+      // const createEntry= 
+      await Entry.create({
+        entryType, date, creditDebit, amount, title, note, frequency
+      })
+      res.sendStatus(204)
+    } catch (err) {
+      res.sendStatus(404);
+      next(err);
+    }
+  });
+  
   
 
 export default router;
