@@ -1,6 +1,6 @@
 import React, { FC,useState, useEffect } from 'react';
 import axios from 'axios';
-import { EventApi, DateSelectArg, EventClickArg, EventContentArg, formatDate } from '@fullcalendar/core';
+import { EventApi, EventInput, DateSelectArg, EventClickArg, EventContentArg, formatDate } from '@fullcalendar/core';
 import { Box, List, ListItem, ListItemText, Typography, useTheme, Modal } from "@mui/material";
 import FullCalendar from '@fullcalendar/react'
 import dayGridPlugin from '@fullcalendar/daygrid'
@@ -41,11 +41,10 @@ const Calendar:FC=()=>{
   const [date, setDate] = useState('');
   const [title, setTitle] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
-  const [events, setEvents] = useState<EventApi[]>([]);
+  const [events, setEvents] = useState<EventInput[]>([]);
 
   const fetchGoals = async () => {
-    const response = await axios.get('/api/goals');
-    console.log(response.data);
+    const response = await axios.get('/api/events');
     setEvents(response.data);
   };
 
@@ -53,9 +52,9 @@ const Calendar:FC=()=>{
     fetchGoals();
   }, []);
 
-  const handleEvents = (events: EventApi[]) => {
-    setEvents(events);
-  };
+  // const handleEvents = (events: EventApi[]) => {
+  //   setEvents(events);
+  // };
 
   const handleModalOpen = (selected: EventClickArg) => {
     setModalOpen(true);
@@ -67,6 +66,7 @@ const Calendar:FC=()=>{
     setModalOpen(false);
   };
 
+  console.log(events)
   console.log(INITIAL_EVENTS)
 
   return (
@@ -84,9 +84,9 @@ const Calendar:FC=()=>{
           selectable={true}
           selectMirror={true}
           dayMaxEvents={true}
-          initialEvents={INITIAL_EVENTS}
+          initialEvents={events}
           eventClick={handleModalOpen}
-          eventsSet={handleEvents} // called after events are initialized/added/changed/removed
+          //eventsSet={handleEvents} // called after events are initialized/added/changed/removed
           // eventAdd={function(){}}
           // eventChange={function(){}}
           // eventRemove={function(){}}
