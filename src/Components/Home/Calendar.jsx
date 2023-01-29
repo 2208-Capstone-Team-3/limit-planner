@@ -7,7 +7,7 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import listPlugin from '@fullcalendar/list'
 import interactionPlugin from '@fullcalendar/interaction'
-import { INITIAL_EVENTS, createEventId } from './event-utils'
+import { SendTwoTone } from '@mui/icons-material';
 
 const modalStyle = {
     position: 'absolute',
@@ -37,39 +37,47 @@ const months = {
     11: 'December'
 };
 
-const Calendar:FC=()=>{
-  const [date, setDate] = useState<string>('');
-  const [title, setTitle] = useState<string>('');
+/**
+ * Notes about the calendar:
+ * Only working if not TS file
+ * Need to have a field 'start' and optional 'end' on model NOT startDate or endDate
+ * Need to have a field 'allDay' on an event
+ * Properties like 'note' are placed on 'extendedProps' automatically by FullCalendar
+ * We will have to refactor any models that we want to display on a calendar to
+ * appease FullCalendar   
+ */
+
+const Calendar=()=>{
+  const [date, setDate] = useState('');
+  const [title, setTitle] = useState('');
+  const [note,setNote] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
-  const [events, setEvents] = useState<EventApi[]>([]);
-  const [myEvents,setMyEvents] = useState<EventInput[]>([]);
+  const [events, setEvents] = useState([]);
+  const [loading,setLoading] = useState(false);
 
   const fetchEvents = async () => {
+    setLoading(true);
     const response = await axios.get('/api/events');
-    setMyEvents(response.data);
+    setEvents(response.data);
+    setLoading(false);
   };
 
   useEffect(() => {
     fetchEvents();
   }, []);
 
-  const handleEvents = (events: EventApi[]) => {
-    setEvents(events);
-  };
-
-  const handleModalOpen = (selected: EventClickArg) => {
+  const handleModalOpen = (selected) => {
     setModalOpen(true);
     setDate(`${selected.event.start}`);
     setTitle(selected.event.title);
+    setNote(selected.event.extendedProps.note);
   };
 
   const handleModalClose = () => {
     setModalOpen(false);
   };
 
-  console.log(myEvents)
-  console.log(INITIAL_EVENTS)
-
+  if(loading) return <p>Loading bitch...</p>
   return (
     <Box>
       <Box sx={{ height: 500,width: 1000 }}>
@@ -85,9 +93,13 @@ const Calendar:FC=()=>{
           selectable={true}
           selectMirror={true}
           dayMaxEvents={true}
-          initialEvents={myEvents}
+          initialEvents={events}
+          // initialEvents = {[
+          //   {id:'1234',title:'A fucking event',date:'2023-01-01'},
+          //   {id:'5678',title:'Another fucking event',date:'2023-01-05'}
+          // ]}
           eventClick={handleModalOpen}
-          eventsSet={handleEvents} // called after events are initialized/added/changed/removed
+          //eventsSet={(events)=>setEvents(currentEvents)} // called after events are initialized/added/changed/removed
           // eventAdd={function(){}}
           // eventChange={function(){}}
           // eventRemove={function(){}}
@@ -106,7 +118,7 @@ const Calendar:FC=()=>{
                       {date}
                   </Typography>
                   <Typography id="modal-modal-title" variant="h5" component="h2">
-                      {title}
+                      {title} - {note}
                   </Typography>
               </Box>
           </Modal>

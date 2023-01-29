@@ -163,14 +163,16 @@ const accountData = [
 
 const eventData = [
   {
-    title: "Big day",
-    start:new Date('2023-01-01').toISOString().replace(/T.*$/, ''),
-    end:new Date('2023-01-01').toISOString().replace(/T.*$/, ''),
+    title: "Bought a gun",
+    note:"Bought a new gun from Wal-Mart",
+    start: new Date('2023-01-03'),
+    allDay:true
   },
   {
-    title: "Vacation",
-    start: new Date('2023-01-05').toISOString().replace(/T.*$/, ''),
-    end: new Date('2023-01-10').toISOString().replace(/T.*$/, ''),
+    title: "Killed  a man",
+    note:'Killed a fella cuz he was lookin at me funny',
+    start: new Date('2023-01-11'),
+    allDay:true
   }
 ];
 

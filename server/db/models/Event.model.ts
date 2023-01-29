@@ -19,8 +19,9 @@ export interface EventAttributes
   > {
   id?: string;
   title: string;
-  start: string;
-  end: string;
+  note:string;
+  start: Date;
+  allDay: boolean;
 }
 
 const Event = db.define<EventAttributes>("event", {
@@ -33,13 +34,17 @@ const Event = db.define<EventAttributes>("event", {
     type: STRING,
     allowNull: false,
   },
-  start: {
+  note: {
     type: STRING,
     allowNull: false,
   },
-  end: {
-    type: STRING,
+  start: {
+    type: DATE,
     allowNull: false,
+  },
+  allDay:{
+    type: BOOLEAN,
+    defaultValue: true
   }
 });
 
