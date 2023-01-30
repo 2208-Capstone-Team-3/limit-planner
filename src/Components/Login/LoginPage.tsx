@@ -28,11 +28,11 @@ const LoginPage = () => {
   const theme = useTheme();
   const colorMode = useContext(ColorModeContext);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [credentials, setCredentials] = useState({
     username: "",
     password: "",
   });
-  const navigate = useNavigate();
 
   const onChange = (ev: BaseSyntheticEvent) => {
     setCredentials({ ...credentials, [ev.target.name]: ev.target.value });
@@ -85,7 +85,6 @@ const LoginPage = () => {
       <IconButton
         sx={{ position: "absolute", zIndex: 6, left: "1vw", top: "1vw" }}
         onClick={colorMode.toggleColorMode}
-        color="inherit"
       >
         {theme.palette.mode === "dark" ? <Brightness7 /> : <Brightness4 />}
       </IconButton>
@@ -101,7 +100,7 @@ const LoginPage = () => {
             top: "15vh",
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+          <Avatar sx={{ m: 1, bgcolor: "secondary.secondary" }}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
@@ -138,7 +137,7 @@ const LoginPage = () => {
               autoComplete="current-password"
             />
             <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
+              control={<Checkbox value="remember" />}
               label="Remember me"
             />
             <Button

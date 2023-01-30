@@ -9,10 +9,7 @@ import { useDispatch } from "react-redux";
 import { blueGrey, deepOrange, grey } from "@mui/material/colors";
 
 export const ColorModeContext = React.createContext({
-  toggleColorMode: () => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    true;
-  },
+  toggleColorMode: () => {},
 });
 
 function App() {
@@ -45,7 +42,6 @@ function App() {
             },
             divider: blueGrey[700],
             background: {
-              default: blueGrey[500],
               paper: blueGrey[500],
             },
             text: {
@@ -58,7 +54,6 @@ function App() {
             primary: deepOrange,
             divider: deepOrange[600],
             background: {
-              default: deepOrange[900],
               paper: deepOrange[900],
             },
             text: {
