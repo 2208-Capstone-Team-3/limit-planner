@@ -15,6 +15,7 @@ import LoginPage from "./Components/Login/LoginPage";
 import Home from "./Components/Home/Home";
 import CreateUserPage from "./Components/UserCreation/UserCreationPage";
 import axios from "axios";
+import HomeBasePortal from "./Components/Home/HomeBasePortal";
 
 const userTokenTestTrue = async () => {
   try {
@@ -38,7 +39,7 @@ const userTokenTestFalse = async () => {
     if (token == null) {
       throw redirect("/");
     }
-    return true
+    return true;
   } catch (error) {
     throw redirect("/");
   }
@@ -51,7 +52,7 @@ const router = createBrowserRouter([
     // errorElement: <ErrorBoundary />,
     children: [
       {
-        path: "/",
+        path: "",
         element: <Landing />,
         loader: userTokenTestTrue,
       },
@@ -68,7 +69,13 @@ const router = createBrowserRouter([
       {
         path: "home",
         element: <Home />,
-        children: [],
+        children: [
+          {
+            path: "",
+            element: <HomeBasePortal />,
+            loader: userTokenTestFalse,
+          },
+        ],
         loader: userTokenTestFalse,
       },
     ],
