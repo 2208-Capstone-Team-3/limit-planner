@@ -3,13 +3,47 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  redirect,
+  RouterProvider,
+} from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./store/index";
 import Landing from "./Components/Landing/Landing";
 import LoginPage from "./Components/Login/LoginPage";
 import Home from "./Components/Home/Home";
 import CreateUserPage from "./Components/UserCreation/UserCreationPage";
+import axios from "axios";
+import HomeBasePortal from "./Components/Home/HomeBasePortal";
+
+const userTokenTestTrue = async () => {
+  try {
+    const token = window.localStorage.getItem("token");
+    const res = await axios.get("/api/auth", {
+      headers: {
+        Authorization: token,
+      },
+    });
+    if (res.status === 200 || res.status === 304) {
+      throw redirect("/home");
+    }
+  } catch (error) {
+    return true;
+  }
+};
+const userTokenTestFalse = async () => {
+  try {
+    const token = window.localStorage.getItem("token");
+    console.log(token);
+    if (token == null) {
+      throw redirect("/");
+    }
+    return true;
+  } catch (error) {
+    throw redirect("/");
+  }
+};
 
 const router = createBrowserRouter([
   {
@@ -18,21 +52,31 @@ const router = createBrowserRouter([
     // errorElement: <ErrorBoundary />,
     children: [
       {
-        path: "/",
+        path: "",
         element: <Landing />,
+        loader: userTokenTestTrue,
       },
       {
         path: "login",
         element: <LoginPage />,
+        loader: userTokenTestTrue,
       },
       {
         path: "createuser",
         element: <CreateUserPage />,
+        loader: userTokenTestTrue,
       },
       {
         path: "home",
         element: <Home />,
-        children: [],
+        children: [
+          {
+            path: "",
+            element: <HomeBasePortal />,
+            loader: userTokenTestFalse,
+          },
+        ],
+        loader: userTokenTestFalse,
       },
     ],
   },

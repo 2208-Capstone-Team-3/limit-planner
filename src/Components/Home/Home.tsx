@@ -26,7 +26,7 @@ import { setHomeDrawerOpen } from "../../store/themeSlice";
 import { useDispatch } from "react-redux";
 
 const Home = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const homeDrawerOpen: boolean = useSelector(
     (state: RootState) => state.theme.theme.homeDrawerOpen
   );
@@ -86,11 +86,13 @@ const Home = () => {
         sx={{
           backgroundColor: (theme) =>
             theme.palette.mode === "light"
-              ? theme.palette.grey[100]
+              ? theme.palette.grey[200]
               : theme.palette.grey[900],
           flexGrow: 1,
           height: "100vh",
           overflow: "auto",
+          mt: "10vh",
+          ml: () => (homeDrawerOpen ? "14vw" : "0vw"),
         }}
       >
         <Outlet />

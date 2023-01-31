@@ -81,6 +81,7 @@ function LimitAppBar() {
       sx={{ display: "flex", height: "10vh", placeContent: "center" }}
       position="fixed"
       variant="outlined"
+      elevation={0}
     >
       <Box sx={{ display: "flex", ml: "1vw", width: "100%" }}>
         <IconButton

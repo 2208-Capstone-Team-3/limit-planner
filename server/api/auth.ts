@@ -8,9 +8,9 @@ router.get(
   "/",
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      res.send(await User.prototype.findByToken(req.headers.authorization));
+      res.status(200).send(await User.prototype.findByToken(req.headers.authorization));
     } catch (error) {
-      next(error);
+     res.sendStatus(404)
     }
   }
 );
