@@ -1,6 +1,6 @@
 import { VIRTUAL } from "sequelize";
 import db from "./db.js";
-import { Account, Entry, Goal, User } from "./index.js";
+import { Account, Entry, Goal, User, Event } from "./index.js";
 
 const entryData = [
   {
@@ -164,6 +164,34 @@ const accountData = [
     balance: 6000.0,
   },
 ];
+
+const eventData = [
+  {
+    title: "Bought coffee",
+    note:"Bought a coffee from the corner bodega",
+    start: new Date('2023-01-03'),
+    allDay:true
+  },
+  {
+    title: "Paid electricity bill",
+    note:'Paid ConEdison for electricity bill',
+    start: new Date('2023-01-11'),
+    allDay:true
+  },
+  {
+    title: "Paid heat bill",
+    note:'Paid ConEdison for heat bill',
+    start: new Date('2023-01-15'),
+    allDay:true
+  },
+  {
+    title: "Paid phone bill",
+    note:'Venmoed family member for family phone plan',
+    start: new Date('2023-01-20'),
+    allDay:true
+  }
+];
+
 const seed = async () => {
   await db.sync({ force: true });
   try {
@@ -193,6 +221,12 @@ const seed = async () => {
     const [goalOne, goalTwo, goalThree, goalFour] = await Promise.all(
       goalData.map((goal) => Goal.create(goal))
     );
+
+    // --------------EVENTS--------------
+
+    console.log("adding events");
+
+    await Promise.all(eventData.map((event) => Event.create(event)));
 
     // --------------ASSOCIATIONS--------------
 
