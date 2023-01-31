@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useCallback, useContext, useEffect } from "react";
 import "./landing.css";
 import "animate.css";
 import lightLogo from "../../resources/logo.svg";
@@ -31,6 +31,10 @@ import {
   KeyboardArrowUp,
 } from "@mui/icons-material/";
 import { ColorModeContext } from "../../App";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { setUser } from "../../store/userSlice";
 
 function usePhotometer<Type>(lightRet: Type, darkRet: Type): Type {
   const theme = useTheme();
@@ -40,7 +44,28 @@ function usePhotometer<Type>(lightRet: Type, darkRet: Type): Type {
 
 function Landing() {
   const theme = useTheme();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const colorMode = useContext(ColorModeContext);
+
+  const loginWithToken = useCallback(async () => {
+    try {
+      const token = window.localStorage.getItem("token");
+      if (token) {
+        const response = await axios.get("/api/auth", {
+          headers: {
+            authorization: token,
+          },
+        });
+        dispatch(setUser(response.data));
+
+        navigate("/home");
+        window.location.reload();
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }, [dispatch, navigate]);
 
   const lightVideoComp = (
     <video
@@ -66,6 +91,10 @@ function Landing() {
     ></video>
   );
 
+  useEffect(() => {
+    loginWithToken();
+  }, [loginWithToken]);
+
   return (
     <Box>
       <IconButton
@@ -76,8 +105,14 @@ function Landing() {
         {theme.palette.mode === "dark" ? <Brightness7 /> : <Brightness4 />}
       </IconButton>
       <Button
-      variant="contained"
-        sx={{ ml: 1, position: "absolute", zIndex: 6, right: "2vw", top: "2vw" }}
+        variant="contained"
+        sx={{
+          ml: 1,
+          position: "absolute",
+          zIndex: 6,
+          right: "2vw",
+          top: "2vw",
+        }}
         href="login"
         color="inherit"
       >
@@ -155,7 +190,7 @@ function Landing() {
               <Container>
                 <Paper
                   key={"second-box-content"}
-                  variant="outlined"
+                  variant="elevation"
                   sx={{
                     display: "flex",
                     placeContent: "center",
@@ -203,7 +238,7 @@ function Landing() {
               <Container>
                 <Paper
                   key={"third-box-content"}
-                  variant="outlined"
+                  variant="elevation"
                   sx={{
                     display: "flex",
                     placeContent: "center",
@@ -251,7 +286,7 @@ function Landing() {
               <Container>
                 <Paper
                   key={"fourth-box-content"}
-                  variant="outlined"
+                  variant="elevation"
                   sx={{
                     display: "flex",
                     placeContent: "center",

@@ -1,4 +1,10 @@
-import React, { BaseSyntheticEvent, useContext, useState } from "react";
+import React, {
+  BaseSyntheticEvent,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../store/userSlice";
 import axios from "axios";
@@ -22,17 +28,17 @@ const LoginPage = () => {
   const theme = useTheme();
   const colorMode = useContext(ColorModeContext);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [credentials, setCredentials] = useState({
     username: "",
     password: "",
   });
-  const navigate = useNavigate();
 
   const onChange = (ev: BaseSyntheticEvent) => {
     setCredentials({ ...credentials, [ev.target.name]: ev.target.value });
   };
 
-  const loginWithToken = async () => {
+  const loginWithToken = useCallback(async () => {
     try {
       const token = window.localStorage.getItem("token");
       if (token) {
@@ -42,7 +48,6 @@ const LoginPage = () => {
           },
         });
         dispatch(setUser(response.data));
-        console.log(response.data)
 
         navigate("/home");
         window.location.reload();
@@ -50,7 +55,7 @@ const LoginPage = () => {
     } catch (error) {
       console.error(error);
     }
-  };
+  }, [dispatch, navigate]);
 
   const attemptLogin = async (event: BaseSyntheticEvent) => {
     try {
@@ -64,18 +69,22 @@ const LoginPage = () => {
       window.localStorage.setItem("token", token);
 
       loginWithToken();
+      navigate("/home");
+      window.location.reload();
     } catch (error) {
       console.error(error);
     }
   };
 
+  useEffect(() => {
+    window.localStorage.getItem("token") && loginWithToken();
+  });
+
   return (
     <Box>
-      {" "}
       <IconButton
         sx={{ position: "absolute", zIndex: 6, left: "1vw", top: "1vw" }}
         onClick={colorMode.toggleColorMode}
-        color="inherit"
       >
         {theme.palette.mode === "dark" ? <Brightness7 /> : <Brightness4 />}
       </IconButton>
@@ -91,7 +100,7 @@ const LoginPage = () => {
             top: "15vh",
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+          <Avatar sx={{ m: 1, bgcolor: "secondary.secondary" }}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
@@ -128,7 +137,7 @@ const LoginPage = () => {
               autoComplete="current-password"
             />
             <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
+              control={<Checkbox value="remember" />}
               label="Remember me"
             />
             <Button
