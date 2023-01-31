@@ -7,7 +7,6 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import timeGridPlugin from '@fullcalendar/timegrid'
 import listPlugin from '@fullcalendar/list'
 import interactionPlugin from '@fullcalendar/interaction'
-import { SendTwoTone } from '@mui/icons-material';
 
 const modalStyle = {
     position: 'absolute',
@@ -77,7 +76,7 @@ const Calendar=()=>{
     setModalOpen(false);
   };
 
-  if(loading) return <p>Loading bitch...</p>
+  if(loading) return <p>Loading...</p>
   return (
     <Box>
       <Box sx={{ height: 500,width: 1000 }}>
@@ -95,8 +94,8 @@ const Calendar=()=>{
           dayMaxEvents={true}
           initialEvents={events}
           // initialEvents = {[
-          //   {id:'1234',title:'A fucking event',date:'2023-01-01'},
-          //   {id:'5678',title:'Another fucking event',date:'2023-01-05'}
+          //   {id:'1234',title:'An event',date:'2023-01-01'},
+          //   {id:'5678',title:'An event',date:'2023-01-05'}
           // ]}
           eventClick={handleModalOpen}
           //eventsSet={(events)=>setEvents(currentEvents)} // called after events are initialized/added/changed/removed
