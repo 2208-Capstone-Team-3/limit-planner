@@ -34,7 +34,7 @@ const Home = () => {
   const toggleDrawer = (): void => {
     dispatch(setHomeDrawerOpen(!homeDrawerOpen));
   };
-
+ 
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
       <LimitAppBar />
