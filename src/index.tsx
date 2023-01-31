@@ -36,7 +36,6 @@ const userTokenTestTrue = async () => {
 const userTokenTestFalse = async () => {
   try {
     const token = window.localStorage.getItem("token");
-    console.log(token);
     if (token == null) {
       throw redirect("/");
     }

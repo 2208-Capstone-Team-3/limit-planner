@@ -2,12 +2,13 @@ import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import React from "react";
 import MainGoalPercentageChart from "../Charts/MainGoalPercentageChart";
 import MainLineChart from "../Charts/MainLineChart";
+import Calendar from "./Calendar";
 
 const HomeBasePortal = () => {
   return (
     <Grid2 container height={"90vh"} width={"auto"}>
-        <Grid2 xs={6}>
-            <div>Calendar Placeholder</div>
+        <Grid2  xs={6}>
+            <Calendar />
         </Grid2>
       <Grid2 xs={6}>
         <MainLineChart />

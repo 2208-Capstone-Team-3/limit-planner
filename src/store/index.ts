@@ -3,6 +3,7 @@ import userReducer from "./userSlice";
 import userToCreateReducer from "./userToCreateSlice";
 import entriesReducer from "./entriesSlice";
 import themeReducer from "./themeSlice";
+import accountsReducer from "./accountsSlice";
 
 const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ const store = configureStore({
     userToCreate: userToCreateReducer,
     entries: entriesReducer,
     theme: themeReducer,
+    accounts: accountsReducer,
   },
 });
 

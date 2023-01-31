@@ -79,6 +79,21 @@ function App() {
       console.error(error);
     }
   }, [dispatch]);
+  const accountsWithToken = useCallback(async () => {
+    try {
+      const token = window.localStorage.getItem("token");
+      if (token) {
+        const response = await axios.get("/api/accounts", {
+          headers: {
+            authorization: token,
+          },
+        });
+        dispatch(setUser(response.data));
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }, [dispatch]);
 
   const theme = React.useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
 
