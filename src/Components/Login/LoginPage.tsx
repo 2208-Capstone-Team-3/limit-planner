@@ -1,4 +1,10 @@
-import React, { BaseSyntheticEvent, useContext, useState } from "react";
+import React, {
+  BaseSyntheticEvent,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../store/userSlice";
 import axios from "axios";
@@ -32,7 +38,7 @@ const LoginPage = () => {
     setCredentials({ ...credentials, [ev.target.name]: ev.target.value });
   };
 
-  const loginWithToken = async () => {
+  const loginWithToken = useCallback(async () => {
     try {
       const token = window.localStorage.getItem("token");
       if (token) {
@@ -42,7 +48,6 @@ const LoginPage = () => {
           },
         });
         dispatch(setUser(response.data));
-        console.log(response.data)
 
         navigate("/home");
         window.location.reload();
@@ -50,7 +55,7 @@ const LoginPage = () => {
     } catch (error) {
       console.error(error);
     }
-  };
+  }, [dispatch, navigate]);
 
   const attemptLogin = async (event: BaseSyntheticEvent) => {
     try {
@@ -64,14 +69,19 @@ const LoginPage = () => {
       window.localStorage.setItem("token", token);
 
       loginWithToken();
+      navigate("/home");
+      window.location.reload();
     } catch (error) {
       console.error(error);
     }
   };
 
+  useEffect(() => {
+    window.localStorage.getItem("token") && loginWithToken();
+  });
+
   return (
     <Box>
-      {" "}
       <IconButton
         sx={{ position: "absolute", zIndex: 6, left: "1vw", top: "1vw" }}
         onClick={colorMode.toggleColorMode}
