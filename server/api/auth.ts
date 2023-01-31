@@ -3,14 +3,15 @@ import { User } from "../db/index.js";
 import { authenticateUser } from "./helpers/authUserMiddleware.js";
 const router = express.Router();
 
-
 router.get(
   "/",
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      res.status(200).send(await User.prototype.findByToken(req.headers.authorization));
+      res
+        .status(200)
+        .send(await User.prototype.findByToken(req.headers.authorization));
     } catch (error) {
-     res.sendStatus(404)
+      res.sendStatus(404);
     }
   }
 );

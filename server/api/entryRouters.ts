@@ -7,10 +7,10 @@ const router = express.Router();
 router.get("/", authenticateUser, async (req: Request, res: Response, next: NextFunction) : Promise<void>=> {
   try {
     const userId = res.locals.user.id
-    const foundUserInfo = await User.findByPk(userId, {
+    const foundUserInfo: any = await User.findByPk(userId, {
       include: [Entry]
     })
-    const entryInfoOnly = foundUserInfo.Entry
+    const entryInfoOnly: any = foundUserInfo.Entry
     res.send(entryInfoOnly)
   } catch (err) {
     res.sendStatus(404);
