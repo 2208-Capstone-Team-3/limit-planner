@@ -1,4 +1,4 @@
-import { Sequelize } from "sequelize-typescript";
+import { Sequelize } from "sequelize";
 
 const config = {
   logging: false,

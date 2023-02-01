@@ -1,17 +1,29 @@
 import express, { Request, Response, NextFunction } from "express";
 import { Entry, User } from "../db/index.js";
 import { EntryAttributes } from "../db/models/Entry.model.js";
+import { UserAttributes } from "../db/models/User.model.js";
 import { authenticateUser } from "./helpers/authUserMiddleware.js";
 const router = express.Router();
 
-router.get("/", authenticateUser, async (req: Request, res: Response, next: NextFunction) : Promise<void>=> {
+router.get("/", async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const userId = res.locals.user.id
-    const foundUserInfo: any = await User.findByPk(userId, {
-      include: [Entry]
-    })
-    const entryInfoOnly: any = foundUserInfo.Entry
-    res.send(entryInfoOnly)
+    const header = req.headers.authorization;
+    const token = header && header.split(" ")[1];
+
+    if (!token) return res.sendStatus(404);
+
+    const foundUser = await User.prototype.findByToken(token);
+
+    const foundUserInfo: UserAttributes | null = await User.findByPk(
+      foundUser.id,
+      {
+        include: [Entry],
+      }
+    );
+    if (foundUserInfo) {
+      const entryInfoOnly = foundUserInfo.accounts;
+      res.status(200).send(entryInfoOnly);
+    }
   } catch (err) {
     res.sendStatus(404);
     next(err);

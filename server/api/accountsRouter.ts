@@ -1,27 +1,37 @@
 import express, { Request, Response, NextFunction } from "express";
+import jwt from "jsonwebtoken";
 import { Account, User } from "../db/index.js";
 import { AccountAttributes } from "../db/models/Account.model.js";
+import { UserAttributes } from "../db/models/User.model.js";
 import { authenticateUser } from "./helpers/authUserMiddleware.js";
+import { JWT } from "./helpers/superSecret.js";
 const router = express.Router();
 
 // GET  /api/accounts
-router.get(
-  "/",
-  authenticateUser,
-  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    try {
-      const userId = res.locals.user.id;
-      const foundUserInfo: any = await User.findByPk(userId, {
+router.get("/", async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const header = req.headers.authorization;
+    const token = header && header.split(" ")[1];
+
+    if (!token) return res.sendStatus(404);
+
+    const foundUser = await User.prototype.findByToken(token);
+
+    const foundUserInfo: UserAttributes | null = await User.findByPk(
+      foundUser.id,
+      {
         include: [Account],
-      });
-      const accountInfoOnly = foundUserInfo.Account;
-      res.send(accountInfoOnly);
-    } catch (err) {
-      res.sendStatus(404);
-      next(err);
+      }
+    );
+    if (foundUserInfo) {
+      const accountInfoOnly = foundUserInfo.accounts;
+      res.status(200).send(accountInfoOnly);
     }
+  } catch (err) {
+    res.sendStatus(404);
+    next(err);
   }
-);
+});
 
 // GET  /api/accounts/:accountId
 router.get(

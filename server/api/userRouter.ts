@@ -4,7 +4,11 @@ const router = express.Router();
 
 router.get("/", async (req, res, next) => {
   try {
-    const token = req.headers.authorization;
+    const header = req.headers.authorization;
+    const token = header && header.split(" ")[1];
+
+    if (!token) return res.status(404).send("No Token Found")
+
     const user = await User.prototype.findByToken(token);
 
     res.send(user);

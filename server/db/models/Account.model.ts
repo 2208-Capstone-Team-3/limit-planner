@@ -7,7 +7,6 @@ import {
   UUIDV4,
   STRING,
   FLOAT,
-  //DATE,
   ENUM,
 } from "sequelize";
 import { EntryAttributes } from "./Entry.model.js";

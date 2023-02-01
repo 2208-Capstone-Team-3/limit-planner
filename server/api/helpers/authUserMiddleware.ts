@@ -24,16 +24,25 @@ export const authenticateUser = (
   if (!token) return res.sendStatus(404);
 
   jwt.verify(token, JWT, async (err, user) => {
-    if (err instanceof Error) return res.status(404).send(err.message);
+    if (err) return res.status(404).send(err.message);
 
-    const userInfo = await User.findByPk(req.body.user.id);
-    if (!userInfo) return res.sendStatus(404);
+    if (!user) return res.sendStatus(404);
 
-    res.locals = {
-      ...res.locals,
-      user: userInfo,
-    };
-    next();
+    if (typeof user === "object") {
+
+      console.log(user)
+      const userInfo: UserAttributes | null = await User.findByPk(user.id);
+
+      if (!userInfo) return res.sendStatus(404);
+
+      // res.locals = {
+      //   ...res.locals,
+      //   user: userInfo,
+      // };
+      req.body.user = userInfo;
+
+      next();
+    }
   });
 };
 

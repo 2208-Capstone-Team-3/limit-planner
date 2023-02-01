@@ -20,7 +20,6 @@ import React from "react";
 import { Outlet } from "react-router-dom";
 import LimitAppBar from "../AppBar/AppBar";
 import MedalIcon from '@mui/icons-material/WorkspacePremium';
-import Calendar from "./Calendar";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { setHomeDrawerOpen } from "../../store/themeSlice";

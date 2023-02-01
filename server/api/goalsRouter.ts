@@ -1,6 +1,7 @@
 import express, { Request, Response, NextFunction } from "express";
 import { Goal, User } from "../db/index.js";
 import { GoalAttributes } from "../db/models/Goal.model.js";
+import { UserAttributes } from "../db/models/User.model.js";
 // import { UserAttributes } from "../db/models/User.model.js";
 import { authenticateUser } from "./helpers/authUserMiddleware.js";
 const router = express.Router();
@@ -9,24 +10,30 @@ const router = express.Router();
 //   Goal: GoalAttributes;
 // }
 
-router.get(
-  "/",
-  authenticateUser,
-  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    try {
-      const userId = res.locals.user.id;
+router.get("/", async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const header = req.headers.authorization;
+    const token = header && header.split(" ")[1];
 
-      const foundUserInfo: any = await User.findByPk(userId, {
+    if (!token) return res.sendStatus(404);
+
+    const foundUser = await User.prototype.findByToken(token);
+
+    const foundUserInfo: UserAttributes | null = await User.findByPk(
+      foundUser.id,
+      {
         include: [Goal],
-      });
-      const goalInfoOnly: any = foundUserInfo.Goal;
-      res.send(goalInfoOnly);
-    } catch (err) {
-      res.sendStatus(404);
-      next(err);
+      }
+    );
+    if (foundUserInfo) {
+      const goalInfoOnly = foundUserInfo.accounts;
+      res.status(200).send(goalInfoOnly);
     }
+  } catch (err) {
+    res.sendStatus(404);
+    next(err);
   }
-);
+});
 
 router.post(
   "/",

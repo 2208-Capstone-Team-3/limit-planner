@@ -168,28 +168,28 @@ const accountData = [
 const eventData = [
   {
     title: "Bought coffee",
-    note:"Bought a coffee from the corner bodega",
-    start: new Date('2023-01-03'),
-    allDay:true
+    note: "Bought a coffee from the corner bodega",
+    start: new Date("2023-01-03"),
+    allDay: true,
   },
   {
     title: "Paid electricity bill",
-    note:'Paid ConEdison for electricity bill',
-    start: new Date('2023-01-11'),
-    allDay:true
+    note: "Paid ConEdison for electricity bill",
+    start: new Date("2023-01-11"),
+    allDay: true,
   },
   {
     title: "Paid heat bill",
-    note:'Paid ConEdison for heat bill',
-    start: new Date('2023-01-15'),
-    allDay:true
+    note: "Paid ConEdison for heat bill",
+    start: new Date("2023-01-15"),
+    allDay: true,
   },
   {
     title: "Paid phone bill",
-    note:'Venmoed family member for family phone plan',
-    start: new Date('2023-01-20'),
-    allDay:true
-  }
+    note: "Venmoed family member for family phone plan",
+    start: new Date("2023-01-20"),
+    allDay: true,
+  },
 ];
 
 const seed = async () => {

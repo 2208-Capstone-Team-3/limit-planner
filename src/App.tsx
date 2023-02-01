@@ -7,6 +7,7 @@ import axios from "axios";
 import { setUser } from "./store/userSlice";
 import { useDispatch } from "react-redux";
 import { blueGrey, deepOrange, grey } from "@mui/material/colors";
+import { setAccounts } from "./store/accountsSlice";
 
 export const ColorModeContext = React.createContext({
   toggleColorMode: () => {},
@@ -70,7 +71,7 @@ function App() {
       if (token) {
         const response = await axios.get("/api/auth", {
           headers: {
-            authorization: token,
+            authorization: `Bearer ${token}`,
           },
         });
         dispatch(setUser(response.data));
@@ -79,16 +80,18 @@ function App() {
       console.error(error);
     }
   }, [dispatch]);
+
   const accountsWithToken = useCallback(async () => {
     try {
       const token = window.localStorage.getItem("token");
       if (token) {
         const response = await axios.get("/api/accounts", {
           headers: {
-            authorization: token,
+            authorization: `Bearer ${token}`,
           },
         });
-        dispatch(setUser(response.data));
+        console.log(response.data)
+        dispatch(setAccounts(response.data));
       }
     } catch (error) {
       console.error(error);
@@ -99,6 +102,7 @@ function App() {
 
   useEffect(() => {
     loginWithToken();
+    accountsWithToken();
 
     const existingPreference = localStorage.getItem("colorModeCookie");
     if (existingPreference) {
@@ -107,7 +111,7 @@ function App() {
       setMode("light");
       localStorage.setItem("colorModeCookie", "light");
     }
-  }, [loginWithToken]);
+  }, [accountsWithToken, loginWithToken]);
 
   return (
     <ColorModeContext.Provider value={colorMode}>
