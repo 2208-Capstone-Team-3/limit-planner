@@ -55,6 +55,7 @@ const Home = () => {
             mt: "10vh",
           }}
         >
+          <Calendar/>
           <Typography variant="button">Collapse</Typography>
           <IconButton onClick={toggleDrawer} style={{ position: "sticky" }}>
             {homeDrawerOpen ? <ChevronLeft /> : <ChevronRight />}

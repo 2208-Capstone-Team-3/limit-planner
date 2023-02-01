@@ -9,6 +9,7 @@ import {
   FLOAT,
   DATE,
   BOOLEAN,
+  ENUM
 } from "sequelize";
 
 // order of InferAttributes & InferCreationAttributes is important.
@@ -22,6 +23,7 @@ export interface EventAttributes
   note:string;
   start: Date;
   allDay: boolean;
+  frequency: string;
 }
 
 const Event = db.define<EventAttributes>("event", {
@@ -45,7 +47,16 @@ const Event = db.define<EventAttributes>("event", {
   allDay:{
     type: BOOLEAN,
     defaultValue: true
-  }
+  },
+
+  frequency: {
+    type: ENUM,
+    values: ["Weekly", "Biweekly", "Monthly", "ByDate"],
+    allowNull: false,
+    validate: {
+      notEmpty: true,
+    },
+  },
 });
 
 export default Event;
