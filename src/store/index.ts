@@ -4,6 +4,7 @@ import userToCreateReducer from "./userToCreateSlice";
 import entriesReducer from "./entriesSlice";
 import themeReducer from "./themeSlice";
 import accountsReducer from "./accountsSlice";
+import goalsReducer from "./goalsSlice";
 
 const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ const store = configureStore({
     entries: entriesReducer,
     theme: themeReducer,
     accounts: accountsReducer,
+    goals: goalsReducer,
   },
 });
 
