@@ -18,8 +18,11 @@ export interface AccountAttributes
     InferAttributes<AccountAttributes>,
     InferCreationAttributes<AccountAttributes>
   > {
-  addGoal(goalFour: GoalAttributes): unknown;
-  addEntry(entryOne: EntryAttributes): unknown;
+  addGoal(goal: GoalAttributes): unknown;
+  addEntry(entry: EntryAttributes): unknown;
+  goals?: []
+  entries?: []
+  userId?: string;
   id?: string;
   accountType: string;
   accountName: string;

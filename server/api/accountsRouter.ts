@@ -13,7 +13,7 @@ router.get("/", async (req: Request, res: Response, next: NextFunction) => {
 
     if (!token) return res.sendStatus(404);
 
-    const foundUser = await User.prototype.findByToken(token);
+    const foundUser: UserAttributes = await User.prototype.findByToken(token);
 
     const foundUserInfo: UserAttributes | null = await User.findByPk(
       foundUser.id,

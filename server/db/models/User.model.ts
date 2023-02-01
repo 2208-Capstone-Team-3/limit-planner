@@ -24,7 +24,8 @@ export interface UserAttributes
     InferCreationAttributes<UserAttributes>
   > {
   accounts?: [];
-  addAccount(accountOne: AccountAttributes): unknown;
+  goals?: [];
+  addAccount(account: AccountAttributes): unknown;
   id?: string;
   password: string;
   username: string;

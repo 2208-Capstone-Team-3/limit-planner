@@ -8,6 +8,8 @@ import { setUser } from "./store/userSlice";
 import { useDispatch } from "react-redux";
 import { blueGrey, deepOrange, grey } from "@mui/material/colors";
 import { setAccounts } from "./store/accountsSlice";
+import { setGoals } from "./store/goalsSlice";
+import { setEntries } from "./store/entriesSlice";
 
 export const ColorModeContext = React.createContext({
   toggleColorMode: () => {},
@@ -90,8 +92,42 @@ function App() {
             authorization: `Bearer ${token}`,
           },
         });
-        console.log(response.data)
+        console.log(response.data);
         dispatch(setAccounts(response.data));
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }, [dispatch]);
+
+  const goalsWithToken = useCallback(async () => {
+    try {
+      const token = window.localStorage.getItem("token");
+      if (token) {
+        const response = await axios.get("/api/goals", {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        });
+        console.log(response.data);
+        dispatch(setGoals(response.data));
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }, [dispatch]);
+
+  const entriesWithToken = useCallback(async () => {
+    try {
+      const token = window.localStorage.getItem("token");
+      if (token) {
+        const response = await axios.get("/api/entries", {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        });
+        console.log(response.data);
+        dispatch(setEntries(response.data));
       }
     } catch (error) {
       console.error(error);
@@ -103,6 +139,8 @@ function App() {
   useEffect(() => {
     loginWithToken();
     accountsWithToken();
+    goalsWithToken();
+    entriesWithToken();
 
     const existingPreference = localStorage.getItem("colorModeCookie");
     if (existingPreference) {
@@ -111,7 +149,7 @@ function App() {
       setMode("light");
       localStorage.setItem("colorModeCookie", "light");
     }
-  }, [accountsWithToken, loginWithToken]);
+  }, [accountsWithToken, entriesWithToken, goalsWithToken, loginWithToken]);
 
   return (
     <ColorModeContext.Provider value={colorMode}>

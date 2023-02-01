@@ -83,6 +83,14 @@ const goalData = [
     endDate: new Date("2023-09-12"),
     victory: true,
   },
+  {
+    name: "Buy coffin for self",
+    goalAmount: 4600454,
+    startAmount: 25891,
+    startDate: new Date("2022-06-05"),
+    endDate: new Date("2023-09-12"),
+    victory: true,
+  },
 ];
 const userData = [
   {
@@ -218,7 +226,7 @@ const seed = async () => {
 
     console.log("adding goals");
 
-    const [goalOne, goalTwo, goalThree, goalFour] = await Promise.all(
+    const [goalOne, goalTwo, goalThree, goalFour, goalFive] = await Promise.all(
       goalData.map((goal) => Goal.create(goal))
     );
 
@@ -252,6 +260,7 @@ const seed = async () => {
     accountTwo.addGoal(goalThree);
     accountTwo.addGoal(goalTwo);
     accountThree.addGoal(goalOne);
+    accountFour.addGoal(goalFive);
   } catch (err) {
     console.log("error");
     console.log(err);
