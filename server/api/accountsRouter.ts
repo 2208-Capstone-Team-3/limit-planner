@@ -1,10 +1,8 @@
 import express, { Request, Response, NextFunction } from "express";
-import jwt from "jsonwebtoken";
 import { Account, User } from "../db/index.js";
 import { AccountAttributes } from "../db/models/Account.model.js";
 import { UserAttributes } from "../db/models/User.model.js";
 import { authenticateUser } from "./helpers/authUserMiddleware.js";
-import { JWT } from "./helpers/superSecret.js";
 const router = express.Router();
 
 // GET  /api/accounts

@@ -2,13 +2,8 @@ import express, { Request, Response, NextFunction } from "express";
 import { Goal, User } from "../db/index.js";
 import { GoalAttributes } from "../db/models/Goal.model.js";
 import { UserAttributes } from "../db/models/User.model.js";
-// import { UserAttributes } from "../db/models/User.model.js";
 import { authenticateUser } from "./helpers/authUserMiddleware.js";
 const router = express.Router();
-
-// interface UserAccounts extends UserAttributes {
-//   Goal: GoalAttributes;
-// }
 
 router.get("/", async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -40,6 +35,7 @@ router.post(
   authenticateUser,
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
+      const user = req.body.user;
       const {
         name,
         goalAmount,
@@ -48,8 +44,7 @@ router.post(
         endDate,
         victory,
       }: GoalAttributes = req.body;
-      // const createGoal=
-      await Goal.create({
+      const createdGoal = await Goal.create({
         name,
         goalAmount,
         startAmount,
@@ -57,6 +52,7 @@ router.post(
         endDate,
         victory,
       });
+      user.addGoal(createdGoal);
       res.sendStatus(204);
     } catch (err) {
       res.sendStatus(404);

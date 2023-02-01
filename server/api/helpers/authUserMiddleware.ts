@@ -18,29 +18,25 @@ export const authenticateUser = (
   res: Response,
   next: NextFunction
 ) => {
+  // Get the header sent by the user = Bearer 1234254asdfawef
   const header = req.headers.authorization;
-  const token = header && header.split(" ")[1];
 
+  // Separate the token from the "Bearer" word
+  const token = header && header.split(" ")[1]; // "1234254asdfawef"
+
+  // If no token was given, give them a 404
   if (!token) return res.sendStatus(404);
 
   jwt.verify(token, JWT, async (err, user) => {
-    if (err) return res.status(404).send(err.message);
+    // If it was an invalid token, give them a 404
+    if (err) return res.sendStatus(404);
 
-    if (!user) return res.sendStatus(404);
-
+    // Do stuff with our user
     if (typeof user === "object") {
-
-      console.log(user)
-      const userInfo: UserAttributes | null = await User.findByPk(user.id);
-
+      const userInfo = await User.findByPk(user.id);
       if (!userInfo) return res.sendStatus(404);
 
-      // res.locals = {
-      //   ...res.locals,
-      //   user: userInfo,
-      // };
       req.body.user = userInfo;
-
       next();
     }
   });
