@@ -56,8 +56,10 @@ const Calendar = () => {
 
   const fetchEvents = async () => {
     setLoading(true);
-    const response = await axios.get("/api/events");
+    console.log("before fetch")
+    const response = await axios.get("/api/entries/calendar");
     setEvents(response.data);
+    console.log("this is console log ", response.data)
     setLoading(false);
   };
 
