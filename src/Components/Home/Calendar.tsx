@@ -51,13 +51,15 @@ const Calendar = () => {
   const [title, setTitle] = useState("");
   const [note, setNote] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
-  const [events, setEvents] = useState([]);
+  const [events, setEvents] = useState([] as any);
   const [loading, setLoading] = useState(false);
 
   const fetchEvents = async () => {
     setLoading(true);
-    const response = await axios.get("/api/events");
-    setEvents(response.data);
+    const oneTimeEvents = await axios.get("/api/events/one-time");
+    const recurringEvents  = await axios.get('/api/events/recurring');
+    const allEvents = [...oneTimeEvents.data,...recurringEvents.data]
+    setEvents(allEvents);
     setLoading(false);
   };
 
@@ -114,11 +116,11 @@ const Calendar = () => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={modalStyle}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
+          {/* <Typography id="modal-modal-title" variant="h6" component="h2">
             {date}
-          </Typography>
+          </Typography> */}
           <Typography id="modal-modal-title" variant="h5" component="h2">
-            {title} - {note}
+            {title}
           </Typography>
         </Box>
       </Modal>

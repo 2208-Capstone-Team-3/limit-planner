@@ -7,24 +7,25 @@ import {
   UUIDV4,
   STRING,
   FLOAT,
+  NUMBER,
   DATE,
   BOOLEAN,
+  ARRAY,
 } from "sequelize";
 
 // order of InferAttributes & InferCreationAttributes is important.
-export interface EventAttributes
+export interface RecurringEventAttributes
   extends Model<
-    InferAttributes<EventAttributes>,
-    InferCreationAttributes<EventAttributes>
+    InferAttributes<RecurringEventAttributes>,
+    InferCreationAttributes<RecurringEventAttributes>
   > {
   id?: string;
   title: string;
-  note:string;
-  start: Date;
-  allDay: boolean;
+  groupId:string;
+  daysOfWeek:string[];
 }
 
-const Event = db.define<EventAttributes>("event", {
+const RecurringEvent = db.define<RecurringEventAttributes>("recurringEvent", {
   id: {
     type: UUID,
     primaryKey: true,
@@ -34,18 +35,14 @@ const Event = db.define<EventAttributes>("event", {
     type: STRING,
     allowNull: false,
   },
-  note: {
+  groupId: {
     type: STRING,
     allowNull: false,
   },
-  start: {
-    type: DATE,
-    allowNull: false,
-  },
-  allDay:{
-    type: BOOLEAN,
-    defaultValue: true
+  daysOfWeek:{
+    type:ARRAY(STRING),
+    allowNull:false
   }
 });
 
-export default Event;
+export default RecurringEvent;

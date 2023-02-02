@@ -1,6 +1,6 @@
 import { VIRTUAL } from "sequelize";
 import db from "./db.js";
-import { Account, Entry, Goal, User, Event } from "./index.js";
+import { Account, Entry, Goal, User, Event, RecurringEvent } from "./index.js";
 
 const entryData = [
   {
@@ -173,7 +173,7 @@ const accountData = [
   },
 ];
 
-const eventData = [
+const oneTimeEventData = [
   {
     title: "Bought coffee",
     note: "Bought a coffee from the corner bodega",
@@ -199,6 +199,14 @@ const eventData = [
     allDay: true,
   },
 ];
+
+const recurringEventData = [
+  {
+    title: "Payday",
+    groupId: "Paychecks",
+    daysOfWeek: ['5'],
+  },
+]
 
 const seed = async () => {
   await db.sync({ force: true });
@@ -230,11 +238,17 @@ const seed = async () => {
       goalData.map((goal) => Goal.create(goal))
     );
 
-    // --------------EVENTS--------------
+    // --------------ONE TIME EVENTS--------------
 
-    console.log("adding events");
+    console.log("adding one time events");
 
-    await Promise.all(eventData.map((event) => Event.create(event)));
+    await Promise.all(oneTimeEventData.map((event) => Event.create(event)));
+
+    // --------------RECURRING EVENTS--------------
+
+    console.log("adding recurring events");
+
+    await Promise.all(recurringEventData.map((recurringEvent) => RecurringEvent.create(recurringEvent)));
 
     // --------------ASSOCIATIONS--------------
 
