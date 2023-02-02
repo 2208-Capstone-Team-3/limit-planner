@@ -79,7 +79,7 @@ const Entry = db.define<EntryAttributes>("entry", {
   },
   frequency: {
     type: ENUM,
-    values: ["Weekly", "Biweekly", "Monthly", "ByDate"],
+    values: ["Weekly", "Biweekly", "Monthly", "ByDate", "Nonrecurring"],
     allowNull: false,
     validate: {
       notEmpty: true,

@@ -1,6 +1,9 @@
 import { VIRTUAL } from "sequelize";
 import db from "./db.js";
 import { Account, Entry, Goal, User, Event } from "./index.js";
+import Chance from "chance";
+
+const chance = new Chance();
 
 const entryData = [
   {
@@ -221,6 +224,21 @@ const seed = async () => {
     console.log("adding entries");
     const [entryOne, entryTwo, entryThree, entryFour, entryFive] =
       await Promise.all(entryData.map((entry) => Entry.create(entry)));
+
+    let i = 0;
+    // const entryList = [];
+    while (i++ < 500) {
+      const newEntry = await Entry.create({
+        entryType: chance.pickone(["User", "API"]),
+        date: new Date(chance.date({ year: 2023 })),
+        creditDebit: chance.pickone(["Credit", "Debit"]),
+        amount: chance.integer({ min: 0, max: 5000 }),
+        title: chance.word(),
+        note: chance.sentence(),
+        frequency: "Nonrecurring",
+      });
+      accountFour.addEntry(newEntry);
+    }
 
     // --------------GOALS--------------
 
