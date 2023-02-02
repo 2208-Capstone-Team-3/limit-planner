@@ -44,7 +44,7 @@ const LoginPage = () => {
       if (token) {
         const response = await axios.get("/api/auth", {
           headers: {
-            authorization: token,
+            authorization: `Bearer ${token}`,
           },
         });
         dispatch(setUser(response.data));

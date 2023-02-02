@@ -73,7 +73,6 @@ function LimitAppBar() {
       navUserGoals();
     setAnchorElUser(null);
   };
-  console.log(user);
 
   return (
     <AppBar

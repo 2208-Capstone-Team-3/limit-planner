@@ -1,8 +1,7 @@
 import express, { Request, Response, NextFunction } from "express";
-import { Account, Goal, User } from "../db/index.js";
+import { Account, Entry, User } from "../db/index.js";
 import { AccountAttributes } from "../db/models/Account.model.js";
-import { GoalAttributes } from "../db/models/Goal.model.js";
-import { UserAttributes } from "../db/models/User.model.js";
+import { EntryAttributes } from "../db/models/Entry.model.js";
 import { authenticateUser } from "./helpers/authUserMiddleware.js";
 const router = express.Router();
 
@@ -13,19 +12,20 @@ router.get("/", async (req: Request, res: Response, next: NextFunction) => {
 
     if (!token) return res.sendStatus(404);
 
-    const foundUser: UserAttributes = await User.prototype.findByToken(token);
+    const foundUser = await User.prototype.findByToken(token);
+
     if (!foundUser.id) {
       return res.sendStatus(404);
     }
 
     const foundUserInfo: AccountAttributes[] | null = await Account.findAll({
       where: { userId: foundUser.id },
-      include: [Goal],
+      include: [Entry],
     });
 
     if (foundUserInfo) {
-      const goalInfoOnly = foundUserInfo.map((acc) => acc.goals);
-      res.status(200).send(goalInfoOnly);
+      const entryInfoOnly = foundUserInfo.map((acc) => acc.entries);
+      res.status(200).send(entryInfoOnly);
     }
   } catch (err) {
     res.sendStatus(404);
@@ -37,25 +37,28 @@ router.post(
   "/",
   authenticateUser,
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    // const user = req.body.user;
+    const account = req.body.account;
     try {
-      const user = req.body.user;
       const {
-        name,
-        goalAmount,
-        startAmount,
-        startDate,
-        endDate,
-        victory,
-      }: GoalAttributes = req.body;
-      const createdGoal = await Goal.create({
-        name,
-        goalAmount,
-        startAmount,
-        startDate,
-        endDate,
-        victory,
+        entryType,
+        date,
+        creditDebit,
+        amount,
+        title,
+        note,
+        frequency,
+      }: EntryAttributes = req.body;
+      const createdEntry = await Entry.create({
+        entryType,
+        date,
+        creditDebit,
+        amount,
+        title,
+        note,
+        frequency,
       });
-      user.addGoal(createdGoal);
+      account.addEntry(createdEntry);
       res.sendStatus(204);
     } catch (err) {
       res.sendStatus(404);
@@ -65,16 +68,16 @@ router.post(
 );
 
 router.delete(
-  "/:GoalId",
+  "/:entryId",
   authenticateUser,
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const GoalId: string = req.params.GoalId;
+      const entryId: string = req.params.entryId;
       //soimething weird happens since
-      //GoalId starts string but ends up number??
+      //entryId starts string but ends up number??
       //so TS forces it to be string idk
-      const GoalToDelete = await Goal.findByPk(GoalId);
-      GoalToDelete?.destroy();
+      const entryToDelete = await Entry.findByPk(entryId);
+      entryToDelete?.destroy();
       res.sendStatus(204);
     } catch (err) {
       res.sendStatus(404);

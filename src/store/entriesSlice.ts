@@ -1,20 +1,25 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
-
-const initialState = {
-    entries: {}
+export interface entriesInitialStateType {
+  entries: [];
 }
 
-export const entriesSlice = createSlice({
-    name: "entries",
-    initialState,
-    reducers: {
-        setEntries: (state, action) => {
-            state.entries = action.payload
-        },
-       
-    }
-})
+const initialState: entriesInitialStateType = {
+  entries: [],
+};
 
-export const { setEntries } = entriesSlice.actions
+export const entriesSlice = createSlice({
+  name: "entries",
+  initialState,
+  reducers: {
+    setEntries: (state, action) => {
+      state.entries = action.payload;
+    },
+    resetEntries: (state) => {
+      state.entries = [];
+    },
+  },
+});
+
+export const { setEntries, resetEntries } = entriesSlice.actions;
 export default entriesSlice.reducer;

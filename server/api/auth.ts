@@ -1,20 +1,23 @@
 import express, { NextFunction, Request, Response } from "express";
+
 import { User } from "../db/index.js";
 import { authenticateUser } from "./helpers/authUserMiddleware.js";
 const router = express.Router();
 
-router.get(
-  "/",
-  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    try {
-      res
-        .status(200)
-        .send(await User.prototype.findByToken(req.headers.authorization));
-    } catch (error) {
-      res.sendStatus(404);
-    }
+router.get("/", async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const header = req.headers.authorization;
+    const token = header && header.split(" ")[1];
+
+    if (!token) return res.sendStatus(404);
+
+    const foundUser = await User.prototype.findByToken(token);
+
+    res.status(200).send(foundUser);
+  } catch (error) {
+    res.status(404).send("Failed to Find User By Token");
   }
-);
+});
 
 router.post("/", async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -24,12 +27,14 @@ router.post("/", async (req: Request, res: Response, next: NextFunction) => {
   }
 });
 
-router.use("/testAuth", authenticateUser);
-
-router.get("/testAuth", (req: Request, res: Response, next) => {
-  if (res.locals.user.isAdmin === false) return res.sendStatus(404);
-  const userInfo = res.locals.user;
-  res.status(200).send(userInfo);
-});
+router.get(
+  "/testAuth",
+  authenticateUser,
+  (req: Request, res: Response, next) => {
+    if (req.body.user.isAdmin === false) return res.sendStatus(404);
+    const userInfo = req.body.user;
+    res.status(200).send(userInfo);
+  }
+);
 
 export default router;

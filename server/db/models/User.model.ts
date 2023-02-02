@@ -16,13 +16,16 @@ import {
 } from "sequelize";
 import { AccountAttributes } from "./Account.model.js";
 import { PlaceType } from "../../../src/Components/UserCreation/UserGoogleLocation.js";
+import { JWT } from "../../api/helpers/superSecret.js";
 
 export interface UserAttributes
   extends Model<
     InferAttributes<UserAttributes>,
     InferCreationAttributes<UserAttributes>
   > {
-  addAccount(accountOne: AccountAttributes): unknown;
+  accounts?: [];
+  goals?: [];
+  addAccount(account: AccountAttributes): unknown;
   id?: string;
   password: string;
   username: string;
@@ -142,7 +145,7 @@ User.addHook("beforeSave", async (user: UserAttributes) => {
 
 User.prototype.findByToken = async function (token: string) {
   try {
-    const tokenId: JwtPayload = jwt.verify(token, "secret", {
+    const tokenId: JwtPayload = jwt.verify(token, JWT, {
       complete: true,
     });
     const id: Identifier = tokenId.payload.id;
@@ -162,7 +165,7 @@ User.prototype.findByToken = async function (token: string) {
 };
 
 User.prototype.generateToken = function () {
-  return jwt.sign({ id: this.id }, "secret");
+  return jwt.sign({ id: this.id }, JWT);
 };
 
 User.prototype.authenticate = async function (userAuth: {
@@ -176,12 +179,11 @@ User.prototype.authenticate = async function (userAuth: {
     },
   });
   if (user && (await bcrypt.compare(password, user.password))) {
-    return jwt.sign({ id: user.id }, "secret");
+    return jwt.sign({ id: user.id }, JWT);
   }
   const error = new Error("bad credentials");
   error.message = "401";
   throw error;
 };
-
 
 export default User;

@@ -15,34 +15,27 @@ import LoginPage from "./Components/Login/LoginPage";
 import Home from "./Components/Home/Home";
 import CreateUserPage from "./Components/UserCreation/UserCreationPage";
 import Calendar from "./Components/Home/Calendar";
-import axios from "axios";
+
 import HomeBasePortal from "./Components/Home/HomeBasePortal";
 
 const userTokenTestTrue = async () => {
   try {
     const token = window.localStorage.getItem("token");
-    const res = await axios.get("/api/auth", {
-      headers: {
-        Authorization: token,
-      },
-    });
-    if (res.status === 200 || res.status === 304) {
-      throw redirect("/home");
-    }
+    if (token) throw redirect("/home");
+    return true
   } catch (error) {
-    return true;
+    return false;
   }
 };
 const userTokenTestFalse = async () => {
   try {
     const token = window.localStorage.getItem("token");
-    console.log(token);
-    if (token == null) {
+    if (!token) {
       throw redirect("/");
     }
     return true;
   } catch (error) {
-    throw redirect("/");
+    return false
   }
 };
 
@@ -74,7 +67,6 @@ const router = createBrowserRouter([
           {
             path: "",
             element: <HomeBasePortal />,
-            loader: userTokenTestFalse,
           },
         ],
         loader: userTokenTestFalse,
