@@ -9,49 +9,58 @@ const entryData = [
   {
     entryType: "API",
     //YYYY-MM-DD
-    date: new Date("2022-03-24"),
+    start: new Date ("2022-03-24"),
+    allDay: true,
     creditDebit: "Credit",
     amount: 400,
-    title: "Groceries",
-    note: "I went to buy groceries at Walmart",
-    frequency: "Weekly",
+ 
+    title: "I went to buy groceries at Walmart",
+  
+    
   },
   {
     entryType: "API",
-    date: new Date("2022-04-24"),
+    start: new Date (                                                                                                                                                     "2022-04-24"),
+    allDay: true,
     creditDebit: "Debit",
     amount: 500,
-    title: "Snacks",
-    note: "I went to buy snacks at Walmart",
-    frequency: "Biweekly",
+   
+    title: "I went to buy snacks at Walmart",
+  
+    
   },
   {
     entryType: "User",
-    date: new Date("2022-05-24"),
+    start: new Date("2022-05-24"),
+    allDay: true,
     creditDebit: "Credit",
     amount: 600,
-    title: "Drugs",
-    note: "I went to buy drugs at Walmart",
-    frequency: "Monthly",
+    groupId: "Drugs",
+    title: "I went to buy drugs at Walmart",
+    daysOfWeek: [2]
   },
   {
     entryType: "User",
-    date: new Date("2022-06-24"),
+    start: new Date("2022-06-24"),
+    allDay: true,
     creditDebit: "Debit",
     amount: 700,
-    title: "Alcohol",
-    note: "I went to buy alcohol at Walmart",
-    frequency: "ByDate",
+    groupId: "Alcohol",
+    title: "I went to buy alcohol at Walmart",
+    daysOfWeek: [4, 5]
   },
   {
     entryType: "User",
-    date: new Date("2022-07-24"),
+    start: new Date("2022-07-24"),
+    allDay: true,
     creditDebit: "Debit",
     amount: 700,
-    title: "Bribes",
-    note: "I went to bribe people at Walmart",
-    frequency: "ByDate",
+    groupId: "Bribes",
+    title: "I went to bribe people at Walmart",
+    daysOfWeek: [0]
   },
+
+
 ];
 const goalData = [
   {
@@ -176,32 +185,32 @@ const accountData = [
   },
 ];
 
-const eventData = [
-  {
-    title: "Bought coffee",
-    note: "Bought a coffee from the corner bodega",
-    start: new Date("2023-01-03"),
-    allDay: true,
-  },
-  {
-    title: "Paid electricity bill",
-    note: "Paid ConEdison for electricity bill",
-    start: new Date("2023-01-11"),
-    allDay: true,
-  },
-  {
-    title: "Paid heat bill",
-    note: "Paid ConEdison for heat bill",
-    start: new Date("2023-01-15"),
-    allDay: true,
-  },
-  {
-    title: "Paid phone bill",
-    note: "Venmoed family member for family phone plan",
-    start: new Date("2023-01-20"),
-    allDay: true,
-  },
-];
+// const eventData = [
+//   {
+//     title: "Bought coffee",
+//     note: "Bought a coffee from the corner bodega",
+//     start: new Date("2023-01-03"),
+//     allDay: true,
+//   },
+//   {
+//     title: "Paid electricity bill",
+//     note: "Paid ConEdison for electricity bill",
+//     start: new Date("2023-01-11"),
+//     allDay: true,
+//   },
+//   {
+//     title: "Paid heat bill",
+//     note: "Paid ConEdison for heat bill",
+//     start: new Date("2023-01-15"),
+//     allDay: true,
+//   },
+//   {
+//     title: "Paid phone bill",
+//     note: "Venmoed family member for family phone plan",
+//     start: new Date("2023-01-20"),
+//     allDay: true,
+//   },
+// ];
 
 const seed = async () => {
   await db.sync({ force: true });
@@ -250,9 +259,9 @@ const seed = async () => {
 
     // --------------EVENTS--------------
 
-    console.log("adding events");
+    // console.log("adding events");
 
-    await Promise.all(eventData.map((event) => Event.create(event)));
+    // await Promise.all(eventData.map((event) => Event.create(event)));
 
     // --------------ASSOCIATIONS--------------
 
