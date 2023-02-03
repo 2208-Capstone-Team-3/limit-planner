@@ -86,7 +86,21 @@ const Entry = db.define<EntryAttributes>("entry", {
   //   type:ARRAY(INTEGER),
   //   allowNull:true
   // },
-  
+  note: {
+    type: STRING,
+    allowNull: false,
+    validate: {
+      notEmpty: true,
+    },
+  },
+  frequency: {
+    type: ENUM,
+    values: ["Weekly", "Biweekly", "Monthly", "ByDate", "Nonrecurring"],
+    allowNull: false,
+    validate: {
+      notEmpty: true,
+    },
+  },
 });
 
 export default Entry;

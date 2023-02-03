@@ -6,7 +6,11 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
 import interactionPlugin from "@fullcalendar/interaction";
-import { EventClickArg } from "@fullcalendar/core";
+import { DateSelectArg, EventClickArg } from "@fullcalendar/core";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
+import { setDateSelector } from "../../store/themeSlice";
+import { useDispatch } from "react-redux";
 
 const modalStyle = {
   position: "absolute",
@@ -53,6 +57,8 @@ const Calendar = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch()
+  let dateSelector = useSelector((state: RootState) => state.theme.theme.dateSelector);
 
   const fetchEvents = async () => {
     setLoading(true);
@@ -72,6 +78,10 @@ const Calendar = () => {
     setDate(`${selected.event.start}`);
     setTitle(selected.event.title);
     setNote(selected.event.extendedProps.note);
+  };
+  const handleSelect = (selected: DateSelectArg) => {
+    console.log(selected.startStr)
+    dispatch(setDateSelector(selected.startStr))
   };
 
   const handleModalClose = () => {
@@ -100,6 +110,7 @@ const Calendar = () => {
           selectMirror={true}
           dayMaxEvents={true}
           initialEvents={events}
+          select={handleSelect}
           eventClick={handleModalOpen}
           //eventsSet={(events)=>setEvents(currentEvents)} // called after events are initialized/added/changed/removed
           // eventAdd={function(){}}
