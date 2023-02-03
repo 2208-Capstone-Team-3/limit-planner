@@ -1,7 +1,7 @@
 import { VIRTUAL } from "sequelize";
 import db from "./db.js";
 import { Account, Entry, Goal, User, Event } from "./index.js";
-import {addDays, addMonths, addYears, endOfDay} from 'date-fns'
+import {addDays, addMonths, addYears, endOfDay} from 'date-fns';
 
 const entryData = [
   {
@@ -223,26 +223,26 @@ const seed = async () => {
 
     // --------------EVENTS--------------
 
-    console.log("adding one time events");
-    // moving this logic to the front end!
-    const seedEvents = (eventData:any) => {
-      eventData.forEach((event:any)=>{
-        if (event.frequency === "Bi-Weekly"){
-          for (let i = 0; i <= 26; i++){
-            Event.create(event)
-            event.start = addDays(event.start, 14)
-          }
-        }else if (event.frequency === "Monthly"){
-            for (let i = 0; i <= 12; i++){
-              Event.create(event)
-              event.start = addMonths(event.start, 1)
-            }
-          }})
-        }
-    seedEvents(eventData);
+    console.log("adding events");
 
+    // moving this logic to the front end on calendar component!
+    // const seedEvents = (eventData:any) => {
+    //   eventData.forEach((event:any)=>{
+    //     if (event.frequency === "Bi-Weekly"){
+    //       for (let i = 0; i <= 26; i++){
+    //         Event.create(event)
+    //         event.start = addDays(event.start, 14)
+    //       }
+    //     }else if (event.frequency === "Monthly"){
+    //         for (let i = 0; i <= 12; i++){
+    //           Event.create(event)
+    //           event.start = addMonths(event.start, 1)
+    //         }
+    //       }})
+    //     }
+    // seedEvents(eventData);
 
-    // await Promise.all(eventData.map((event) => Event.create(event)));
+    await Promise.all(eventData.map((event) => Event.create(event)));
 
     // --------------ASSOCIATIONS--------------
 
