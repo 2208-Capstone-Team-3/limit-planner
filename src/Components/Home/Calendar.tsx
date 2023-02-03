@@ -72,8 +72,7 @@ const Calendar = () => {
           newEvents.push(newEvent);
           // need to add some logic for 'addDays'
         };
-      };
-      if(event.frequency==="Monthly"){
+      }else if(event.frequency==="Monthly"){
         // creating a copy of the event from the API response
         let newEvent=event;
         for (let i = 0; i <= 12; i++){
