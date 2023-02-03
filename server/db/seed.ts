@@ -1,6 +1,7 @@
 import { VIRTUAL } from "sequelize";
 import db from "./db.js";
 import { Account, Entry, Goal, User, Event, RecurringEvent } from "./index.js";
+import {addDays, addMonths, addYears, endOfDay} from 'date-fns'
 
 const entryData = [
   {
@@ -175,43 +176,20 @@ const accountData = [
 
 const eventData = [
   {
-    title: "Bought coffee",
-    note: "Bought a coffee from the corner bodega",
-    start: new Date("2023-01-03"),
+    title: "Paycheck",
+    note: "Got paid today!",
+    start: new Date("2023-01-05"),
     allDay: true,
+    frequency:'Bi-Weekly'
   },
   {
-    title: "Paid electricity bill",
-    note: "Paid ConEdison for electricity bill",
-    start: new Date("2023-01-11"),
+    title: "Paid electric bill",
+    note: "Paid ConEd",
+    start: new Date("2023-01-31"),
     allDay: true,
-  },
-  {
-    title: "Paid heat bill",
-    note: "Paid ConEdison for heat bill",
-    start: new Date("2023-01-15"),
-    allDay: true,
-  },
-  {
-    title: "Paid phone bill",
-    note: "Venmoed family member for family phone plan",
-    start: new Date("2023-01-20"),
-    allDay: true,
-  },
-  {
-    title: "Payday",
-    groupId: "Paychecks",
-    daysOfWeek: ['5'],
+    frequency:'Monthly'
   },
 ];
-
-// const recurringEventData = [
-//   {
-//     title: "Payday",
-//     groupId: "Paychecks",
-//     daysOfWeek: ['5'],
-//   },
-// ]
 
 const seed = async () => {
   await db.sync({ force: true });
@@ -243,17 +221,27 @@ const seed = async () => {
       goalData.map((goal) => Goal.create(goal))
     );
 
-    // --------------ONE TIME EVENTS--------------
+    // --------------EVENTS--------------
 
     console.log("adding one time events");
+    const seedEvents = (eventData:any) => {
+      eventData.forEach((event:any)=>{
+        if (event.frequency === "Bi-Weekly"){
+          for (let i = 0; i <= 26; i++){
+            Event.create(event)
+            event.start = addDays(event.start, 14)
+          }
+        }else if (event.frequency === "Monthly"){
+            for (let i = 0; i <= 12; i++){
+              Event.create(event)
+              event.start = addMonths(event.start, 1)
+            }
+          }})
+        }
+    seedEvents(eventData);
 
-    await Promise.all(eventData.map((event) => Event.create(event)));
 
-    // --------------RECURRING EVENTS--------------
-
-    // console.log("adding recurring events");
-
-    // await Promise.all(recurringEventData.map((recurringEvent) => RecurringEvent.create(recurringEvent)));
+    // await Promise.all(eventData.map((event) => Event.create(event)));
 
     // --------------ASSOCIATIONS--------------
 

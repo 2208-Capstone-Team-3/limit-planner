@@ -8,6 +8,7 @@ import {
   STRING,
   FLOAT,
   ARRAY,
+  ENUM,
   DATE,
   BOOLEAN,
 } from "sequelize";
@@ -20,11 +21,10 @@ export interface EventAttributes
   > {
   id?: string;
   title: string;
-  note?:string;
-  start?: Date;
-  allDay?: boolean;
-  groupId?:string;
-  daysOfWeek?:string[];
+  note:string;
+  start: Date;
+  allDay: boolean;
+  frequency:string
 }
 
 const Event = db.define<EventAttributes>("event", {
@@ -39,27 +39,22 @@ const Event = db.define<EventAttributes>("event", {
   },
   note: {
     type: STRING,
-    allowNull: true,
+    allowNull: false,
   },
   // one-time event fields
   start: {
     type: DATE,
-    allowNull: true,
+    allowNull: false,
   },
   allDay:{
     type: BOOLEAN,
     defaultValue: true,
-    allowNull:true
+    allowNull:false
   },
-  // recurring even fields
-  groupId: {
-    type: STRING,
-    allowNull: true,
-    defaultValue: UUIDV4
-  },
-  daysOfWeek:{
-    type:ARRAY(STRING),
-    allowNull:true
+  frequency:{
+    type: ENUM,
+    values:['ByDate','Weekly','Bi-Weekly','Monthly'],
+    allowNull:false
   }
 });
 
