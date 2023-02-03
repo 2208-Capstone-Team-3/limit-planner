@@ -92,7 +92,6 @@ function App() {
             authorization: `Bearer ${token}`,
           },
         });
-        console.log(response.data);
         dispatch(setAccounts(response.data));
       }
     } catch (error) {
@@ -109,7 +108,6 @@ function App() {
             authorization: `Bearer ${token}`,
           },
         });
-        console.log(response.data);
         dispatch(setGoals(response.data));
       }
     } catch (error) {
@@ -126,7 +124,6 @@ function App() {
             authorization: `Bearer ${token}`,
           },
         });
-        console.log(response.data);
         dispatch(setEntries(response.data));
       }
     } catch (error) {
