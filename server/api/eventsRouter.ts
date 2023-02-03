@@ -6,8 +6,8 @@ const router = express.Router();
 
 router.get("/", async (req: Request, res: Response, next: NextFunction): Promise<void>=> {
   try {
-    const oneTimeEvents: EventAttributes[] = await Event.findAll();
-    res.send(oneTimeEvents);
+    const events: EventAttributes[] = await Event.findAll();
+    res.send(events);
   } catch (err) {
     res.sendStatus(404);
     next(err);
