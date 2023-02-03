@@ -7,6 +7,9 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
 import interactionPlugin from "@fullcalendar/interaction";
 import { EventClickArg } from "@fullcalendar/core";
+import {addDays, addMonths, addYears, endOfDay} from 'date-fns';
+import { CommentsDisabledOutlined } from "@mui/icons-material";
+import { EventAttributes } from './../../../server/db/models/Event.model';
 
 const modalStyle = {
   position: "absolute",
@@ -51,13 +54,36 @@ const Calendar = () => {
   const [title, setTitle] = useState("");
   const [note, setNote] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
-  const [events, setEvents] = useState([] as any);
+  const [calendarEvents, setCalendarEvents] = useState([] as any);
   const [loading, setLoading] = useState(false);
 
   const fetchEvents = async () => {
     setLoading(true);
-    const events = await axios.get("/api/events");
-    setEvents(events.data);
+    // creating a new empty array for events
+    const newEvents:EventAttributes[]=[];
+    const response = await axios.get("/api/events");
+    // looping over the events from DB
+    response.data.forEach((event:EventAttributes)=>{
+      if(event.frequency==="Bi-Weekly"){
+        // creating a copy of the event from the API response
+        let newEvent=event;
+        for (let i = 0; i <= 26; i++){
+          // pushing the copy to the array 'newEvents'
+          newEvents.push(newEvent);
+          // need to add some logic for 'addDays'
+        };
+      };
+      if(event.frequency==="Monthly"){
+        // creating a copy of the event from the API response
+        let newEvent=event;
+        for (let i = 0; i <= 12; i++){
+          // pushing the copy to the array 'newEvents'
+          newEvents.push(newEvent);
+          // need to add some logic for 'addMonths'
+        };
+      };
+    });
+    setCalendarEvents(newEvents);
     setLoading(false);
   };
 
@@ -97,7 +123,7 @@ const Calendar = () => {
           selectable={true}
           selectMirror={true}
           dayMaxEvents={true}
-          initialEvents={events}
+          initialEvents={calendarEvents}
           eventClick={handleModalOpen}
           //eventsSet={(events)=>setEvents(currentEvents)} // called after events are initialized/added/changed/removed
           // eventAdd={function(){}}
