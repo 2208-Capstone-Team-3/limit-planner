@@ -1,6 +1,6 @@
 import { VIRTUAL } from "sequelize";
 import db from "./db.js";
-import { Account, Entry, Goal, User, Event, RecurringEvent } from "./index.js";
+import { Account, Entry, Goal, User, Event } from "./index.js";
 import {addDays, addMonths, addYears, endOfDay} from 'date-fns'
 
 const entryData = [
@@ -224,6 +224,7 @@ const seed = async () => {
     // --------------EVENTS--------------
 
     console.log("adding one time events");
+    // moving this logic to the front end!
     const seedEvents = (eventData:any) => {
       eventData.forEach((event:any)=>{
         if (event.frequency === "Bi-Weekly"){

@@ -56,10 +56,8 @@ const Calendar = () => {
 
   const fetchEvents = async () => {
     setLoading(true);
-    const oneTimeEvents = await axios.get("/api/events/one-time");
-    //const recurringEvents  = await axios.get('/api/events/recurring');
-    //const allEvents = [...oneTimeEvents.data,...recurringEvents.data]
-    setEvents(oneTimeEvents.data);
+    const events = await axios.get("/api/events");
+    setEvents(events.data);
     setLoading(false);
   };
 
