@@ -7,7 +7,7 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
 import interactionPlugin from "@fullcalendar/interaction";
 import { EventClickArg } from "@fullcalendar/core";
-import {addDays, addMonths, addYears, endOfDay} from 'date-fns';
+import {addDays, addMonths, addYears, endOfDay, parseISO} from 'date-fns';
 import { CommentsDisabledOutlined } from "@mui/icons-material";
 import { EventAttributes } from './../../../server/db/models/Event.model';
 
@@ -65,12 +65,12 @@ const Calendar = () => {
     // looping over the events from DB
     response.data.forEach((event:EventAttributes)=>{
       if(event.frequency==="Bi-Weekly"){
-        // creating a copy of the event from the API response
-        let newEvent=event;
         for (let i = 0; i <= 26; i++){
+          // creating a copy of the event from the API response
+          let newEvent=event;
           // pushing the copy to the array 'newEvents'
           newEvents.push(newEvent);
-          // need to add some logic for 'addDays'
+          // need to add some logic for 'addDays;
         };
       }else if(event.frequency==="Monthly"){
         // creating a copy of the event from the API response
