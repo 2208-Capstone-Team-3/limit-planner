@@ -55,6 +55,7 @@ const Event = db.define<EventAttributes>("event", {
   groupId: {
     type: STRING,
     allowNull: true,
+    defaultValue: UUIDV4
   },
   daysOfWeek:{
     type:ARRAY(STRING),
