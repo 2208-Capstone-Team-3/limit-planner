@@ -7,6 +7,7 @@ import {
   UUIDV4,
   STRING,
   FLOAT,
+  ARRAY,
   DATE,
   BOOLEAN,
 } from "sequelize";
@@ -19,9 +20,11 @@ export interface EventAttributes
   > {
   id?: string;
   title: string;
-  note:string;
-  start: Date;
-  allDay: boolean;
+  note?:string;
+  start?: Date;
+  allDay?: boolean;
+  groupId?:string;
+  daysOfWeek?:string[];
 }
 
 const Event = db.define<EventAttributes>("event", {
@@ -36,15 +39,26 @@ const Event = db.define<EventAttributes>("event", {
   },
   note: {
     type: STRING,
-    allowNull: false,
+    allowNull: true,
   },
+  // one-time event fields
   start: {
     type: DATE,
-    allowNull: false,
+    allowNull: true,
   },
   allDay:{
     type: BOOLEAN,
-    defaultValue: true
+    defaultValue: true,
+    allowNull:true
+  },
+  // recurring even fields
+  groupId: {
+    type: STRING,
+    allowNull: true,
+  },
+  daysOfWeek:{
+    type:ARRAY(STRING),
+    allowNull:true
   }
 });
 

@@ -173,7 +173,7 @@ const accountData = [
   },
 ];
 
-const oneTimeEventData = [
+const eventData = [
   {
     title: "Bought coffee",
     note: "Bought a coffee from the corner bodega",
@@ -198,15 +198,20 @@ const oneTimeEventData = [
     start: new Date("2023-01-20"),
     allDay: true,
   },
-];
-
-const recurringEventData = [
   {
     title: "Payday",
     groupId: "Paychecks",
     daysOfWeek: ['5'],
   },
-]
+];
+
+// const recurringEventData = [
+//   {
+//     title: "Payday",
+//     groupId: "Paychecks",
+//     daysOfWeek: ['5'],
+//   },
+// ]
 
 const seed = async () => {
   await db.sync({ force: true });
@@ -242,13 +247,13 @@ const seed = async () => {
 
     console.log("adding one time events");
 
-    await Promise.all(oneTimeEventData.map((event) => Event.create(event)));
+    await Promise.all(eventData.map((event) => Event.create(event)));
 
     // --------------RECURRING EVENTS--------------
 
-    console.log("adding recurring events");
+    // console.log("adding recurring events");
 
-    await Promise.all(recurringEventData.map((recurringEvent) => RecurringEvent.create(recurringEvent)));
+    // await Promise.all(recurringEventData.map((recurringEvent) => RecurringEvent.create(recurringEvent)));
 
     // --------------ASSOCIATIONS--------------
 
