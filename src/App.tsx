@@ -13,6 +13,7 @@ import { setEntries } from "./store/entriesSlice";
 import { setReoccurEntries } from "./store/reoccurEntriesSlice";
 import { useSelector } from "react-redux";
 import {addDays, addMonths, addYears, endOfDay, parseISO} from 'date-fns';
+import { EntryAttributes } from './../server/db/models/Entry.model';
 
 
 export const ColorModeContext = React.createContext({
@@ -21,7 +22,6 @@ export const ColorModeContext = React.createContext({
 
 function App() {
   const dispatch = useDispatch();
-  const { reoccurEntries } = useSelector((state:any) => state.reoccurEntries)
   const { entries } = useSelector((state:any) => state.entries)
   const [mode, setMode] = React.useState<"light" | "dark">("light");
 
@@ -132,9 +132,36 @@ function App() {
             authorization: `Bearer ${token}`,
           },
         });
-        console.log(response.data);
+        console.log({'Entries':response.data});
         dispatch(setEntries(response.data));
-      }
+        // populating an array of recurring entries
+        // to be displayed on calendar component
+        // const reEnt:EntryAttributes[]=[];
+        // response.data.forEach((entry:EntryAttributes)=>{
+        //   if(entry.frequency==='ByDate'){
+        //     reEnt.push(entry);
+        //   }else if(entry.frequency==='Monthly'){
+        //     for (let i = 0; i <= 24; i++){
+        //       reEnt.push(entry);
+        //       //entry.start = addMonths(entry.start, 1);
+        //     };
+        //   };
+        //   if(entry.frequency==='Weekly'){
+        //     for (let i = 0; i <= 104; i++){
+        //       reEnt.push(entry);
+        //       //entry.start = addDays(entry.start, 7);
+        //     };
+        //   };
+        //   if(entry.frequency==='Bi-Weekly'){
+        //     for (let i = 0; i <= 52; i++){
+        //       reEnt.push(entry)
+        //       //entry.start = addDays(entry.start, 14)
+        //     };
+        //   };
+        //   console.log({'Recurring entries':reEnt})
+        //   dispatch(setReoccurEntries(reEnt));
+        // });
+      };
     } catch (error) {
       console.error(error);
     }
@@ -142,53 +169,53 @@ function App() {
 
 
   /** creates and saves reoccuring entries */ 
-  const reoccurEntriesFetch = () => {
-    let reEnt: {}[] = []
+  // const reoccurEntriesFetch = () => {
+  //   let reEnt: {}[] = [];
 
-   entries.forEach((ent: {frequency: string, start: Date}) => {
-    if (ent.frequency === 'ByDate'){
-      reEnt.push(ent)
+  //  entries.forEach((ent: {frequency: string, start: Date}) => {
+  //   if (ent.frequency === 'ByDate'){
+  //     reEnt.push(ent)
 
-    } else if (ent.frequency === 'Monthly'){
-       for (let i = 0; i <= 24; i++){
-        reEnt.push(ent)
-        ent.start = addMonths(ent.start, 1)
+  //   } else if (ent.frequency === 'Monthly'){
+  //      for (let i = 0; i <= 24; i++){
+  //       reEnt.push(ent)
+  //       ent.start = addMonths(ent.start, 1)
         
-       }
+  //      }
 
-    } else if (ent.frequency === 'Weekly'){
-      for (let i = 0; i <= 104; i++){
-        reEnt.push(ent)
-        ent.start = addDays(ent.start, 7)
+  //   } else if (ent.frequency === 'Weekly'){
+  //     for (let i = 0; i <= 104; i++){
+  //       reEnt.push(ent)
+  //       ent.start = addDays(ent.start, 7)
         
-       }
-    } else if (ent.frequency === 'Bi-Weekly') {
-      for (let i = 0; i <= 52; i++){
-        reEnt.push(ent)
-        ent.start = addDays(ent.start, 14)
+  //      }
+  //   } else if (ent.frequency === 'Bi-Weekly') {
+  //     for (let i = 0; i <= 52; i++){
+  //       reEnt.push(ent)
+  //       ent.start = addDays(ent.start, 14)
         
-       }
+  //      }
 
 
-    }
+  //   }
 
-   }
+  //  }
   
    
    
-   )
+  //  )
   
-    dispatch(setReoccurEntries(reEnt))
+  //   dispatch(setReoccurEntries(reEnt))
 
-  }
+  // }
 
   const theme = React.useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
   
   /** watches entries state and runs reoccur fetch*/
-  useEffect(() => {
-    reoccurEntriesFetch()
+  // useEffect(() => {
+  //   reoccurEntriesFetch()
   
-  }, [entries]);
+  // }, [entries]);
 
   useEffect(() => {
     loginWithToken();

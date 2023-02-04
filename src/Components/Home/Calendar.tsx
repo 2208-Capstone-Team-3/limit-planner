@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import axios from "axios";
 import { Box, Typography, Modal } from "@mui/material";
 import FullCalendar from "@fullcalendar/react";
@@ -9,7 +10,9 @@ import interactionPlugin from "@fullcalendar/interaction";
 import { EventClickArg } from "@fullcalendar/core";
 import {addDays, addMonths, addYears, endOfDay, parseISO} from 'date-fns';
 import { CommentsDisabledOutlined } from "@mui/icons-material";
-import { EventAttributes } from './../../../server/db/models/Event.model';
+// import { EventAttributes } from './../../../server/db/models/Event.model';
+import { EntryAttributes } from './../../../server/db/models/Entry.model';
+import { RootState } from "../../store";
 
 const modalStyle = {
   position: "absolute",
@@ -39,50 +42,52 @@ const modalStyle = {
 //   11: "December",
 // };
 
-/**
- * Notes about the calendar:
- * Only working if not TS file
- * Need to have a field 'start' and optional 'end' on model NOT startDate or endDate
- * Need to have a field 'allDay' on an event
- * Properties like 'note' are placed on 'extendedProps' automatically by FullCalendar
- * We will have to refactor any models that we want to display on a calendar to
- * appease FullCalendar
- */
-
 const Calendar = () => {
   const [date, setDate] = useState("");
   const [title, setTitle] = useState("");
   const [note, setNote] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
-  const [calendarEvents, setCalendarEvents] = useState([] as any);
+  const [calendarEntries, setCalendarEntries] = useState([] as any);
   const [loading, setLoading] = useState(false);
+  //const { reoccurEntries } = useSelector((state:RootState) => state.reoccurEntries)
+  //const entries = useSelector((state: RootState) => state.entries.entries);
 
   const fetchEvents = async () => {
     setLoading(true);
     // creating a new empty array for events
-    const newEvents:EventAttributes[]=[];
-    const response = await axios.get("/api/events");
+    const newEntries:EntryAttributes[]=[];
+    const response = await axios.get("/api/entries");
     // looping over the events from DB
-    response.data.forEach((event:EventAttributes)=>{
-      if(event.frequency==="Bi-Weekly"){
+    response.data.forEach((entry:EntryAttributes)=>{
+      if(entry.frequency==="Bi-Weekly"){
         for (let i = 0; i <= 26; i++){
           // creating a copy of the event from the API response
-          let newEvent=event;
+          let newEntry=entry;
           // pushing the copy to the array 'newEvents'
-          newEvents.push(newEvent);
+          newEntries.push(newEntry);
           // need to add some logic for 'addDays;
         };
-      }else if(event.frequency==="Monthly"){
+      };
+      if(entry.frequency==="Monthly"){
         // creating a copy of the event from the API response
-        let newEvent=event;
+        let newEntry=entry;
         for (let i = 0; i <= 12; i++){
           // pushing the copy to the array 'newEvents'
-          newEvents.push(newEvent);
+          newEntries.push(newEntry);
+          // need to add some logic for 'addMonths'
+        };
+      };
+      if(entry.frequency==="Weekly"){
+        // creating a copy of the event from the API response
+        let newEntry=entry;
+        for (let i = 0; i <= 52; i++){
+          // pushing the copy to the array 'newEvents'
+          newEntries.push(newEntry);
           // need to add some logic for 'addMonths'
         };
       };
     });
-    setCalendarEvents(newEvents);
+    setCalendarEntries(newEntries);
     setLoading(false);
   };
 
@@ -122,7 +127,7 @@ const Calendar = () => {
           selectable={true}
           selectMirror={true}
           dayMaxEvents={true}
-          initialEvents={calendarEvents}
+          initialEvents={calendarEntries}
           eventClick={handleModalOpen}
           //eventsSet={(events)=>setEvents(currentEvents)} // called after events are initialized/added/changed/removed
           // eventAdd={function(){}}
@@ -139,11 +144,14 @@ const Calendar = () => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={modalStyle}>
-          {/* <Typography id="modal-modal-title" variant="h6" component="h2">
+          <Typography id="modal-modal-title" variant="h6" component="h2">
             {date}
-          </Typography> */}
+          </Typography>
           <Typography id="modal-modal-title" variant="h5" component="h2">
             {title}
+          </Typography>
+          <Typography id="modal-modal-title" variant="h5" component="h2">
+            {note}
           </Typography>
         </Box>
       </Modal>

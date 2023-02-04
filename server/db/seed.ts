@@ -15,7 +15,8 @@ const entryData = [
     allDay: true,
     frequency:'Bi-Weekly'
   },
-  { entryType: "User",
+  { 
+    entryType: "User",
     amount: 60000,
     creditDebit: "Debit",
     title: "Paid electric bill",
@@ -24,82 +25,36 @@ const entryData = [
     allDay: true,
     frequency:'Monthly'
   },
-  { entryType: "User",
-  amount: 80000,
-  creditDebit: "Debit",
-  title: "Paid car bill",
-  note: "Paid ConEd",
-  start: new Date("2023-01-15"),
-  allDay: true,
-  frequency:'Bi-Weekly'
-},
-{ entryType: "API",
-amount: 70000,
-creditDebit: "Debit",
-title: "Paid SOME OTHER bill",
-note: "Paid ConEd",
-start: new Date("2023-01-11"),
-allDay: true,
-frequency:'Weekly'
-},
-{ entryType: "API",
-amount: 30000,
-creditDebit: "Debit",
-title: "Paid SOME OTHER OTHER bill",
-note: "Paid ConEd",
-start: new Date("2023-01-07"),
-allDay: true,
-frequency:'Monthly'
-},
-
-
-  
-  // {
-  //   entryType: "API",
-  //   //YYYY-MM-DD
-  //   date: new Date("2022-03-24"),
-  //   creditDebit: "Credit",
-  //   amount: 400,
-  //   title: "Groceries",
-  //   note: "I went to buy groceries at Walmart",
-  //   frequency: "Weekly",
-  // },
-  // {
-  //   entryType: "API",
-  //   date: new Date("2022-04-24"),
-  //   creditDebit: "Debit",
-  //   amount: 500,
-  //   title: "Snacks",
-  //   note: "I went to buy snacks at Walmart",
-  //   frequency: "Biweekly",
-  // },
-  // {
-  //   entryType: "User",
-  //   date: new Date("2022-05-24"),
-  //   creditDebit: "Credit",
-  //   amount: 600,
-  //   title: "Drugs",
-  //   note: "I went to buy drugs at Walmart",
-  //   frequency: "Monthly",
-  // },
-  // {
-  //   entryType: "User",
-  //   date: new Date("2022-06-24"),
-  //   creditDebit: "Debit",
-  //   amount: 700,
-  //   title: "Alcohol",
-  //   note: "I went to buy alcohol at Walmart",
-  //   frequency: "ByDate",
-  // },
-  // {
-  //   entryType: "User",
-  //   date: new Date("2022-07-24"),
-  //   creditDebit: "Debit",
-  //   amount: 700,
-  //   title: "Bribes",
-  //   note: "I went to bribe people at Walmart",
-  //   frequency: "ByDate",
-  // },
+  { 
+    entryType: "User",
+    amount: 80000,
+    creditDebit: "Debit",
+    title: "Paid car bill",
+    note: "Paid ConEd",
+    start: new Date("2023-01-15"),
+    allDay: true,
+    frequency:'Bi-Weekly'
+  },
+  { 
+    entryType: "API",
+    amount: 70000,
+    creditDebit: "Debit",
+    title: "Paid SOME OTHER bill",
+    note: "Paid ConEd",
+    start: new Date("2023-01-11"),
+    allDay: true,
+    frequency:'Weekly'
+  },
+  { 
+    entryType: "API",
+    amount: 30000,
+    creditDebit: "Debit",
+    title: "Paid SOME OTHER OTHER bill",
+    note: "Paid ConEd",
+    start: new Date("2023-01-07"),
+    allDay: true,
+    frequency:'Monthly'
+  },
 ];
 const goalData = [
   {
