@@ -6,19 +6,53 @@ import {addDays, addMonths, addYears, endOfDay} from 'date-fns';
 const entryData = [
 
   {
+    entryType: "API",
+    amount: 20000,
+    creditDebit: "credit",
     title: "Paycheck",
     note: "Got paid today!",
     start: new Date("2023-01-05"),
     allDay: true,
     frequency:'Bi-Weekly'
   },
-  {
+  { entryType: "User",
+    amount: 60000,
+    creditDebit: "debit",
     title: "Paid electric bill",
     note: "Paid ConEd",
     start: new Date("2023-01-31"),
     allDay: true,
     frequency:'Monthly'
   },
+  { entryType: "User",
+  amount: 80000,
+  creditDebit: "debit",
+  title: "Paid car bill",
+  note: "Paid ConEd",
+  start: new Date("2023-01-15"),
+  allDay: true,
+  frequency:'Bi-Weekly'
+},
+{ entryType: "API",
+amount: 70000,
+creditDebit: "debit",
+title: "Paid SOME OTHER bill",
+note: "Paid ConEd",
+start: new Date("2023-01-11"),
+allDay: true,
+frequency:'Weekly'
+},
+{ entryType: "API",
+amount: 30000,
+creditDebit: "debit",
+title: "Paid SOME OTHER OTHER bill",
+note: "Paid ConEd",
+start: new Date("2023-01-07"),
+allDay: true,
+frequency:'Monthly'
+},
+
+
   
   // {
   //   entryType: "API",
