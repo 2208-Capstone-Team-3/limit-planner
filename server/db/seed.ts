@@ -4,52 +4,68 @@ import { Account, Entry, Goal, User, Event } from "./index.js";
 import {addDays, addMonths, addYears, endOfDay} from 'date-fns';
 
 const entryData = [
+
   {
-    entryType: "API",
-    //YYYY-MM-DD
-    date: new Date("2022-03-24"),
-    creditDebit: "Credit",
-    amount: 400,
-    title: "Groceries",
-    note: "I went to buy groceries at Walmart",
-    frequency: "Weekly",
+    title: "Paycheck",
+    note: "Got paid today!",
+    start: new Date("2023-01-05"),
+    allDay: true,
+    frequency:'Bi-Weekly'
   },
   {
-    entryType: "API",
-    date: new Date("2022-04-24"),
-    creditDebit: "Debit",
-    amount: 500,
-    title: "Snacks",
-    note: "I went to buy snacks at Walmart",
-    frequency: "Biweekly",
+    title: "Paid electric bill",
+    note: "Paid ConEd",
+    start: new Date("2023-01-31"),
+    allDay: true,
+    frequency:'Monthly'
   },
-  {
-    entryType: "User",
-    date: new Date("2022-05-24"),
-    creditDebit: "Credit",
-    amount: 600,
-    title: "Drugs",
-    note: "I went to buy drugs at Walmart",
-    frequency: "Monthly",
-  },
-  {
-    entryType: "User",
-    date: new Date("2022-06-24"),
-    creditDebit: "Debit",
-    amount: 700,
-    title: "Alcohol",
-    note: "I went to buy alcohol at Walmart",
-    frequency: "ByDate",
-  },
-  {
-    entryType: "User",
-    date: new Date("2022-07-24"),
-    creditDebit: "Debit",
-    amount: 700,
-    title: "Bribes",
-    note: "I went to bribe people at Walmart",
-    frequency: "ByDate",
-  },
+  
+  // {
+  //   entryType: "API",
+  //   //YYYY-MM-DD
+  //   date: new Date("2022-03-24"),
+  //   creditDebit: "Credit",
+  //   amount: 400,
+  //   title: "Groceries",
+  //   note: "I went to buy groceries at Walmart",
+  //   frequency: "Weekly",
+  // },
+  // {
+  //   entryType: "API",
+  //   date: new Date("2022-04-24"),
+  //   creditDebit: "Debit",
+  //   amount: 500,
+  //   title: "Snacks",
+  //   note: "I went to buy snacks at Walmart",
+  //   frequency: "Biweekly",
+  // },
+  // {
+  //   entryType: "User",
+  //   date: new Date("2022-05-24"),
+  //   creditDebit: "Credit",
+  //   amount: 600,
+  //   title: "Drugs",
+  //   note: "I went to buy drugs at Walmart",
+  //   frequency: "Monthly",
+  // },
+  // {
+  //   entryType: "User",
+  //   date: new Date("2022-06-24"),
+  //   creditDebit: "Debit",
+  //   amount: 700,
+  //   title: "Alcohol",
+  //   note: "I went to buy alcohol at Walmart",
+  //   frequency: "ByDate",
+  // },
+  // {
+  //   entryType: "User",
+  //   date: new Date("2022-07-24"),
+  //   creditDebit: "Debit",
+  //   amount: 700,
+  //   title: "Bribes",
+  //   note: "I went to bribe people at Walmart",
+  //   frequency: "ByDate",
+  // },
 ];
 const goalData = [
   {

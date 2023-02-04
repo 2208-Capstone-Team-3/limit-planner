@@ -9,6 +9,7 @@ import {
   FLOAT,
   DATE,
   ENUM,
+  BOOLEAN
 } from "sequelize";
 
 // order of InferAttributes & InferCreationAttributes is important.
@@ -17,14 +18,15 @@ export interface EntryAttributes
     InferAttributes<EntryAttributes>,
     InferCreationAttributes<EntryAttributes>
   > {
-  id?: string;
-  entryType: string;
-  date: Date;
-  creditDebit: string;
-  amount: number;
-  title: string;
-  note: string;
-  frequency: string;
+    id?: string;
+    entryType: string;
+    amount: number;
+    creditDebit: string
+    title: string;
+    note:string;
+    start: Date;
+    allDay: boolean;
+    frequency:string
 }
 
 const Entry = db.define<EntryAttributes>("entry", {
@@ -41,8 +43,9 @@ const Entry = db.define<EntryAttributes>("entry", {
       notEmpty: true,
     },
   },
-  date: {
-    type: DATE,
+  amount: {
+    type: FLOAT,
+    defaultValue: 0.0,
     allowNull: false,
     validate: {
       notEmpty: true,
@@ -55,36 +58,30 @@ const Entry = db.define<EntryAttributes>("entry", {
       notEmpty: true,
     },
   },
-  amount: {
-    type: FLOAT,
-    defaultValue: 0.0,
-    allowNull: false,
-    validate: {
-      notEmpty: true,
-    },
-  },
+  
   title: {
     type: STRING,
     allowNull: false,
-    validate: {
-      notEmpty: true,
-    },
   },
   note: {
     type: STRING,
     allowNull: false,
-    validate: {
-      notEmpty: true,
-    },
   },
-  frequency: {
-    type: ENUM,
-    values: ["Weekly", "Biweekly", "Monthly", "ByDate"],
+  // one-time event fields
+  start: {
+    type: DATE,
     allowNull: false,
-    validate: {
-      notEmpty: true,
-    },
   },
+  allDay:{
+    type: BOOLEAN,
+    defaultValue: true,
+    allowNull:false
+  },
+  frequency:{
+    type: ENUM,
+    values:['ByDate','Weekly','Bi-Weekly','Monthly'],
+    allowNull:false
+  }
 });
 
 export default Entry;

@@ -10,6 +10,10 @@ import { blueGrey, deepOrange, grey } from "@mui/material/colors";
 import { setAccounts } from "./store/accountsSlice";
 import { setGoals } from "./store/goalsSlice";
 import { setEntries } from "./store/entriesSlice";
+import { setReoccurEntries } from "./store/reoccurEntriesSlice";
+import { useSelector } from "react-redux";
+import {addDays, addMonths, addYears, endOfDay, parseISO} from 'date-fns';
+
 
 export const ColorModeContext = React.createContext({
   toggleColorMode: () => {},
@@ -17,6 +21,8 @@ export const ColorModeContext = React.createContext({
 
 function App() {
   const dispatch = useDispatch();
+  const { reoccurEntries } = useSelector((state:any) => state.reoccurEntries)
+  const { entries } = useSelector((state:any) => state.entries)
   const [mode, setMode] = React.useState<"light" | "dark">("light");
 
   const colorMode = React.useMemo(
@@ -134,13 +140,62 @@ function App() {
     }
   }, [dispatch]);
 
+
+  /** creates and saves reoccuring entries */ 
+  const reoccurEntriesFetch = () => {
+    let reEnt: {}[] = []
+
+   entries.forEach((ent: {frequency: string, start: Date}) => {
+    if (ent.frequency === 'ByDate'){
+      reEnt.push(ent)
+
+    } else if (ent.frequency === 'Monthly'){
+       for (let i = 0; i <= 24; i++){
+        reEnt.push(ent)
+        ent.start = addMonths(ent.start, 1)
+        
+       }
+
+    } else if (ent.frequency === 'Weekly'){
+      for (let i = 0; i <= 104; i++){
+        reEnt.push(ent)
+        ent.start = addDays(ent.start, 7)
+        
+       }
+    } else if (ent.frequency === 'Bi-Weekly') {
+      for (let i = 0; i <= 52; i++){
+        reEnt.push(ent)
+        ent.start = addDays(ent.start, 14)
+        
+       }
+
+
+    }
+
+   }
+  
+   
+   
+   )
+  
+    dispatch(setReoccurEntries(reEnt))
+
+  }
+
   const theme = React.useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
+  
+  /** watches entries state and runs reoccur fetch*/
+  useEffect(() => {
+    reoccurEntriesFetch()
+  
+  }, [entries]);
 
   useEffect(() => {
     loginWithToken();
     accountsWithToken();
     goalsWithToken();
     entriesWithToken();
+    
 
     const existingPreference = localStorage.getItem("colorModeCookie");
     if (existingPreference) {
