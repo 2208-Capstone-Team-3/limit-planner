@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import React, { useState, useEffect, useCallback } from "react";
+//import { useSelector } from "react-redux";
 import axios from "axios";
 import { Box, Typography, Modal } from "@mui/material";
 import FullCalendar from "@fullcalendar/react";
@@ -9,10 +9,11 @@ import listPlugin from "@fullcalendar/list";
 import interactionPlugin from "@fullcalendar/interaction";
 import { EventClickArg } from "@fullcalendar/core";
 import {addDays, addMonths, addYears, endOfDay, parseISO} from 'date-fns';
-import { CommentsDisabledOutlined } from "@mui/icons-material";
-// import { EventAttributes } from './../../../server/db/models/Event.model';
+//import { CommentsDisabledOutlined } from "@mui/icons-material";
+//import { EventAttributes } from './../../../server/db/models/Event.model';
 import { EntryAttributes } from './../../../server/db/models/Entry.model';
-import { RootState } from "../../store";
+//import { setReoccurEntries } from "./../../store/reoccurEntriesSlice";
+//import { RootState } from "../../store";
 
 const modalStyle = {
   position: "absolute",
@@ -52,48 +53,41 @@ const Calendar = () => {
   //const { reoccurEntries } = useSelector((state:RootState) => state.reoccurEntries)
   //const entries = useSelector((state: RootState) => state.entries.entries);
 
-  const fetchEvents = async () => {
+  const fetchEvents = useCallback(async () => {
     setLoading(true);
-    // creating a new empty array for events
-    const newEntries:EntryAttributes[]=[];
+    const newEntries: EntryAttributes[] = [];
     const response = await axios.get("/api/entries");
-    // looping over the events from DB
-    response.data.forEach((entry:EntryAttributes)=>{
-      if(entry.frequency==="Bi-Weekly"){
-        for (let i = 0; i <= 26; i++){
-          // creating a copy of the event from the API response
-          let newEntry=entry;
-          // pushing the copy to the array 'newEvents'
+    response.data.forEach((entry: EntryAttributes) => {
+      if (entry.frequency === "Monthly") {
+        let newEntry = entry;
+        for (let i = 0; i <= 12; i++) {
           newEntries.push(newEntry);
-          // need to add some logic for 'addDays;
         };
       };
-      if(entry.frequency==="Monthly"){
-        // creating a copy of the event from the API response
-        let newEntry=entry;
-        for (let i = 0; i <= 12; i++){
-          // pushing the copy to the array 'newEvents'
+      if (entry.frequency === "Bi-Weekly") {
+        for (let i = 0; i <= 26; i++) {
+          let newEntry = entry;
           newEntries.push(newEntry);
-          // need to add some logic for 'addMonths'
+          //entry.start = addDays(entry.start, 14);
         };
       };
-      if(entry.frequency==="Weekly"){
-        // creating a copy of the event from the API response
-        let newEntry=entry;
-        for (let i = 0; i <= 52; i++){
-          // pushing the copy to the array 'newEvents'
+      if (entry.frequency === "Weekly") {
+        let newEntry = entry;
+        for (let i = 0; i <= 52; i++) {
           newEntries.push(newEntry);
-          // need to add some logic for 'addMonths'
+          //entry.start = addDays(entry.start, 7);
         };
       };
     });
     setCalendarEntries(newEntries);
     setLoading(false);
-  };
-
+  },[]);
+  
   useEffect(() => {
     fetchEvents();
-  }, []);
+  }, [fetchEvents]);
+
+  //console.log(calendarEntries);
 
   const handleModalOpen = (selected: EventClickArg) => {
     setModalOpen(true);
