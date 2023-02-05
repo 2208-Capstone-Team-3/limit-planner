@@ -24,7 +24,7 @@ export interface EntryAttributes
     creditDebit: string
     title: string;
     note:string;
-    start: Date;
+    start: Date | string;
     allDay: boolean;
     frequency:string
 }
