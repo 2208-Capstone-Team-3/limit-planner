@@ -4,14 +4,13 @@ import { Account, Entry, Goal, User, Event } from "./index.js";
 import {addDays, addMonths, addYears, endOfDay} from 'date-fns';
 
 const entryData = [
-
   {
     entryType: "API",
     amount: 20000,
     creditDebit: "Credit",
-    title: "Paycheck",
+    title: "Bi-Weekly Paycheck",
     note: "Got paid today!",
-    start: new Date("2023-01-05"),
+    start: new Date("2023-01-13"),
     allDay: true,
     frequency:'Bi-Weekly'
   },
@@ -19,29 +18,19 @@ const entryData = [
     entryType: "User",
     amount: 60000,
     creditDebit: "Debit",
-    title: "Paid electric bill",
+    title: "Monthly Electricityt Bill",
     note: "Paid ConEd",
-    start: new Date("2023-01-31"),
+    start: new Date("2023-01-24"),
     allDay: true,
     frequency:'Monthly'
-  },
-  { 
-    entryType: "User",
-    amount: 80000,
-    creditDebit: "Debit",
-    title: "Paid car bill",
-    note: "Paid ConEd",
-    start: new Date("2023-01-15"),
-    allDay: true,
-    frequency:'Bi-Weekly'
   },
   { 
     entryType: "API",
     amount: 70000,
     creditDebit: "Debit",
-    title: "Paid SOME OTHER bill",
-    note: "Paid ConEd",
-    start: new Date("2023-01-11"),
+    title: "Weekly Grocery Shopping",
+    note: "Bought groceries",
+    start: new Date("2023-01-01"),
     allDay: true,
     frequency:'Weekly'
   },
@@ -49,11 +38,11 @@ const entryData = [
     entryType: "API",
     amount: 30000,
     creditDebit: "Debit",
-    title: "Paid SOME OTHER OTHER bill",
-    note: "Paid ConEd",
+    title: "Daily coffee",
+    note: "Bought coffee",
     start: new Date("2023-01-07"),
     allDay: true,
-    frequency:'Monthly'
+    frequency:'ByDate'
   },
 ];
 const goalData = [
@@ -277,7 +266,7 @@ const seed = async () => {
   } catch (err) {
     console.log("error");
     console.log(err);
-  }
+  };
 };
 
 seed();
