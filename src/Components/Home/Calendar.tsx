@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useCallback } from "react";
-//import { useSelector } from "react-redux";
-import axios from "axios";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import { Box, Typography, Modal } from "@mui/material";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
@@ -8,12 +7,7 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
 import interactionPlugin from "@fullcalendar/interaction";
 import { EventClickArg } from "@fullcalendar/core";
-import {addDays, addMonths, addYears, endOfDay, endOfYesterday, parseISO} from 'date-fns';
-//import { CommentsDisabledOutlined } from "@mui/icons-material";
-//import { EventAttributes } from './../../../server/db/models/Event.model';
-import { EntryAttributes } from './../../../server/db/models/Entry.model';
-//import { setReoccurEntries } from "./../../store/reoccurEntriesSlice";
-//import { RootState } from "../../store";
+import { RootState } from "../../store";
 
 const modalStyle = {
   position: "absolute",
@@ -48,58 +42,8 @@ const Calendar = () => {
   const [title, setTitle] = useState("");
   const [note, setNote] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
-  const [calendarEntries, setCalendarEntries] = useState([] as any);
-  const [loading, setLoading] = useState(false);
-  //const { reoccurEntries } = useSelector((state:RootState) => state.reoccurEntries)
-  //const entries = useSelector((state: RootState) => state.entries.entries);
-
-  const fetchEvents = useCallback(async () => {
-    setLoading(true);
-    const newEntries: EntryAttributes[] = [];
-    const response = await axios.get("/api/entries");
-    response.data.forEach((entry: EntryAttributes) => {
-      let newDate = new Date(entry.start);
-      if (entry.frequency === "Monthly") {
-        for (let i = 0; i <= 12; i++) {
-          let newEntry = structuredClone(entry);
-          newEntry.start = newDate.toISOString();
-          newEntries.push(newEntry);
-          newDate = addMonths(newDate,1);
-        };
-      };
-      if (entry.frequency === "Bi-Weekly") {
-        for (let i = 0; i <= 26; i++) {
-          let newEntry = structuredClone(entry);
-          newEntry.start = newDate.toISOString();
-          newEntries.push(newEntry);
-          newDate = addDays(newDate,14);
-        };
-      };
-      if (entry.frequency === "Weekly") {
-        for (let i = 0; i <= 52; i++) {
-          let newEntry = structuredClone(entry);
-          newEntry.start = newDate.toISOString();
-          newEntries.push(newEntry);
-          newDate = addDays(newDate,7);
-        };
-      };
-      if (entry.frequency === "ByDate") {
-        for (let i = 0; i <= 365; i++) {
-          let newEntry = structuredClone(entry);
-          newEntry.start = newDate.toISOString();
-          newEntries.push(newEntry);
-          newDate = addDays(newDate,1);
-        };
-      };
-    });
-    setCalendarEntries(newEntries);
-    setLoading(false);
-  },[]);
+  const reoccurEntries = useSelector((state:RootState) => state.reoccurEntries.reoccurEntries)
   
-  useEffect(() => {
-    fetchEvents();
-  }, [fetchEvents]);
-
   const handleModalOpen = (selected: EventClickArg) => {
     setModalOpen(true);
     setDate(`${selected.event.start}`);
@@ -111,7 +55,7 @@ const Calendar = () => {
     setModalOpen(false);
   };
 
-  if (loading) return <p>Loading...</p>;
+  if (reoccurEntries.length===0) return <p>Loading...</p>;
   return (
     <Box>
       <Box>
@@ -132,7 +76,7 @@ const Calendar = () => {
           selectable={true}
           selectMirror={true}
           dayMaxEvents={true}
-          initialEvents={calendarEntries}
+          initialEvents={reoccurEntries}
           eventClick={handleModalOpen}
           //eventsSet={(events)=>setEvents(currentEvents)} // called after events are initialized/added/changed/removed
           // eventAdd={function(){}}
