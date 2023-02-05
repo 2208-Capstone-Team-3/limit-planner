@@ -8,7 +8,7 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
 import interactionPlugin from "@fullcalendar/interaction";
 import { EventClickArg } from "@fullcalendar/core";
-import {addDays, addMonths, addYears, endOfDay, parseISO} from 'date-fns';
+import {addDays, addMonths, addYears, endOfDay, endOfYesterday, parseISO} from 'date-fns';
 //import { CommentsDisabledOutlined } from "@mui/icons-material";
 //import { EventAttributes } from './../../../server/db/models/Event.model';
 import { EntryAttributes } from './../../../server/db/models/Entry.model';
@@ -58,24 +58,37 @@ const Calendar = () => {
     const newEntries: EntryAttributes[] = [];
     const response = await axios.get("/api/entries");
     response.data.forEach((entry: EntryAttributes) => {
+      let newDate = new Date(entry.start);
       if (entry.frequency === "Monthly") {
-        let newEntry = entry;
         for (let i = 0; i <= 12; i++) {
+          let newEntry = structuredClone(entry);
+          newEntry.start = newDate.toISOString();
           newEntries.push(newEntry);
+          newDate = addMonths(newDate,1);
         };
       };
       if (entry.frequency === "Bi-Weekly") {
         for (let i = 0; i <= 26; i++) {
-          let newEntry = entry;
+          let newEntry = structuredClone(entry);
+          newEntry.start = newDate.toISOString();
           newEntries.push(newEntry);
-          //entry.start = addDays(entry.start, 14);
+          newDate = addDays(newDate,14);
         };
       };
       if (entry.frequency === "Weekly") {
-        let newEntry = entry;
         for (let i = 0; i <= 52; i++) {
+          let newEntry = structuredClone(entry);
+          newEntry.start = newDate.toISOString();
           newEntries.push(newEntry);
-          //entry.start = addDays(entry.start, 7);
+          newDate = addDays(newDate,7);
+        };
+      };
+      if (entry.frequency === "ByDate") {
+        for (let i = 0; i <= 365; i++) {
+          let newEntry = structuredClone(entry);
+          newEntry.start = newDate.toISOString();
+          newEntries.push(newEntry);
+          newDate = addDays(newDate,1);
         };
       };
     });
@@ -86,8 +99,6 @@ const Calendar = () => {
   useEffect(() => {
     fetchEvents();
   }, [fetchEvents]);
-
-  //console.log(calendarEntries);
 
   const handleModalOpen = (selected: EventClickArg) => {
     setModalOpen(true);

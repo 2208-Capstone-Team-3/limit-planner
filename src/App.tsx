@@ -10,8 +10,8 @@ import { blueGrey, deepOrange, grey } from "@mui/material/colors";
 import { setAccounts } from "./store/accountsSlice";
 import { setGoals } from "./store/goalsSlice";
 import { setEntries } from "./store/entriesSlice";
-import { useSelector } from "react-redux";
-import {addDays, addMonths, addYears, endOfDay, parseISO} from 'date-fns';
+//import { useSelector } from "react-redux";
+//import {addDays, addMonths, addYears, endOfDay, parseISO} from 'date-fns';
 //import { setReoccurEntries } from "./store/reoccurEntriesSlice";
 //import { EntryAttributes } from './../server/db/models/Entry.model';
 
@@ -131,7 +131,6 @@ function App() {
             authorization: `Bearer ${token}`,
           },
         });
-        console.log({'Entries':response.data});
         dispatch(setEntries(response.data));
       };
     } catch (error) {
@@ -147,30 +146,42 @@ function App() {
   //       authorization: `Bearer ${token}`,
   //     },
   //   });
-  //   const reEnt:EntryAttributes[]=[];
-  //   response.data.forEach((entry:EntryAttributes)=>{
-  //     if(entry.frequency==='ByDate'){
-  //       reEnt.push(entry);
-  //     }else if(entry.frequency==='Monthly'){
-  //       for (let i = 0; i <= 24; i++){
-  //         reEnt.push(entry);
-  //         //entry.start = addMonths(entry.start, 1);
+  //   const newEntries: EntryAttributes[] = [];
+  //   response.data.forEach((entry: EntryAttributes) => {
+  //     let newDate = new Date(entry.start);
+  //     if (entry.frequency === "Monthly") {
+  //       for (let i = 0; i <= 12; i++) {
+  //         let newEntry = structuredClone(entry);
+  //         newEntry.start = newDate.toISOString();
+  //         newEntries.push(newEntry);
+  //         newDate = addMonths(newDate,1);
   //       };
   //     };
-  //     if(entry.frequency==='Weekly'){
-  //       for (let i = 0; i <= 104; i++){
-  //         reEnt.push(entry);
-  //         //entry.start = addDays(entry.start, 7);
+  //     if (entry.frequency === "Bi-Weekly") {
+  //       for (let i = 0; i <= 26; i++) {
+  //         let newEntry = structuredClone(entry);
+  //         newEntry.start = newDate.toISOString();
+  //         newEntries.push(newEntry);
+  //         newDate = addDays(newDate,14);
   //       };
   //     };
-  //     if(entry.frequency==='Bi-Weekly'){
-  //       for (let i = 0; i <= 52; i++){
-  //         reEnt.push(entry)
-  //         //entry.start = addDays(entry.start, 14)
+  //     if (entry.frequency === "Weekly") {
+  //       for (let i = 0; i <= 52; i++) {
+  //         let newEntry = structuredClone(entry);
+  //         newEntry.start = newDate.toISOString();
+  //         newEntries.push(newEntry);
+  //         newDate = addDays(newDate,7);
   //       };
   //     };
-  //     //console.log({'Recurring entries':reEnt})
-  //     dispatch(setReoccurEntries(reEnt));
+  //     if (entry.frequency === "ByDate") {
+  //       for (let i = 0; i <= 365; i++) {
+  //         let newEntry = structuredClone(entry);
+  //         newEntry.start = newDate.toISOString();
+  //         newEntries.push(newEntry);
+  //         newDate = addDays(newDate,1);
+  //       };
+  //     };
+  //     dispatch(setReoccurEntries(newEntries));
   //   });
   // },[dispatch]);
 
@@ -190,13 +201,8 @@ function App() {
       setMode("light");
       localStorage.setItem("colorModeCookie", "light");
     }
-  }, [accountsWithToken, entriesWithToken, goalsWithToken, loginWithToken]);
-
-  // /** watches entries state and runs reoccur fetch*/
-  // useEffect(() => {
-  //   reoccurEntriesFetch()
-  // // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
+  // }, [accountsWithToken, entriesWithToken, goalsWithToken, loginWithToken, reoccurEntriesFetch]);
+}, [accountsWithToken, entriesWithToken, goalsWithToken, loginWithToken]);
 
   return (
     <ColorModeContext.Provider value={colorMode}>
