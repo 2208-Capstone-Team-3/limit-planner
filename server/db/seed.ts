@@ -18,7 +18,7 @@ const entryData = [
     entryType: "User",
     amount: 60000,
     creditDebit: "Debit",
-    title: "Monthly Electricityt Bill",
+    title: "Monthly Electricity Bill",
     note: "Paid ConEd",
     start: new Date("2023-01-24"),
     allDay: true,
@@ -40,7 +40,17 @@ const entryData = [
     creditDebit: "Debit",
     title: "Daily coffee",
     note: "Bought coffee",
-    start: new Date("2023-01-07"),
+    start: new Date("2023-01-15"),
+    allDay: true,
+    frequency:'ByDate'
+  },
+  { 
+    entryType: "API",
+    amount: 30000,
+    creditDebit: "Debit",
+    title: "Daily coffee",
+    note: "Bought coffee",
+    start: new Date("2023-02-07"),
     allDay: true,
     frequency:'ByDate'
   },
