@@ -173,12 +173,7 @@ function App() {
         };
       };
       if (entry.frequency === "ByDate") {
-        for (let i = 0; i <= 365; i++) {
-          let newEntry = structuredClone(entry);
-          newEntry.start = newDate.toISOString();
-          newEntries = [...newEntries,newEntry];
-          newDate = addDays(newDate,1);
-        };
+        newEntries = [...newEntries,entry];
       };
       dispatch(setReoccurEntries(newEntries));
     });
