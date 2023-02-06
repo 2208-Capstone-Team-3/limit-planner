@@ -26,10 +26,11 @@ export interface EntryAttributes
   allDay: boolean;
   creditDebit: string;
   amount: number;
-  //groupId?:string;
+  groupId?: string;
   title: string;
-  // daysOfWeek?:number[];
-  
+  daysOfWeek?:number[];
+  note: string;
+  frequency: string;
 }
 
 const Entry = db.define<EntryAttributes>("entry", {
@@ -71,10 +72,10 @@ const Entry = db.define<EntryAttributes>("entry", {
       notEmpty: true,
     },
   },
-  // groupId: {
-  //   type: STRING,
-  //   allowNull: true
-  // },
+  groupId: {
+    type: STRING,
+    allowNull: true
+  },
   title: {
     type: STRING,
     allowNull: false,
@@ -82,10 +83,10 @@ const Entry = db.define<EntryAttributes>("entry", {
       notEmpty: true,
     },
   },
-  // daysOfWeek:{
-  //   type:ARRAY(INTEGER),
-  //   allowNull:true
-  // },
+  daysOfWeek:{
+    type:ARRAY(INTEGER),
+    allowNull:true
+  },
   note: {
     type: STRING,
     allowNull: false,

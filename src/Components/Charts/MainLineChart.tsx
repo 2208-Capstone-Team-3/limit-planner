@@ -17,16 +17,16 @@ const MainLineChart = () => {
   let dateSelector = useSelector(
     (state: RootState) => state.theme.theme.dateSelector
   );
-  console.log(entries);
+  // console.log(entries);
   const data: { x: any; y: any }[] = [];
   let accountTotal = 0;
-  console.log(accounts);
+  // console.log(accounts);
   entries
-    .flat()
+    .flat(Infinity)
     .forEach(
-      (ele: { date: Date; amount: number; creditDebit: string }, id, arr) => {
+      (ele: { start: Date; amount: number; creditDebit: string }, id, arr) => {
         data.push({
-          x: new Date(ele.date),
+          x: new Date(ele.start),
           y:
             ele.creditDebit === "Credit"
               ? (accountTotal += ele.amount)

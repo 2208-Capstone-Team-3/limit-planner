@@ -13,9 +13,10 @@ const entryData = [
     allDay: true,
     creditDebit: "Credit",
     amount: 400,
- 
+    groupId: "Food",
     title: "I went to buy groceries at Walmart",
-  
+    note: chance.sentence(),
+    frequency: "Nonrecurring",
     
   },
   {
@@ -24,9 +25,10 @@ const entryData = [
     allDay: true,
     creditDebit: "Debit",
     amount: 500,
-   
+    groupId: "Food",
     title: "I went to buy snacks at Walmart",
-  
+    note: chance.sentence(),
+    frequency: "Nonrecurring",
     
   },
   {
@@ -37,7 +39,9 @@ const entryData = [
     amount: 600,
     groupId: "Drugs",
     title: "I went to buy drugs at Walmart",
-    daysOfWeek: [2]
+    daysOfWeek: [2],
+    note: chance.sentence(),
+    frequency: "Nonrecurring",
   },
   {
     entryType: "User",
@@ -47,7 +51,9 @@ const entryData = [
     amount: 700,
     groupId: "Alcohol",
     title: "I went to buy alcohol at Walmart",
-    daysOfWeek: [4, 5]
+    daysOfWeek: [4, 5],
+    note: chance.sentence(),
+    frequency: "Nonrecurring",
   },
   {
     entryType: "User",
@@ -57,7 +63,9 @@ const entryData = [
     amount: 700,
     groupId: "Bribes",
     title: "I went to bribe people at Walmart",
-    daysOfWeek: [0]
+    daysOfWeek: [0],
+    note: chance.sentence(),
+    frequency: "Nonrecurring",
   },
 
 
@@ -239,9 +247,10 @@ const seed = async () => {
     while (i++ < 500) {
       const newEntry = await Entry.create({
         entryType: chance.pickone(["User", "API"]),
-        date: new Date(chance.date({ year: 2023 })),
+        start: new Date(chance.date({ year: 2023 })),
         creditDebit: chance.pickone(["Credit", "Debit"]),
         amount: chance.integer({ min: 0, max: 5000 }),
+        allDay: true,
         title: chance.word(),
         note: chance.sentence(),
         frequency: "Nonrecurring",

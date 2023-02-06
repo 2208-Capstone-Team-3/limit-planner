@@ -10,7 +10,7 @@ interface initialStateType {
 const initialState: initialStateType = {
   theme: {
     homeDrawerOpen: true,
-    dateSelector: "052023",
+    dateSelector: "05-05-2023",
   },
 };
 
