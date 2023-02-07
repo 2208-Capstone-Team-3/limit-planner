@@ -1,8 +1,9 @@
-import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import React from "react";
+import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import MainGoalPercentageChart from "../Charts/MainGoalPercentageChart";
 import MainLineChart from "../Charts/MainLineChart";
 import Calendar from "./Calendar";
+import Selectors from "./Selectors";
 
 const HomeBasePortal = () => {
   return (
@@ -14,7 +15,7 @@ const HomeBasePortal = () => {
         <MainLineChart />
       </Grid2>
       <Grid2 xs={6}>
-       <div>Selector Placeholder</div>
+       <Selectors />
       </Grid2>
       <Grid2 xs={6}>
         <MainGoalPercentageChart />
