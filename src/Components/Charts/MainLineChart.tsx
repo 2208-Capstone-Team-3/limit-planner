@@ -64,9 +64,6 @@ const MainLineChart = () => {
           labels={({ datum }) => `${datum.x.toDateString()}, $${datum.y}`}
           theme={VictoryTheme.material}
           voronoiDimension={"x"}
-          activateLabels
-          activateData
-          responsive
         />
       }
     >

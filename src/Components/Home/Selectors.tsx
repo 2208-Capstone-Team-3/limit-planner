@@ -26,34 +26,39 @@ const Selectors = () => {
   const handleAccount = (ele: SelectChangeEvent) => {
     dispatch(setAccountSelector(ele.target.value));
   };
+
   const handleGoal = (ele: SelectChangeEvent) => {
     dispatch(setGoalSelector(ele.target.value));
   };
-
+  const allGoals = goals.flat(Infinity).map((ele) => ele);
   return (
     <Grid2 container padding={1}>
-      <Grid2 paddingRight={1}>
-        <FormControl fullWidth>
+      <Grid2 minWidth={"8vw"} paddingRight={1}>
+        <FormControl key={"accountFormControl"} fullWidth>
           <InputLabel id="accountSelectLabel">Account</InputLabel>
           <Select
+            key={"accountSelect"}
             fullWidth
             labelId="accountSelectLabel"
             id="accountSelect"
-            value={accountSelector}
+            value={accountSelector ?? "Account"}
             renderValue={(ele) => <Typography>{ele}</Typography>}
             label="Account"
             onChange={handleAccount}
           >
             {accounts.map((ele, id) => (
-              <MenuItem value={ele.accountName}>{ele.accountName}</MenuItem>
+              <MenuItem key={`${ele.id}` + id} value={ele.accountName}>
+                {ele.accountName}
+              </MenuItem>
             ))}
           </Select>
         </FormControl>
       </Grid2>
-      <Grid2 paddingRight={1}>
+      <Grid2 minWidth={"6vw"} paddingRight={1}>
         <FormControl fullWidth>
           <InputLabel id="goalSelectLabel">Goal</InputLabel>
           <Select
+            key={"goalSelect"}
             fullWidth
             labelId="goalSelectLabel"
             id="goalSelect"
@@ -62,8 +67,10 @@ const Selectors = () => {
             label="Goal"
             onChange={handleGoal}
           >
-            {goals.map((ele, id) => (
-              <MenuItem value={ele.name}>{ele.name}</MenuItem>
+            {allGoals.map((ele, id) => (
+              <MenuItem key={`${ele.id}` + id} value={ele.name}>
+                {ele.name ?? "None"}
+              </MenuItem>
             ))}
           </Select>
         </FormControl>

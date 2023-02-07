@@ -13,8 +13,8 @@ const initialState: initialStateType = {
   theme: {
     homeDrawerOpen: true,
     dateSelector: "05-05-2023",
-    accountSelector: "Account",
-    goalSelector: "Goal"
+    accountSelector: "",
+    goalSelector: ""
   },
 };
 
@@ -35,7 +35,7 @@ export const themeSlice = createSlice({
       state.theme.accountSelector = action.payload;
     },
     setGoalSelector: (state, action) => {
-      state.theme.accountSelector = action.payload;
+      state.theme.goalSelector = action.payload;
     },
     setLightorDark: (state, action) => {
       localStorage.setItem("colorModeCookie", action.payload);
@@ -44,8 +44,8 @@ export const themeSlice = createSlice({
       state.theme = {
         homeDrawerOpen: true,
         dateSelector: new Date(),
-        accountSelector: "Account",
-        goalSelector: "Account"
+        accountSelector: "",
+        goalSelector: ""
       };
     },
   },

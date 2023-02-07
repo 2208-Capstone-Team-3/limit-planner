@@ -7,8 +7,8 @@ export interface goalsInitialStateType {
       name: string;
       goalAmount: number;
       startAmount: number;
-      startDate: Date;
-      endDate: Date;
+      startDate: Date | string;
+      endDate: Date | string;
       victory: boolean;
     }
   ];
@@ -20,8 +20,8 @@ const initialState: goalsInitialStateType = {
       name: "Undefined",
       goalAmount: 1,
       startAmount: 0,
-      startDate: new Date(),
-      endDate: new Date(),
+      startDate: "05-05-2023",
+      endDate: "05-05-2023",
       victory: false,
     },
   ],
@@ -40,8 +40,8 @@ export const goalsSlice = createSlice({
           name: "Undefined",
           goalAmount: 1,
           startAmount: 0,
-          startDate: new Date(),
-          endDate: new Date(),
+          startDate: "05-05-2023",
+          endDate: "05-05-2023",
           victory: false,
         },
       ];

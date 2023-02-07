@@ -17,12 +17,14 @@ import {
 import { AccountAttributes } from "./Account.model.js";
 import { PlaceType } from "../../../src/Components/UserCreation/UserGoogleLocation.js";
 import { JWT } from "../../api/helpers/superSecret.js";
+import { GoalAttributes } from "./Goal.model.js";
 
 export interface UserAttributes
   extends Model<
     InferAttributes<UserAttributes>,
     InferCreationAttributes<UserAttributes>
   > {
+  addGoal(goal: GoalAttributes): unknown;
   accounts?: [];
   goals?: [];
   addAccount(account: AccountAttributes): unknown;

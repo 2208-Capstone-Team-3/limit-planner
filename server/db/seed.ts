@@ -256,6 +256,7 @@ const seed = async () => {
     accountTwo.addGoal(goalTwo);
     accountThree.addGoal(goalOne);
     accountFour.addGoal(goalFive);
+    userFour.addGoal(goalFive);
   } catch (err) {
     console.log("error");
     console.log(err);

@@ -6,7 +6,7 @@ import Calendar from "./Calendar";
 import Selectors from "./Selectors";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
-import { Divider } from "@mui/material";
+import MainHistogram from "../Charts/MainHistogram";
 
 const HomeBasePortal = () => {
   const homeDrawerOpen: boolean = useSelector(
@@ -33,6 +33,9 @@ const HomeBasePortal = () => {
         </Grid2>
         <Grid2>
           <MainGoalPercentageChart />
+        </Grid2>
+        <Grid2>
+          <MainHistogram />
         </Grid2>
       </Grid2>
     </Grid2>
