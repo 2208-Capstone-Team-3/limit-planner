@@ -2,74 +2,61 @@ import { VIRTUAL } from "sequelize";
 import db from "./db.js";
 import { Account, Entry, Goal, User, Event } from "./index.js";
 import Chance from "chance";
-
 const chance = new Chance();
 
 const entryData = [
   {
-    entryType: "API",
-    //YYYY-MM-DD
-    start: new Date ("2022-03-24"),
-    allDay: true,
+    entryType: "User",
+    amount: 20000,
     creditDebit: "Credit",
-    amount: 400,
-    groupId: "Food",
-    title: "I went to buy groceries at Walmart",
-    note: chance.sentence(),
-    frequency: "Nonrecurring",
-    
+    title: "Bi-Weekly Paycheck",
+    note: "Got paid today!",
+    start: new Date("2023-01-13"),
+    allDay: true,
+    frequency:'Bi-Weekly'
   },
-  {
+  { 
+    entryType: "User",
+    amount: 60000,
+    creditDebit: "Debit",
+    title: "Monthly Electricity Bill",
+    note: "Paid ConEd",
+    start: new Date("2023-01-24"),
+    allDay: true,
+    frequency:'Monthly'
+  },
+  { 
     entryType: "API",
-    start: new Date (                                                                                                                                                     "2022-04-24"),
-    allDay: true,
+    amount: 70000,
     creditDebit: "Debit",
-    amount: 500,
-    groupId: "Food",
-    title: "I went to buy snacks at Walmart",
-    note: chance.sentence(),
-    frequency: "Nonrecurring",
-    
-  },
-  {
-    entryType: "User",
-    start: new Date("2022-05-24"),
+    title: "Weekly Grocery Shopping",
+    note: "Bought groceries",
+    start: new Date("2023-01-01"),
     allDay: true,
-    creditDebit: "Credit",
-    amount: 600,
-    groupId: "Drugs",
-    title: "I went to buy drugs at Walmart",
-    daysOfWeek: [2],
-    note: chance.sentence(),
-    frequency: "Nonrecurring",
+    frequency:'Weekly'
   },
-  {
-    entryType: "User",
-    start: new Date("2022-06-24"),
-    allDay: true,
+  { 
+    entryType: "API",
+    amount: 30000,
     creditDebit: "Debit",
-    amount: 700,
-    groupId: "Alcohol",
-    title: "I went to buy alcohol at Walmart",
-    daysOfWeek: [4, 5],
-    note: chance.sentence(),
-    frequency: "Nonrecurring",
-  },
-  {
-    entryType: "User",
-    start: new Date("2022-07-24"),
+    title: "Daily coffee",
+    note: "Bought coffee",
+    start: new Date("2023-01-15"),
     allDay: true,
-    creditDebit: "Debit",
-    amount: 700,
-    groupId: "Bribes",
-    title: "I went to bribe people at Walmart",
-    daysOfWeek: [0],
-    note: chance.sentence(),
-    frequency: "Nonrecurring",
+    frequency:'ByDate'
   },
-
-
+  { 
+    entryType: "API",
+    amount: 30000,
+    creditDebit: "Debit",
+    title: "Daily coffee",
+    note: "Bought coffee",
+    start: new Date("2023-02-07"),
+    allDay: true,
+    frequency:'ByDate'
+  }
 ];
+
 const goalData = [
   {
     name: "Buy icecream",
@@ -193,33 +180,6 @@ const accountData = [
   },
 ];
 
-// const eventData = [
-//   {
-//     title: "Bought coffee",
-//     note: "Bought a coffee from the corner bodega",
-//     start: new Date("2023-01-03"),
-//     allDay: true,
-//   },
-//   {
-//     title: "Paid electricity bill",
-//     note: "Paid ConEdison for electricity bill",
-//     start: new Date("2023-01-11"),
-//     allDay: true,
-//   },
-//   {
-//     title: "Paid heat bill",
-//     note: "Paid ConEdison for heat bill",
-//     start: new Date("2023-01-15"),
-//     allDay: true,
-//   },
-//   {
-//     title: "Paid phone bill",
-//     note: "Venmoed family member for family phone plan",
-//     start: new Date("2023-01-20"),
-//     allDay: true,
-//   },
-// ];
-
 const seed = async () => {
   await db.sync({ force: true });
   try {
@@ -248,12 +208,14 @@ const seed = async () => {
       const newEntry = await Entry.create({
         entryType: chance.pickone(["User", "API"]),
         start: new Date(chance.date({ year: 2023 })),
+        start: new Date(chance.date({ year: 2023 })),
         creditDebit: chance.pickone(["Credit", "Debit"]),
         amount: chance.integer({ min: 0, max: 5000 }),
         allDay: true,
         title: chance.word(),
         note: chance.sentence(),
-        frequency: "Nonrecurring",
+        allDay:true,
+        frequency: "ByDate",
       });
       accountFour.addEntry(newEntry);
     }
@@ -269,8 +231,6 @@ const seed = async () => {
     // --------------EVENTS--------------
 
     // console.log("adding events");
-
-    // await Promise.all(eventData.map((event) => Event.create(event)));
 
     // --------------ASSOCIATIONS--------------
 
@@ -289,6 +249,7 @@ const seed = async () => {
     accountThree.addEntry(entryThree);
     accountFour.addEntry(entryFour);
     accountFour.addEntry(entryFive);
+    accountFour.addEntry(entryThree);
 
     // Account.hasMany(Goal);
     // Goal.belongsTo(Account);
@@ -300,7 +261,7 @@ const seed = async () => {
   } catch (err) {
     console.log("error");
     console.log(err);
-  }
+  };
 };
 
 seed();

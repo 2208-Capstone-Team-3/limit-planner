@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React, { useState } from "react";
+import { useSelector,useDispatch } from "react-redux";
 import { Box, Typography, Modal } from "@mui/material";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
@@ -7,10 +7,8 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
 import interactionPlugin from "@fullcalendar/interaction";
 import { DateSelectArg, EventClickArg } from "@fullcalendar/core";
-import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { setDateSelector } from "../../store/themeSlice";
-import { useDispatch } from "react-redux";
 
 const modalStyle = {
   position: "absolute",
@@ -40,39 +38,15 @@ const modalStyle = {
 //   11: "December",
 // };
 
-/**
- * Notes about the calendar:
- * Only working if not TS file
- * Need to have a field 'start' and optional 'end' on model NOT startDate or endDate
- * Need to have a field 'allDay' on an event
- * Properties like 'note' are placed on 'extendedProps' automatically by FullCalendar
- * We will have to refactor any models that we want to display on a calendar to
- * appease FullCalendar
- */
-
 const Calendar = () => {
+  const dispatch = useDispatch();
   const [date, setDate] = useState("");
   const [title, setTitle] = useState("");
   const [note, setNote] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
-  const [events, setEvents] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const dispatch = useDispatch()
-  let dateSelector = useSelector((state: RootState) => state.theme.theme.dateSelector);
-
-  const fetchEvents = async () => {
-    setLoading(true);
-    console.log("before fetch")
-    const response = await axios.get("/api/entries/calendar");
-    setEvents(response.data);
-    console.log("this is console log ", response.data)
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    fetchEvents();
-  }, []);
-
+  const reoccurEntries = useSelector((state:RootState) => state.reoccurEntries.reoccurEntries);
+  //const entries = useSelector((state:RootState) => state.entries.entries)
+  
   const handleModalOpen = (selected: EventClickArg) => {
     setModalOpen(true);
     setDate(`${selected.event.start}`);
@@ -88,7 +62,9 @@ const Calendar = () => {
     setModalOpen(false);
   };
 
-  if (loading) return <p>Loading...</p>;
+  console.log(reoccurEntries);
+
+  if (reoccurEntries.length===0) return <p>Loading...</p>;
   return (
     <Box>
       <Box>
@@ -109,7 +85,7 @@ const Calendar = () => {
           selectable={true}
           selectMirror={true}
           dayMaxEvents={true}
-          initialEvents={events}
+          initialEvents={reoccurEntries}
           select={handleSelect}
           eventClick={handleModalOpen}
           //eventsSet={(events)=>setEvents(currentEvents)} // called after events are initialized/added/changed/removed
@@ -131,7 +107,10 @@ const Calendar = () => {
             {date}
           </Typography>
           <Typography id="modal-modal-title" variant="h5" component="h2">
-            {title} - {note}
+            {title}
+          </Typography>
+          <Typography id="modal-modal-title" variant="h5" component="h2">
+            {note}
           </Typography>
         </Box>
       </Modal>

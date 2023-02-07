@@ -7,6 +7,8 @@ import {
   UUIDV4,
   STRING,
   FLOAT,
+  ARRAY,
+  ENUM,
   DATE,
   BOOLEAN,
 } from "sequelize";
@@ -21,7 +23,8 @@ export interface EventAttributes
   title: string;
   note:string;
   start: Date;
-  // allDay: boolean;
+  allDay: boolean;
+  frequency:string
 }
 
 const Event = db.define<EventAttributes>("event", {
@@ -38,14 +41,21 @@ const Event = db.define<EventAttributes>("event", {
     type: STRING,
     allowNull: false,
   },
+  // one-time event fields
   start: {
     type: DATE,
     allowNull: false,
   },
-  // allDay:{
-  //   type: BOOLEAN,
-  //   defaultValue: true
-  // }
+  allDay:{
+    type: BOOLEAN,
+    defaultValue: true,
+    allowNull:false
+  },
+  frequency:{
+    type: ENUM,
+    values:['ByDate','Weekly','Bi-Weekly','Monthly'],
+    allowNull:false
+  }
 });
 
 export default Event;
