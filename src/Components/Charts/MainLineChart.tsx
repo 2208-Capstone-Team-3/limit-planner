@@ -1,14 +1,12 @@
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 import {
-  Tuple,
   VictoryChart,
   VictoryLine,
   VictoryTheme,
   VictoryVoronoiContainer,
 } from "victory";
 import { RootState } from "../../store";
-import * as d3 from "d3";
 import { addMonths, subMonths } from "date-fns";
 
 const MainLineChart = () => {
