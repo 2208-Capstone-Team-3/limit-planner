@@ -5,20 +5,6 @@ import { EntryAttributes } from "../db/models/Entry.model.js";
 import { authenticateUser } from "./helpers/authUserMiddleware.js";
 const router = express.Router();
 
-/**
- * removed user authentication from this GET route temporarily
- * will restore original route after testing
- */
-router.get("/", async (req: Request, res: Response, next: NextFunction): Promise<void>=> {
-  try {
-    const entries: EntryAttributes[] = await Entry.findAll();
-    res.send(entries);
-  } catch (err) {
-    res.sendStatus(404);
-    next(err);
-  }
-});
-
 // router.get("/", async (req: Request, res: Response, next: NextFunction) => {
 //   try {
 //     const header = req.headers.authorization;
@@ -80,8 +66,41 @@ router.post(
       res.sendStatus(404);
       next(err);
     }
-  }
-);
+
+
+// router.post(
+//   "/",
+//   authenticateUser,
+//   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+//     // const user = req.body.user;
+//     const account = req.body.account;
+//     try {
+//       const {
+//         entryType,
+//         date,
+//         creditDebit,
+//         amount,
+//         title,
+//         note,
+//         frequency,
+//       }: EntryAttributes = req.body;
+//       const createdEntry = await Entry.create({
+//         entryType,
+//         date,
+//         creditDebit,
+//         amount,
+//         title,
+//         note,
+//         frequency,
+//       });
+//       account.addEntry(createdEntry);
+//       res.sendStatus(204);
+//     } catch (err) {
+//       res.sendStatus(404);
+//       next(err);
+//     }
+//   }
+// );
 
 router.delete(
   "/:entryId",

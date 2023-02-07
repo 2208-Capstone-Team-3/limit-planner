@@ -6,10 +6,12 @@ import {
   UUID,
   UUIDV4,
   STRING,
+  ARRAY,
   FLOAT,
   DATE,
   ENUM,
-  BOOLEAN
+  BOOLEAN,
+  INTEGER
 } from "sequelize";
 
 // order of InferAttributes & InferCreationAttributes is important.
@@ -43,9 +45,8 @@ const Entry = db.define<EntryAttributes>("entry", {
       notEmpty: true,
     },
   },
-  amount: {
-    type: FLOAT,
-    defaultValue: 0.0,
+  start: {
+    type: DATE,
     allowNull: false,
     validate: {
       notEmpty: true,
@@ -58,18 +59,28 @@ const Entry = db.define<EntryAttributes>("entry", {
       notEmpty: true,
     },
   },
-  
+  amount: {
+    type: FLOAT,
+    defaultValue: 0.0,
+    allowNull: false,
+    validate: {
+      notEmpty: true,
+    },
+  },
+  // groupId: {
+  //   type: STRING,
+  //   allowNull: true
+  // },
   title: {
     type: STRING,
     allowNull: false,
   },
+  // daysOfWeek:{
+  //   type:ARRAY(INTEGER),
+  //   allowNull:true
+  // },
   note: {
     type: STRING,
-    allowNull: false,
-  },
-  // one-time event fields
-  start: {
-    type: DATE,
     allowNull: false,
   },
   allDay:{

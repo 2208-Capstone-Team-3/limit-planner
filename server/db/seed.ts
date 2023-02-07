@@ -1,11 +1,11 @@
 import { VIRTUAL } from "sequelize";
 import db from "./db.js";
 import { Account, Entry, Goal, User, Event } from "./index.js";
-import {addDays, addMonths, addYears, endOfDay} from 'date-fns';
+import Chance from "chance";
+const chance = new Chance();
 
 const entryData = [
   {
-    entryType: "API",
     amount: 20000,
     creditDebit: "Credit",
     title: "Bi-Weekly Paycheck",
@@ -53,8 +53,9 @@ const entryData = [
     start: new Date("2023-02-07"),
     allDay: true,
     frequency:'ByDate'
-  },
+  }
 ];
+
 const goalData = [
   {
     name: "Buy icecream",
@@ -178,23 +179,6 @@ const accountData = [
   },
 ];
 
-const eventData = [
-  {
-    title: "Paycheck",
-    note: "Got paid today!",
-    start: new Date("2023-01-05"),
-    allDay: true,
-    frequency:'Bi-Weekly'
-  },
-  {
-    title: "Paid electric bill",
-    note: "Paid ConEd",
-    start: new Date("2023-01-31"),
-    allDay: true,
-    frequency:'Monthly'
-  },
-];
-
 const seed = async () => {
   await db.sync({ force: true });
   try {
@@ -217,6 +201,21 @@ const seed = async () => {
     const [entryOne, entryTwo, entryThree, entryFour, entryFive] =
       await Promise.all(entryData.map((entry) => Entry.create(entry)));
 
+    let i = 0;
+    // const entryList = [];
+    while (i++ < 500) {
+      const newEntry = await Entry.create({
+        entryType: chance.pickone(["User", "API"]),
+        date: new Date(chance.date({ year: 2023 })),
+        creditDebit: chance.pickone(["Credit", "Debit"]),
+        amount: chance.integer({ min: 0, max: 5000 }),
+        title: chance.word(),
+        note: chance.sentence(),
+        frequency: "Nonrecurring",
+      });
+      accountFour.addEntry(newEntry);
+    }
+
     // --------------GOALS--------------
 
     console.log("adding goals");
@@ -227,26 +226,7 @@ const seed = async () => {
 
     // --------------EVENTS--------------
 
-    console.log("adding events");
-
-    // moving this logic to the front end on calendar component!
-    // const seedEvents = (eventData:any) => {
-    //   eventData.forEach((event:any)=>{
-    //     if (event.frequency === "Bi-Weekly"){
-    //       for (let i = 0; i <= 26; i++){
-    //         Event.create(event)
-    //         event.start = addDays(event.start, 14)
-    //       }
-    //     }else if (event.frequency === "Monthly"){
-    //         for (let i = 0; i <= 12; i++){
-    //           Event.create(event)
-    //           event.start = addMonths(event.start, 1)
-    //         }
-    //       }})
-    //     }
-    // seedEvents(eventData);
-
-    await Promise.all(eventData.map((event) => Event.create(event)));
+    // console.log("adding events");
 
     // --------------ASSOCIATIONS--------------
 
