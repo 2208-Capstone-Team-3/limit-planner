@@ -208,13 +208,11 @@ const seed = async () => {
       const newEntry = await Entry.create({
         entryType: chance.pickone(["User", "API"]),
         start: new Date(chance.date({ year: 2023 })),
-        start: new Date(chance.date({ year: 2023 })),
         creditDebit: chance.pickone(["Credit", "Debit"]),
         amount: chance.integer({ min: 0, max: 5000 }),
         allDay: true,
         title: chance.word(),
         note: chance.sentence(),
-        allDay:true,
         frequency: "ByDate",
       });
       accountFour.addEntry(newEntry);

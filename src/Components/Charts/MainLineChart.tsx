@@ -52,21 +52,37 @@ const MainLineChart = () => {
 
   return (
     <VictoryChart
+      domain={{
+        x: [
+          subMonths(new Date(dateSelector), 1),
+          addMonths(new Date(dateSelector), 1),
+        ],
+      }}
       theme={VictoryTheme.material}
       containerComponent={
         <VictoryVoronoiContainer
-          labels={({ datum }) => `${datum.x.toLocaleDateString()}, $${datum.y}`}
+          labels={({ datum }) => `${datum.x.toDateString()}, $${datum.y}`}
           theme={VictoryTheme.material}
+          voronoiDimension={"x"}
+          activateLabels
+          activateData
+          responsive
         />
       }
     >
       <VictoryLine
+        style={{
+          data: { stroke: "#c43a31" },
+          parent: { border: "1px solid #ccc" },
+        }}
         interpolation="linear"
         name="line"
         animate={{
           duration: 2000,
           onLoad: { duration: 1000 },
         }}
+        // minDomain={{ x: Number(subMonths(new Date(dateSelector), 1)) }}
+        // maxDomain={{ x: Number(addMonths(new Date(dateSelector), 1)) }}
         domain={{
           x: [
             subMonths(new Date(dateSelector), 1),

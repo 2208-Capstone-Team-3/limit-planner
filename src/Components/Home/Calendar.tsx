@@ -54,7 +54,7 @@ const Calendar = () => {
     setNote(selected.event.extendedProps.note);
   };
   const handleSelect = (selected: DateSelectArg) => {
-    console.log(selected.startStr)
+    // console.log(selected.startStr)
     dispatch(setDateSelector(selected.startStr))
   };
 
@@ -62,7 +62,7 @@ const Calendar = () => {
     setModalOpen(false);
   };
 
-  console.log(reoccurEntries);
+  // console.log(reoccurEntries);
 
   if (reoccurEntries.length===0) return <p>Loading...</p>;
   return (

@@ -1,11 +1,30 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 export interface goalsInitialStateType {
-  goals: [];
+  goals: [
+    {
+      id?: string;
+      name: string;
+      goalAmount: number;
+      startAmount: number;
+      startDate: Date;
+      endDate: Date;
+      victory: boolean;
+    }
+  ];
 }
 
 const initialState: goalsInitialStateType = {
-  goals: [],
+  goals: [
+    {
+      name: "Undefined",
+      goalAmount: 1,
+      startAmount: 0,
+      startDate: new Date(),
+      endDate: new Date(),
+      victory: false,
+    },
+  ],
 };
 
 export const goalsSlice = createSlice({
@@ -16,7 +35,16 @@ export const goalsSlice = createSlice({
       state.goals = action.payload;
     },
     resetGoals: (state) => {
-      state.goals = [];
+      state.goals = [
+        {
+          name: "Undefined",
+          goalAmount: 1,
+          startAmount: 0,
+          startDate: new Date(),
+          endDate: new Date(),
+          victory: false,
+        },
+      ];
     },
   },
 });
