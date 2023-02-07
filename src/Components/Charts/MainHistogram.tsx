@@ -31,7 +31,6 @@ const MainHistogram = () => {
   return (
     <VictoryChart
       theme={VictoryTheme.material}
-      ti
       containerComponent={
         <VictoryVoronoiContainer
           labels={({ datum }) =>
