@@ -11,7 +11,7 @@ import {
   DATE,
   ENUM,
   BOOLEAN,
-  INTEGER,
+  INTEGER
 } from "sequelize";
 
 // order of InferAttributes & InferCreationAttributes is important.
@@ -20,16 +20,15 @@ export interface EntryAttributes
     InferAttributes<EntryAttributes>,
     InferCreationAttributes<EntryAttributes>
   > {
-  id?: string;
-  entryType: string;
-  start: Date;
-  allDay: boolean;
-  creditDebit: string;
-  amount: number;
-  //groupId?:string;
-  title: string;
-  // daysOfWeek?:number[];
-  
+    id?: string;
+    entryType: string;
+    amount: number;
+    creditDebit: string
+    title: string;
+    note:string;
+    start: Date | string;
+    allDay: boolean;
+    frequency:string
 }
 
 const Entry = db.define<EntryAttributes>("entry", {
@@ -53,9 +52,6 @@ const Entry = db.define<EntryAttributes>("entry", {
       notEmpty: true,
     },
   },
-  allDay: {
-    type: BOOLEAN
-  },
   creditDebit: {
     type: ENUM,
     values: ["Credit", "Debit"],
@@ -78,9 +74,6 @@ const Entry = db.define<EntryAttributes>("entry", {
   title: {
     type: STRING,
     allowNull: false,
-    validate: {
-      notEmpty: true,
-    },
   },
   // daysOfWeek:{
   //   type:ARRAY(INTEGER),
@@ -89,18 +82,17 @@ const Entry = db.define<EntryAttributes>("entry", {
   note: {
     type: STRING,
     allowNull: false,
-    validate: {
-      notEmpty: true,
-    },
   },
-  frequency: {
+  allDay:{
+    type: BOOLEAN,
+    defaultValue: true,
+    allowNull:false
+  },
+  frequency:{
     type: ENUM,
-    values: ["Weekly", "Biweekly", "Monthly", "ByDate", "Nonrecurring"],
-    allowNull: false,
-    validate: {
-      notEmpty: true,
-    },
-  },
+    values:['ByDate','Weekly','Bi-Weekly','Monthly'],
+    allowNull:false
+  }
 });
 
 export default Entry;
