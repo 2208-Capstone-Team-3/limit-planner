@@ -173,7 +173,8 @@ function App() {
           };
         };
         if (entry.frequency === "ByDate") {
-          newEntries = [...newEntries,entry];
+          let newEntry = structuredClone(entry);
+          newEntries = [...newEntries,newEntry];
         };
       });
       dispatch(setReoccurEntries(newEntries));
