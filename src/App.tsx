@@ -128,6 +128,7 @@ function App() {
             authorization: `Bearer ${token}`,
           },
         });
+        //console.log(response.data)
         dispatch(setEntries(response.data));
       };
     } catch (error) {
@@ -138,43 +139,45 @@ function App() {
   /** creates and saves reoccuring entries */ 
   const reoccurEntriesFetch = useCallback(async() => {
     const token = window.localStorage.getItem("token");
-    const response = await axios.get("/api/entries", {
-      headers: {
-        authorization: `Bearer ${token}`,
-      },
-    });
-    let newEntries: EntryAttributes[] = [];
-    response.data.forEach((entry: EntryAttributes) => {
-      let newDate = new Date(entry.start);
-      if (entry.frequency === "Monthly") {
-        for (let i = 0; i <= 12; i++) {
-          let newEntry = structuredClone(entry);
-          newEntry.start = newDate.toISOString();
-          newEntries = [...newEntries,newEntry];
-          newDate = addMonths(newDate,1);
+    if(token){
+      const response = await axios.get("/api/entries", {
+        headers: {
+          authorization: `Bearer ${token}`,
+        },
+      });
+      let newEntries: EntryAttributes[] = [];
+      response.data[0].forEach((entry: EntryAttributes) => {
+        let newDate = new Date(entry.start);
+        if (entry.frequency === "Monthly") {
+          for (let i = 0; i <= 12; i++) {
+            let newEntry = structuredClone(entry);
+            newEntry.start = newDate.toISOString();
+            newEntries = [...newEntries,newEntry];
+            newDate = addMonths(newDate,1);
+          };
         };
-      };
-      if (entry.frequency === "Bi-Weekly") {
-        for (let i = 0; i <= 26; i++) {
-          let newEntry = structuredClone(entry);
-          newEntry.start = newDate.toISOString();
-          newEntries = [...newEntries,newEntry];
-          newDate = addDays(newDate,14);
+        if (entry.frequency === "Bi-Weekly") {
+          for (let i = 0; i <= 26; i++) {
+            let newEntry = structuredClone(entry);
+            newEntry.start = newDate.toISOString();
+            newEntries = [...newEntries,newEntry];
+            newDate = addDays(newDate,14);
+          };
         };
-      };
-      if (entry.frequency === "Weekly") {
-        for (let i = 0; i <= 52; i++) {
-          let newEntry = structuredClone(entry);
-          newEntry.start = newDate.toISOString();
-          newEntries = [...newEntries,newEntry];
-          newDate = addDays(newDate,7);
+        if (entry.frequency === "Weekly") {
+          for (let i = 0; i <= 52; i++) {
+            let newEntry = structuredClone(entry);
+            newEntry.start = newDate.toISOString();
+            newEntries = [...newEntries,newEntry];
+            newDate = addDays(newDate,7);
+          };
         };
-      };
-      if (entry.frequency === "ByDate") {
-        newEntries = [...newEntries,entry];
-      };
+        if (entry.frequency === "ByDate") {
+          newEntries = [...newEntries,entry];
+        };
+      });
       dispatch(setReoccurEntries(newEntries));
-    });
+    }
   },[dispatch]);
 
   const theme = React.useMemo(() => createTheme(getDesignTokens(mode)), [mode]);

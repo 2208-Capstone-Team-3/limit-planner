@@ -6,8 +6,6 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
 import interactionPlugin from "@fullcalendar/interaction";
-import { EventClickArg } from "@fullcalendar/core";
-import { RootState } from "../../store";
 import { DateSelectArg, EventClickArg } from "@fullcalendar/core";
 import { RootState } from "../../store";
 import { setDateSelector } from "../../store/themeSlice";
@@ -41,11 +39,13 @@ const modalStyle = {
 // };
 
 const Calendar = () => {
+  const dispatch = useDispatch();
   const [date, setDate] = useState("");
   const [title, setTitle] = useState("");
   const [note, setNote] = useState("");
   const [modalOpen, setModalOpen] = useState(false);
-  const reoccurEntries = useSelector((state:RootState) => state.reoccurEntries.reoccurEntries)
+  const reoccurEntries = useSelector((state:RootState) => state.reoccurEntries.reoccurEntries);
+  //const entries = useSelector((state:RootState) => state.entries.entries)
   
   const handleModalOpen = (selected: EventClickArg) => {
     setModalOpen(true);
@@ -61,6 +61,8 @@ const Calendar = () => {
   const handleModalClose = () => {
     setModalOpen(false);
   };
+
+  console.log(reoccurEntries);
 
   if (reoccurEntries.length===0) return <p>Loading...</p>;
   return (
