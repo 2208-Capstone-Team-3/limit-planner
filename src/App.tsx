@@ -146,7 +146,7 @@ function App() {
         },
       });
       let newEntries: EntryAttributes[] = [];
-      response.data[0].forEach((entry: EntryAttributes) => {
+      response.data.forEach((entry: EntryAttributes) => {
         let newDate = new Date(entry.start);
         if (entry.frequency === "Monthly") {
           for (let i = 0; i <= 12; i++) {
