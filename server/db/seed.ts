@@ -202,21 +202,21 @@ const seed = async () => {
     const [entryOne, entryTwo, entryThree, entryFour, entryFive] =
       await Promise.all(entryData.map((entry) => Entry.create(entry)));
 
-    let i = 0;
-    // const entryList = [];
-    while (i++ < 500) {
-      const newEntry = await Entry.create({
-        entryType: chance.pickone(["User", "API"]),
-        start: new Date(chance.date({ year: 2023 })),
-        creditDebit: chance.pickone(["Credit", "Debit"]),
-        amount: chance.integer({ min: 0, max: 5000 }),
-        title: chance.word(),
-        note: chance.sentence(),
-        allDay:true,
-        frequency: "ByDate",
-      });
-      accountFour.addEntry(newEntry);
-    }
+    // let i = 0;
+    // // const entryList = [];
+    // while (i++ < 500) {
+    //   const newEntry = await Entry.create({
+    //     entryType: chance.pickone(["User", "API"]),
+    //     start: new Date(chance.date({ year: 2023 })),
+    //     creditDebit: chance.pickone(["Credit", "Debit"]),
+    //     amount: chance.integer({ min: 0, max: 5000 }),
+    //     title: chance.word(),
+    //     note: chance.sentence(),
+    //     allDay:true,
+    //     frequency: "ByDate",
+    //   });
+    //   accountFour.addEntry(newEntry);
+    // }
 
     // --------------GOALS--------------
 
