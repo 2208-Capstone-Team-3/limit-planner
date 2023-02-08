@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { BaseSyntheticEvent,useState } from "react";
+import axios from 'axios';
 import { useSelector,useDispatch } from "react-redux";
 import { Box, Typography, Modal } from "@mui/material";
 import FullCalendar from "@fullcalendar/react";
@@ -23,46 +24,84 @@ const modalStyle = {
   textAlign: "center",
 };
 
-// const months = {
-//   0: "January",
-//   1: "February",
-//   2: "March",
-//   3: "April",
-//   4: "May",
-//   5: "June",
-//   6: "July",
-//   7: "August",
-//   8: "September",
-//   9: "October",
-//   10: "November",
-//   11: "December",
-// };
-
 const Calendar = () => {
   const dispatch = useDispatch();
-  const [date, setDate] = useState("");
-  const [title, setTitle] = useState("");
-  const [note, setNote] = useState("");
+  const token = window.localStorage.getItem("token");
+
+  const [id,setId] = useState<string>("");
+  const [entryType,setEntryType] = useState<string>("");
+  const [amount,setAmount] = useState<number>(0);
+  const [creditDebit,setCreditDebit] = useState<string>("");
+  const [title, setTitle] = useState<string>("");
+  const [note, setNote] = useState<string>("");
+  const [start, setStart] = useState<any>(""); // should fix this with more appropriate data type
+  const [frequency, setFrequency] = useState<string>("");
+
   const [modalOpen, setModalOpen] = useState(false);
+  
   const reoccurEntries = useSelector((state:RootState) => state.reoccurEntries.reoccurEntries);
-  //const entries = useSelector((state:RootState) => state.entries.entries)
   
   const handleModalOpen = (selected: EventClickArg) => {
     setModalOpen(true);
-    setDate(`${selected.event.start}`);
+    setId(selected.event.id);
+    setEntryType(selected.event.extendedProps.entryType);
+    setAmount(selected.event.extendedProps.amount);
+    setCreditDebit(selected.event.extendedProps.creditDebit);
     setTitle(selected.event.title);
     setNote(selected.event.extendedProps.note);
-  };
-  const handleSelect = (selected: DateSelectArg) => {
-    console.log(selected.startStr)
-    dispatch(setDateSelector(selected.startStr))
+    setStart(selected.event.start);
+    setFrequency(selected.event.extendedProps.frequency);
   };
 
   const handleModalClose = () => {
     setModalOpen(false);
   };
 
-  console.log(reoccurEntries);
+  const handleSelect = (selected: DateSelectArg) => {
+    dispatch(setDateSelector(selected.startStr))
+  };
+
+  const handleEntryTypeChange = (event:BaseSyntheticEvent) =>{
+    setEntryType(event.target.value);
+  };
+
+  const handleAmountChange = (event:BaseSyntheticEvent) =>{
+    setAmount(event.target.value);
+  };
+
+  const handleCreditDebitChange = (event:BaseSyntheticEvent) =>{
+    setCreditDebit(event.target.value);
+  };
+
+  const handleTitleChange = (event:BaseSyntheticEvent) => {
+    setTitle(event.target.value);
+  };
+
+  const handleNoteChange = (event:BaseSyntheticEvent) => {
+    setNote(event.target.value);
+  };
+
+  const handleStartChange = (event:BaseSyntheticEvent) =>{
+    setStart(event.target.value);
+  };
+
+  const updateEntry = async() =>{
+    const body = {
+      entryType,
+      amount,
+      creditDebit,
+      title,
+      note,
+      start,
+      frequency
+    };
+    await axios.put(`/api/entries/${id}`,body,{
+      headers: { Authorization: "Bearer " + token }
+    });
+    // Need to update front end.
+    // Will probably have to use same logic from App.tsx to update
+    // entries?
+  };
 
   if (reoccurEntries.length===0) return <p>Loading...</p>;
   return (
@@ -103,7 +142,30 @@ const Calendar = () => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={modalStyle}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
+          <div>
+            <label htmlFor="entry type">Entry type:</label>
+            <input name="entry type" value={entryType} onChange={handleEntryTypeChange}/>
+          </div>
+          <div>
+            <label htmlFor="amount">Amount:</label>
+            <input name="amount" value={amount} onChange={handleAmountChange}/>
+          </div>
+          <label htmlFor="credit/debit">Credit/Debit:</label>
+          <input name="credit/debit" value={creditDebit} onChange={handleCreditDebitChange}/>
+          <div>
+            <label htmlFor="title">Tile:</label>
+            <input name="title" value={title} onChange={handleTitleChange}/>
+          </div>
+          <div>
+            <label htmlFor="note">Note:</label>
+            <input name="note" value={note} onChange={handleNoteChange}/>
+          </div>
+          <div>
+            <label htmlFor="start date">Start date:</label>
+            <input name="start date" value={start} onChange={handleStartChange}/>
+          </div>
+          <button onClick={updateEntry}>Update</button>
+          {/* <Typography id="modal-modal-title" variant="h6" component="h2">
             {date}
           </Typography>
           <Typography id="modal-modal-title" variant="h5" component="h2">
@@ -111,7 +173,7 @@ const Calendar = () => {
           </Typography>
           <Typography id="modal-modal-title" variant="h5" component="h2">
             {note}
-          </Typography>
+          </Typography> */}
         </Box>
       </Modal>
     </Box>
