@@ -25,6 +25,9 @@ const MainGoalPercentageChart = () => {
           duration: 2000,
           onLoad: { duration: 1000 },
         }}
+        style={{
+          data: { fill: "#c43a31" },
+        }}
         barRatio={10}
         domain={{ y: [0, 100] }}
         data={[{ x: "Progress To Primary Goal", y: 90 }]}

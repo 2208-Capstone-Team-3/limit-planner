@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 import MainHistogram from "../Charts/MainHistogram";
 import MainScatterChart from "../Charts/MainScatterChart";
+import { Box, Typography } from "@mui/material";
 
 const HomeBasePortal = () => {
   const homeDrawerOpen: boolean = useSelector(
@@ -27,18 +28,32 @@ const HomeBasePortal = () => {
         height={"100vh"}
         xs={7}
         padding={1}
-        flexDirection={"column"}
+        
       >
-        <Grid2>
+        <Grid2 xs={6}  >
+          <Box sx={{display: "flex", flexDirection: "column", placeItems: "center"}}>
+          <Typography variant="overline">
+            Account Progression
+          </Typography>
           <MainLineChart />
+          </Box>
         </Grid2>
-        <Grid2>
+        <Grid2 xs={6} sx={{display: "flex", flexDirection: "column", placeItems: "center" }}>
+        <Typography variant="overline">
+            Percent To Goal
+          </Typography>
           <MainGoalPercentageChart />
         </Grid2>
-        <Grid2>
+        <Grid2 xs={6} sx={{display: "flex", flexDirection: "column", placeItems: "center" }}>
+        <Typography variant="overline">
+            Transactions Per Month
+          </Typography>
           <MainHistogram />
         </Grid2>
-        <Grid2>
+        <Grid2 xs={6} sx={{display: "flex", flexDirection: "column", placeItems: "center" }}>
+        <Typography variant="overline">
+            Expenses
+          </Typography>
           <MainScatterChart />
         </Grid2>
       </Grid2>
