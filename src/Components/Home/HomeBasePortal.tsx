@@ -7,6 +7,7 @@ import Selectors from "./Selectors";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 import MainHistogram from "../Charts/MainHistogram";
+import MainScatterChart from "../Charts/MainScatterChart";
 
 const HomeBasePortal = () => {
   const homeDrawerOpen: boolean = useSelector(
@@ -36,6 +37,9 @@ const HomeBasePortal = () => {
         </Grid2>
         <Grid2>
           <MainHistogram />
+        </Grid2>
+        <Grid2>
+          <MainScatterChart />
         </Grid2>
       </Grid2>
     </Grid2>
