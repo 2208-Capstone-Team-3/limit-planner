@@ -5,28 +5,59 @@ import { EntryAttributes } from "../db/models/Entry.model.js";
 import { authenticateUser } from "./helpers/authUserMiddleware.js";
 const router = express.Router();
 
+/**
+ * Commenting out this route that requires authentication for testing purposes
+ * Will put back after testing
+ */
+// router.get("/", async (req: Request, res: Response, next: NextFunction) => {
+//   try {
+//     const header = req.headers.authorization;
+//     const token = header && header.split(" ")[1];
+
+//     if (!token) return res.sendStatus(404);
+
+//     const foundUser = await User.prototype.findByToken(token);
+
+//     if (!foundUser.id) {
+//       return res.sendStatus(404);
+//     }
+
+//     const foundUserInfo: AccountAttributes[] | null = await Account.findAll({
+//       where: { userId: foundUser.id },
+//       include: [Entry],
+//     });
+
+//     if (foundUserInfo) {
+//       const entryInfoOnly = foundUserInfo.map((acc) => acc.entries);
+//       res.status(200).send(entryInfoOnly);
+//     }
+//   } catch (err) {
+//     res.sendStatus(404);
+//     next(err);
+//   }
+// });
+
+/**
+ * Adding this generic route here without authentication for testing purposes
+ * will remove after
+ */
 router.get("/", async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const header = req.headers.authorization;
-    const token = header && header.split(" ")[1];
+    const entries = await Entry.findAll();
+    res.send(entries);
+  } catch (err) {
+    res.sendStatus(404);
+    next(err);
+  }
+});
 
-    if (!token) return res.sendStatus(404);
-
-    const foundUser = await User.prototype.findByToken(token);
-
-    if (!foundUser.id) {
-      return res.sendStatus(404);
-    }
-
-    const foundUserInfo: AccountAttributes[] | null = await Account.findAll({
-      where: { userId: foundUser.id },
-      include: [Entry],
-    });
-
-    if (foundUserInfo) {
-      const entryInfoOnly = foundUserInfo.map((acc) => acc.entries);
-      res.status(200).send(entryInfoOnly);
-    }
+router.get(
+  "/:entryId",
+  //authenticateUser,
+  async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const foundEntry = await Entry.findByPk(req.params.entryId);
+    res.send(foundEntry);
   } catch (err) {
     res.sendStatus(404);
     next(err);
@@ -120,4 +151,29 @@ router.delete(
     }
   }
 );
+
+router.put(
+  "/:entryId",
+  //authenticateUser,
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    const data = {
+      entryType:req.body.entryType,
+      amount:req.body.amount,
+      creditDebit:req.body.creditDebit,
+      title:req.body.title,
+      note:req.body.note,
+      start:req.body.start,
+      allDay:req.body.allDay,
+      frequency:req.body.frequency
+    };
+    const entryToUpdate = await Entry.findByPk(req.params.entryId);
+    await entryToUpdate?.update(data);
+    res.send(entryToUpdate);
+  } catch (err) {
+    res.sendStatus(404);
+    next(err);
+  }
+});
+
 export default router;
