@@ -5,46 +5,28 @@ import { EntryAttributes } from "../db/models/Entry.model.js";
 import { authenticateUser } from "./helpers/authUserMiddleware.js";
 const router = express.Router();
 
-/**
- * Commenting out this route that requires authentication for testing purposes
- * Will put back after testing
- */
-// router.get("/", async (req: Request, res: Response, next: NextFunction) => {
-//   try {
-//     const header = req.headers.authorization;
-//     const token = header && header.split(" ")[1];
-
-//     if (!token) return res.sendStatus(404);
-
-//     const foundUser = await User.prototype.findByToken(token);
-
-//     if (!foundUser.id) {
-//       return res.sendStatus(404);
-//     }
-
-//     const foundUserInfo: AccountAttributes[] | null = await Account.findAll({
-//       where: { userId: foundUser.id },
-//       include: [Entry],
-//     });
-
-//     if (foundUserInfo) {
-//       const entryInfoOnly = foundUserInfo.map((acc) => acc.entries);
-//       res.status(200).send(entryInfoOnly);
-//     }
-//   } catch (err) {
-//     res.sendStatus(404);
-//     next(err);
-//   }
-// });
-
-/**
- * Adding this generic route here without authentication for testing purposes
- * will remove after
- */
 router.get("/", async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const entries = await Entry.findAll();
-    res.send(entries);
+    const header = req.headers.authorization;
+    const token = header && header.split(" ")[1];
+
+    if (!token) return res.sendStatus(404);
+
+    const foundUser = await User.prototype.findByToken(token);
+
+    if (!foundUser.id) {
+      return res.sendStatus(404);
+    }
+
+    const foundUserInfo: AccountAttributes[] | null = await Account.findAll({
+      where: { userId: foundUser.id },
+      include: [Entry],
+    });
+
+    if (foundUserInfo) {
+      const entryInfoOnly = foundUserInfo.map((acc) => acc.entries);
+      res.status(200).send(entryInfoOnly);
+    }
   } catch (err) {
     res.sendStatus(404);
     next(err);
@@ -53,7 +35,7 @@ router.get("/", async (req: Request, res: Response, next: NextFunction) => {
 
 router.get(
   "/:entryId",
-  //authenticateUser,
+  authenticateUser,
   async (req: Request, res: Response, next: NextFunction) => {
   try {
     const foundEntry = await Entry.findByPk(req.params.entryId);
@@ -99,6 +81,50 @@ router.post(
     }
   })
 
+router.delete(
+  "/:entryId",
+  authenticateUser,
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+    try {
+      const entryId: string = req.params.entryId;
+      //soimething weird happens since
+      //entryId starts string but ends up number??
+      //so TS forces it to be string idk
+      const entryToDelete = await Entry.findByPk(entryId);
+      entryToDelete?.destroy();
+      res.sendStatus(204);
+    } catch (err) {
+      res.sendStatus(404);
+      next(err);
+    }
+  }
+);
+
+router.put(
+  "/:entryId",
+  authenticateUser,
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    const data = {
+      entryType:req.body.entryType,
+      amount:req.body.amount,
+      creditDebit:req.body.creditDebit,
+      title:req.body.title,
+      note:req.body.note,
+      start:req.body.start,
+      frequency:req.body.frequency
+    };
+    const entryToUpdate = await Entry.findByPk(req.params.entryId);
+    if(entryToUpdate){
+      await entryToUpdate.update(data);
+      res.sendStatus(204);
+    };
+  } catch (err) {
+    res.sendStatus(404);
+    next(err);
+  }
+});
+
 // router.post(
 //   "/",
 //   authenticateUser,
@@ -132,48 +158,5 @@ router.post(
 //     }
 //   }
 // );
-
-router.delete(
-  "/:entryId",
-  authenticateUser,
-  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    try {
-      const entryId: string = req.params.entryId;
-      //soimething weird happens since
-      //entryId starts string but ends up number??
-      //so TS forces it to be string idk
-      const entryToDelete = await Entry.findByPk(entryId);
-      entryToDelete?.destroy();
-      res.sendStatus(204);
-    } catch (err) {
-      res.sendStatus(404);
-      next(err);
-    }
-  }
-);
-
-router.put(
-  "/:entryId",
-  //authenticateUser,
-  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-  try {
-    const data = {
-      entryType:req.body.entryType,
-      amount:req.body.amount,
-      creditDebit:req.body.creditDebit,
-      title:req.body.title,
-      note:req.body.note,
-      start:req.body.start,
-      allDay:req.body.allDay,
-      frequency:req.body.frequency
-    };
-    const entryToUpdate = await Entry.findByPk(req.params.entryId);
-    await entryToUpdate?.update(data);
-    res.send(entryToUpdate);
-  } catch (err) {
-    res.sendStatus(404);
-    next(err);
-  }
-});
 
 export default router;
