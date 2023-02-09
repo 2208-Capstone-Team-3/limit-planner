@@ -12,7 +12,8 @@ import { RootState } from "../../store";
 import { setDateSelector } from "../../store/themeSlice";
 import { setReoccurEntries } from "../../store/reoccurEntriesSlice";
 import { EntryAttributes } from "../../../server/db/models/Entry.model";
-import {addDays, addMonths} from 'date-fns';
+import { addDays, addMonths } from 'date-fns';
+import makeEntryCopies from "./../../helpers/makeEntryCopies";
 
 const modalStyle = {
   position: "absolute",
@@ -101,48 +102,15 @@ const Calendar = () => {
     await axios.put(`/api/entries/${id}`,body,{
       headers: { Authorization: "Bearer " + token }
     });
-    const newEntriesUpdate = await axios.get("/api/entries", {
+    const updatedEntries = await axios.get("/api/entries", {
       headers: { Authorization: "Bearer " + token }
     })
-    let newEntries: EntryAttributes[] = [];
-      newEntriesUpdate.data[0].forEach((entry: EntryAttributes) => {
-        let newDate = new Date(entry.start);
-        if (entry.frequency === "Monthly") {
-          for (let i = 0; i <= 12; i++) {
-            let newEntry = structuredClone(entry);
-            newEntry.start = newDate.toISOString();
-            newEntries = [...newEntries,newEntry];
-            newDate = addMonths(newDate,1);
-          };
-        };
-        if (entry.frequency === "Bi-Weekly") {
-          for (let i = 0; i <= 26; i++) {
-            let newEntry = structuredClone(entry);
-            newEntry.start = newDate.toISOString();
-            newEntries = [...newEntries,newEntry];
-            newDate = addDays(newDate,14);
-          };
-        };
-        if (entry.frequency === "Weekly") {
-          for (let i = 0; i <= 52; i++) {
-            let newEntry = structuredClone(entry);
-            newEntry.start = newDate.toISOString();
-            newEntries = [...newEntries,newEntry];
-            newDate = addDays(newDate,7);
-          };
-        };
-        if (entry.frequency === "ByDate") {
-          let newEntry = structuredClone(entry);
-          newEntries = [...newEntries,newEntry];
-        };
-      });
-      dispatch(setReoccurEntries(newEntries));
-    handleModalClose()
+    const updatedEntryCopies = makeEntryCopies(updatedEntries.data[0])
+    dispatch(setReoccurEntries(updatedEntryCopies));
+    handleModalClose();
   };
 
- 
   if (reoccurEntries.length===0) return <p>Loading...</p>;
-
   return (
     <Box>
       <Box>
