@@ -11,6 +11,8 @@ import { DateSelectArg, EventClickArg } from "@fullcalendar/core";
 import { RootState } from "../../store";
 import { setDateSelector } from "../../store/themeSlice";
 import { setReoccurEntries } from "../../store/reoccurEntriesSlice";
+import { EntryAttributes } from "../../../server/db/models/Entry.model";
+import {addDays, addMonths} from 'date-fns';
 
 const modalStyle = {
   position: "absolute",
@@ -102,7 +104,39 @@ const Calendar = () => {
     const newEntriesUpdate = await axios.get("/api/entries", {
       headers: { Authorization: "Bearer " + token }
     })
-    dispatch(setReoccurEntries(newEntriesUpdate))
+    let newEntries: EntryAttributes[] = [];
+      newEntriesUpdate.data[0].forEach((entry: EntryAttributes) => {
+        let newDate = new Date(entry.start);
+        if (entry.frequency === "Monthly") {
+          for (let i = 0; i <= 12; i++) {
+            let newEntry = structuredClone(entry);
+            newEntry.start = newDate.toISOString();
+            newEntries = [...newEntries,newEntry];
+            newDate = addMonths(newDate,1);
+          };
+        };
+        if (entry.frequency === "Bi-Weekly") {
+          for (let i = 0; i <= 26; i++) {
+            let newEntry = structuredClone(entry);
+            newEntry.start = newDate.toISOString();
+            newEntries = [...newEntries,newEntry];
+            newDate = addDays(newDate,14);
+          };
+        };
+        if (entry.frequency === "Weekly") {
+          for (let i = 0; i <= 52; i++) {
+            let newEntry = structuredClone(entry);
+            newEntry.start = newDate.toISOString();
+            newEntries = [...newEntries,newEntry];
+            newDate = addDays(newDate,7);
+          };
+        };
+        if (entry.frequency === "ByDate") {
+          let newEntry = structuredClone(entry);
+          newEntries = [...newEntries,newEntry];
+        };
+      });
+      dispatch(setReoccurEntries(newEntries));
     // Need to update front end.
     // Will probably have to use same logic from App.tsx to update
     // entries?
@@ -110,6 +144,7 @@ const Calendar = () => {
     console.log("reoccurEntries changed????", reoccurEntries);
   };
 
+ 
   if (reoccurEntries.length===0) return <p>Loading...</p>;
 
   return (
@@ -132,12 +167,15 @@ const Calendar = () => {
           selectable={true}
           selectMirror={true}
           dayMaxEvents={true}
-          //messed around here -yifan
           initialEvents={reoccurEntries}
-          // eventSources={reoccurEntries}
-          // events={reoccurEntries}
+          // eventSources={[
+          //   {id: "reoccur",
+          //   events: reoccurEntries}
+          // ]}
+          events={reoccurEntries}
           select={handleSelect}
           eventClick={handleModalOpen}
+          eventsSet={()=>console.log("TESTING UPDATING ENTRIES",reoccurEntries)}
           //eventsSet={(events)=>setEvents(currentEvents)} // called after events are initialized/added/changed/removed
           // eventAdd={function(){}}
           // eventChange={function(){}}

@@ -10,7 +10,7 @@ import { blueGrey, deepOrange, grey } from "@mui/material/colors";
 import { setAccounts } from "./store/accountsSlice";
 import { setGoals } from "./store/goalsSlice";
 import { setEntries } from "./store/entriesSlice";
-import {addDays, addMonths, addYears, endOfDay, parseISO} from 'date-fns';
+import {addDays, addMonths} from 'date-fns';
 import { setReoccurEntries } from "./store/reoccurEntriesSlice";
 import { EntryAttributes } from './../server/db/models/Entry.model';
 
@@ -208,5 +208,6 @@ function App() {
     </ColorModeContext.Provider>
   );
 }
+
 
 export default App;
