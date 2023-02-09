@@ -165,15 +165,6 @@ const Calendar = () => {
             <input name="start date" value={start} onChange={handleStartChange}/>
           </div>
           <button onClick={updateEntry}>Update</button>
-          {/* <Typography id="modal-modal-title" variant="h6" component="h2">
-            {date}
-          </Typography>
-          <Typography id="modal-modal-title" variant="h5" component="h2">
-            {title}
-          </Typography>
-          <Typography id="modal-modal-title" variant="h5" component="h2">
-            {note}
-          </Typography> */}
         </Box>
       </Modal>
     </Box>

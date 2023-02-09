@@ -14,7 +14,7 @@ import Landing from "./Components/Landing/Landing";
 import LoginPage from "./Components/Login/LoginPage";
 import Home from "./Components/Home/Home";
 import CreateUserPage from "./Components/UserCreation/UserCreationPage";
-import Calendar from "./Components/Home/Calendar";
+import Calendar from "./Components/Calendar/Calendar";
 
 import HomeBasePortal from "./Components/Home/HomeBasePortal";
 

@@ -2,7 +2,7 @@ import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import React from "react";
 import MainGoalPercentageChart from "../Charts/MainGoalPercentageChart";
 import MainLineChart from "../Charts/MainLineChart";
-import Calendar from "./Calendar";
+import Calendar from "../Calendar/Calendar";
 
 const HomeBasePortal = () => {
   return (
