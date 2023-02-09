@@ -137,11 +137,7 @@ const Calendar = () => {
         };
       });
       dispatch(setReoccurEntries(newEntries));
-    // Need to update front end.
-    // Will probably have to use same logic from App.tsx to update
-    // entries?
     handleModalClose()
-    console.log("reoccurEntries changed????", reoccurEntries);
   };
 
  
@@ -168,20 +164,9 @@ const Calendar = () => {
           selectMirror={true}
           dayMaxEvents={true}
           initialEvents={reoccurEntries}
-          // eventSources={[
-          //   {id: "reoccur",
-          //   events: reoccurEntries}
-          // ]}
           events={reoccurEntries}
           select={handleSelect}
           eventClick={handleModalOpen}
-          eventsSet={()=>console.log("TESTING UPDATING ENTRIES",reoccurEntries)}
-          //eventsSet={(events)=>setEvents(currentEvents)} // called after events are initialized/added/changed/removed
-          // eventAdd={function(){}}
-          // eventChange={function(){}}
-          // eventRemove={function(){}}
-          //select={this.handleDateSelect}
-          //eventContent={renderEventContent} // custom render function
         />
       </Box>
       <Modal
