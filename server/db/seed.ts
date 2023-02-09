@@ -210,9 +210,9 @@ const seed = async () => {
         start: new Date(chance.date({ year: 2023 })),
         creditDebit: chance.pickone(["Credit", "Debit"]),
         amount: chance.integer({ min: 0, max: 5000 }),
+        allDay: true,
         title: chance.word(),
         note: chance.sentence(),
-        allDay:true,
         frequency: "ByDate",
       });
       accountFour.addEntry(newEntry);
@@ -256,6 +256,7 @@ const seed = async () => {
     accountTwo.addGoal(goalTwo);
     accountThree.addGoal(goalOne);
     accountFour.addGoal(goalFive);
+    userFour.addGoal(goalFive);
   } catch (err) {
     console.log("error");
     console.log(err);

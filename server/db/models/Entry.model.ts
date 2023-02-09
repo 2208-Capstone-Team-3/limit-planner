@@ -67,10 +67,6 @@ const Entry = db.define<EntryAttributes>("entry", {
       notEmpty: true,
     },
   },
-  // groupId: {
-  //   type: STRING,
-  //   allowNull: true
-  // },
   title: {
     type: STRING,
     allowNull: false,
