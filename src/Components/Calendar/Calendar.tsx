@@ -1,7 +1,7 @@
-import React, { BaseSyntheticEvent,useState } from "react";
+import React, { BaseSyntheticEvent,useState} from "react";
 import axios from 'axios';
 import { useSelector,useDispatch } from "react-redux";
-import { Box, Typography, Modal } from "@mui/material";
+import { Box, Modal } from "@mui/material";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -10,6 +10,7 @@ import interactionPlugin from "@fullcalendar/interaction";
 import { DateSelectArg, EventClickArg } from "@fullcalendar/core";
 import { RootState } from "../../store";
 import { setDateSelector } from "../../store/themeSlice";
+import { setReoccurEntries } from "../../store/reoccurEntriesSlice";
 
 const modalStyle = {
   position: "absolute",
@@ -98,12 +99,19 @@ const Calendar = () => {
     await axios.put(`/api/entries/${id}`,body,{
       headers: { Authorization: "Bearer " + token }
     });
+    const newEntriesUpdate = await axios.get("/api/entries", {
+      headers: { Authorization: "Bearer " + token }
+    })
+    dispatch(setReoccurEntries(newEntriesUpdate))
     // Need to update front end.
     // Will probably have to use same logic from App.tsx to update
     // entries?
+    handleModalClose()
+    console.log("reoccurEntries changed????", reoccurEntries);
   };
 
   if (reoccurEntries.length===0) return <p>Loading...</p>;
+
   return (
     <Box>
       <Box>
@@ -124,7 +132,10 @@ const Calendar = () => {
           selectable={true}
           selectMirror={true}
           dayMaxEvents={true}
+          //messed around here -yifan
           initialEvents={reoccurEntries}
+          // eventSources={reoccurEntries}
+          // events={reoccurEntries}
           select={handleSelect}
           eventClick={handleModalOpen}
           //eventsSet={(events)=>setEvents(currentEvents)} // called after events are initialized/added/changed/removed
