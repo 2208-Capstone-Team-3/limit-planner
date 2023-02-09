@@ -1,7 +1,7 @@
 import {addDays, addMonths} from 'date-fns';
 import { EntryAttributes } from '../../server/db/models/Entry.model';
 
-const makeEntryCopies = (entryData:any) => {
+const makeEntryCopies = (entryData:EntryAttributes[]) => {
     let newEntries: EntryAttributes[] = [];
     entryData.forEach((entry: EntryAttributes) => {
         let newDate = new Date(entry.start);
