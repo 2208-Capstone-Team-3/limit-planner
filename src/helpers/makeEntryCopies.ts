@@ -34,6 +34,7 @@ const makeEntryCopies = (entryData:EntryAttributes[]) => {
             newEntries = [...newEntries,newEntry];
         };
     });
+    console.log("cloning entries complete: ",newEntries)
     return newEntries;
 };
 

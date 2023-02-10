@@ -10,10 +10,11 @@ import interactionPlugin from "@fullcalendar/interaction";
 import { DateSelectArg, EventClickArg } from "@fullcalendar/core";
 import { RootState } from "../../store";
 import { setDateSelector } from "../../store/themeSlice";
-import { setReoccurEntries } from "../../store/reoccurEntriesSlice";
-import { EntryAttributes } from "../../../server/db/models/Entry.model";
-import { addDays, addMonths } from 'date-fns';
+import { setReoccurEntries, deleteReoccurEntries} from "../../store/reoccurEntriesSlice";
+import { setEntries} from "../../store/entriesSlice";
 import makeEntryCopies from "./../../helpers/makeEntryCopies";
+import { EntryAttributes } from "../../../server/db/models/Entry.model";
+// import { addDays, addMonths } from 'date-fns';
 
 const modalStyle = {
   position: "absolute",
@@ -106,11 +107,32 @@ const Calendar = () => {
       headers: { Authorization: "Bearer " + token }
     })
     const updatedEntryCopies = makeEntryCopies(updatedEntries.data[0])
+    dispatch(setEntries(updatedEntryCopies));
     dispatch(setReoccurEntries(updatedEntryCopies));
     handleModalClose();
   };
 
+  const deleteEntry = async (event: BaseSyntheticEvent) => {
+    if (event.target.value==="all") {
+      await axios.delete(`/api/entries/${id}`, {
+        headers: {Authorization: "Bearer " + token}
+      })
+      const updatedEntries = await axios.get("/api/entries", {
+        headers: { Authorization: "Bearer " + token }
+      })
+      const updatedEntryCopies = await makeEntryCopies(updatedEntries.data[0])
+      const filteredEntries = updatedEntryCopies.filter((entry: EntryAttributes) => entry.id !== id);
+      dispatch(setReoccurEntries(filteredEntries));
+      handleModalClose();
+    } else {
+      console.log("single button is clicked")
+    // if (event.target.value === "single")
+    // delete entries based off of what :/
+    }
+  }
+
   if (reoccurEntries.length===0) return <p>Loading...</p>;
+
   return (
     <Box>
       <Box>
@@ -167,6 +189,8 @@ const Calendar = () => {
             <input name="start date" value={start} onChange={handleStartChange}/>
           </div>
           <button onClick={updateEntry}>Update</button>
+          <button onClick={deleteEntry} value="all">Delete All</button>
+          <button onClick={deleteEntry} value="single">Delete Single</button>
         </Box>
       </Modal>
     </Box>

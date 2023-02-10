@@ -49,11 +49,41 @@ const entryData = [
     entryType: "API",
     amount: 30000,
     creditDebit: "Debit",
-    title: "Daily coffee",
+    title: "tuition",
     note: "Bought coffee",
-    start: new Date("2023-02-07"),
+    start: new Date("2023-02-08"),
     allDay: true,
-    frequency:'ByDate'
+    frequency:'Weekly'
+  },
+  { 
+    entryType: "API",
+    amount: 30000,
+    creditDebit: "Debit",
+    title: "mortgage",
+    note: "Bought coffee",
+    start: new Date("2023-02-09"),
+    allDay: true,
+    frequency:'Weekly'
+  },
+  { 
+    entryType: "API",
+    amount: 30000,
+    creditDebit: "Debit",
+    title: "some other thing",
+    note: "Bought coffee",
+    start: new Date("2023-02-10"),
+    allDay: true,
+    frequency:'Weekly'
+  },
+  { 
+    entryType: "API",
+    amount: 30000,
+    creditDebit: "Debit",
+    title: "weekly activity thing",
+    note: "Bought coffee",
+    start: new Date("2023-02-12"),
+    allDay: true,
+    frequency:'Weekly'
   }
 ];
 

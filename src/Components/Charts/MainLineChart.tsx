@@ -22,11 +22,11 @@ const MainLineChart = () => {
   let accountTotal = 0;
   console.log(accounts);
   entries
-    .flat()
+    .flat(Infinity)
     .forEach(
-      (ele: { date: Date; amount: number; creditDebit: string }, id, arr) => {
+      (ele: { start: Date; amount: number; creditDebit: string }) => {
         data.push({
-          x: new Date(ele.date),
+          x: new Date(ele.start),
           y:
             ele.creditDebit === "Credit"
               ? (accountTotal += ele.amount)

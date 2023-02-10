@@ -31,5 +31,5 @@ export const reoccurEntriesSlice = createSlice({
   },
 });
 
-export const { setReoccurEntries, resetReoccurEntries } = reoccurEntriesSlice.actions;
+export const { setReoccurEntries, resetReoccurEntries, deleteReoccurEntries } = reoccurEntriesSlice.actions;
 export default reoccurEntriesSlice.reducer;

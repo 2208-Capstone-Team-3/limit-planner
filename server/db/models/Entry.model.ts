@@ -6,12 +6,10 @@ import {
   UUID,
   UUIDV4,
   STRING,
-  ARRAY,
   FLOAT,
   DATE,
   ENUM,
   BOOLEAN,
-  INTEGER
 } from "sequelize";
 
 // order of InferAttributes & InferCreationAttributes is important.
