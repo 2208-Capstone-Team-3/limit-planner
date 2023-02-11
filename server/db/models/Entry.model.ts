@@ -71,13 +71,8 @@ const Entry = db.define<EntryAttributes>("entry", {
     type: STRING,
     allowNull: false,
   },
-  // daysOfWeek:{
-  //   type:ARRAY(INTEGER),
-  //   allowNull:true
-  // },
   note: {
     type: STRING,
-    allowNull: false,
   },
   allDay:{
     type: BOOLEAN,
