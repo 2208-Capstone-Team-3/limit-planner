@@ -17,6 +17,7 @@ import {
 import { AccountAttributes } from "./Account.model.js";
 import { PlaceType } from "../../../src/Components/UserCreation/UserGoogleLocation.js";
 import { JWT } from "../../api/helpers/superSecret.js";
+import { SkipDateAttributes } from "./Skipdate.model.js";
 
 export interface UserAttributes
   extends Model<
@@ -26,6 +27,7 @@ export interface UserAttributes
   accounts?: [];
   goals?: [];
   addAccount(account: AccountAttributes): unknown;
+  addSkipdate(skipdate: SkipDateAttributes): unknown;
   id?: string;
   password: string;
   username: string;

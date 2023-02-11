@@ -7,7 +7,10 @@ const makeEntryCopies = (entryData:EntryAttributes[]) => {
         let newDate = new Date(entry.start);
         if (entry.frequency === "Monthly") {
             for (let i = 0; i <= 12; i++) {
+                // check if entry[i].skip matches skipdate we provide. if it includes skipdate we want then dont copy it
+                // if (!entry[i].skip === skipDate)
             let newEntry = structuredClone(entry);
+            console.log("date seed info:", newEntry.start)
             newEntry.start = newDate.toISOString();
             newEntries = [...newEntries,newEntry];
             newDate = addMonths(newDate,1);

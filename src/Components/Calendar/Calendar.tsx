@@ -124,7 +124,7 @@ const Calendar = () => {
       const filteredEntries = updatedEntryCopies.filter((entry: EntryAttributes) => entry.id !== id);
       dispatch(setReoccurEntries(filteredEntries));
       handleModalClose();
-    } else {
+    } else { 
       console.log("single button is clicked")
     // if (event.target.value === "single")
     // delete entries based off of what :/
