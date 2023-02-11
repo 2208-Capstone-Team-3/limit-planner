@@ -1,6 +1,6 @@
 import { VIRTUAL } from "sequelize";
 import db from "./db.js";
-import { Account, Entry, Goal, User, Event } from "./index.js";
+import { Account, Entry, Goal, User } from "./index.js";
 import Chance from "chance";
 const chance = new Chance();
 
