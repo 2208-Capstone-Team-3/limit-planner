@@ -1,7 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
-import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import {
   createBrowserRouter,
@@ -10,13 +9,14 @@ import {
 } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./store/index";
+// components
+import App from "./App";
 import Landing from "./Components/Landing/Landing";
 import LoginPage from "./Components/Login/LoginPage";
 import Home from "./Components/Home/Home";
 import CreateUserPage from "./Components/UserCreation/UserCreationPage";
-import Calendar from "./Components/Home/Calendar";
-
 import HomeBasePortal from "./Components/Home/HomeBasePortal";
+import Accounts from "./Components/Accounts/Accounts";
 
 const userTokenTestTrue = async () => {
   try {
@@ -27,6 +27,7 @@ const userTokenTestTrue = async () => {
     return false;
   }
 };
+
 const userTokenTestFalse = async () => {
   try {
     const token = window.localStorage.getItem("token");
@@ -72,9 +73,15 @@ const router = createBrowserRouter([
         loader: userTokenTestFalse,
       },
       {
-        path: "calendar",
-        element: <Calendar />,
-        children: [],
+        path: "accounts",
+        element: <Home />,
+        children: [
+          {
+            path: "",
+            element: <Accounts />,
+          },
+        ],
+        loader: userTokenTestFalse,
       },
     ],
   },
@@ -83,6 +90,7 @@ const router = createBrowserRouter([
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
+
 root.render(
   <React.StrictMode>
     <Provider store={store}>
