@@ -17,6 +17,7 @@ import Home from "./Components/Home/Home";
 import CreateUserPage from "./Components/UserCreation/UserCreationPage";
 import HomeBasePortal from "./Components/Home/HomeBasePortal";
 import Accounts from "./Components/Accounts/Accounts";
+import SingleAccount from "./Components/Accounts/SingleAccount";
 
 const userTokenTestTrue = async () => {
   try {
@@ -79,6 +80,17 @@ const router = createBrowserRouter([
           {
             path: "",
             element: <Accounts />,
+          },
+        ],
+        loader: userTokenTestFalse,
+      },
+      {
+        path: "single-account/:accountId",
+        element: <Home />,
+        children: [
+          {
+            path: "",
+            element: <SingleAccount />,
           },
         ],
         loader: userTokenTestFalse,
