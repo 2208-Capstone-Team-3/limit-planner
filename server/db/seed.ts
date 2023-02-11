@@ -178,6 +178,12 @@ const accountData = [
     institution: "HSBC",
     balance: 6000.0,
   },
+  {
+    accountType: "savings",
+    accountName: "HSBC savings account",
+    institution: "HSBC",
+    balance: 6000.0,
+  },
 ];
 
 const seed = async () => {
@@ -193,7 +199,7 @@ const seed = async () => {
     // --------------ACCOUNTS--------------
 
     console.log("adding accounts");
-    const [accountOne, accountTwo, accountThree, accountFour] =
+    const [accountOne, accountTwo, accountThree, accountFour, accountFive] =
       await Promise.all(accountData.map((account) => Account.create(account)));
 
     // --------------ENTRIES--------------
@@ -202,33 +208,28 @@ const seed = async () => {
     const [entryOne, entryTwo, entryThree, entryFour, entryFive] =
       await Promise.all(entryData.map((entry) => Entry.create(entry)));
 
-    let i = 0;
-    // const entryList = [];
-    while (i++ < 500) {
-      const newEntry = await Entry.create({
-        entryType: chance.pickone(["User", "API"]),
-        start: new Date(chance.date({ year: 2023 })),
-        creditDebit: chance.pickone(["Credit", "Debit"]),
-        amount: chance.integer({ min: 0, max: 5000 }),
-        allDay: true,
-        title: chance.word(),
-        note: chance.sentence(),
-        frequency: "ByDate",
-      });
-      accountFour.addEntry(newEntry);
-    }
+    // let i = 0;
+    // // const entryList = [];
+    // while (i++ < 500) {
+    //   const newEntry = await Entry.create({
+    //     entryType: chance.pickone(["User", "API"]),
+    //     start: new Date(chance.date({ year: 2023 })),
+    //     creditDebit: chance.pickone(["Credit", "Debit"]),
+    //     amount: chance.integer({ min: 0, max: 5000 }),
+    //     allDay: true,
+    //     title: chance.word(),
+    //     note: chance.sentence(),
+    //     frequency: "ByDate",
+    //   });
+    //   accountFour.addEntry(newEntry);
+    // }
 
     // --------------GOALS--------------
 
     console.log("adding goals");
-
     const [goalOne, goalTwo, goalThree, goalFour, goalFive] = await Promise.all(
       goalData.map((goal) => Goal.create(goal))
     );
-
-    // --------------EVENTS--------------
-
-    // console.log("adding events");
 
     // --------------ASSOCIATIONS--------------
 
@@ -238,10 +239,10 @@ const seed = async () => {
     userTwo.addAccount(accountTwo);
     userThree.addAccount(accountThree);
     userFour.addAccount(accountFour);
+    userFour.addAccount(accountFive);
 
     // Account.hasMany(Entry);
     // Entry.belongsTo(Account);
-
     accountOne.addEntry(entryOne);
     accountTwo.addEntry(entryTwo);
     accountThree.addEntry(entryThree);
@@ -257,6 +258,7 @@ const seed = async () => {
     accountThree.addGoal(goalOne);
     accountFour.addGoal(goalFive);
     userFour.addGoal(goalFive);
+    
   } catch (err) {
     console.log("error");
     console.log(err);
