@@ -17,10 +17,10 @@ interface props {
 
 const NewEntry = ({accountId}:props) => {
     const [entryType, setEntryType] = useState<string>("User");
-    const [amount, setAmount] = useState<number>(0);
+    const [amount, setAmount] = useState<number|null>(null);
     const [creditDebit, setCreditDebit] = useState<string>("");
     const [title, setTitle] = useState<string>("");
-    const [start, setStart] = useState<Dayjs|null>(dayjs());
+    const [start, setStart] = useState<Dayjs|null>(null);
     const [allDay, setAllDay] = useState<boolean>(true);
     const [note, setNote] = useState<string>("");
     const [frequency, setFrequency] = useState<string>("");
@@ -40,7 +40,7 @@ const NewEntry = ({accountId}:props) => {
     const handleNoteChange = (event: BaseSyntheticEvent ) => {
         setNote(event.target.value);
     };
-    const handleDateChange = (newDate: Dayjs | null) => {
+    const handleDateChange = (newDate: Dayjs|null) => {
         setStart(newDate);
     };
     const handleFrequencyChange = (event: SelectChangeEvent<string> ) => {
@@ -60,11 +60,11 @@ const NewEntry = ({accountId}:props) => {
             });
             
         };
-        setAmount(0);
+        setAmount(null);
         setCreditDebit("");
         setTitle("");
         setNote("");
-        setStart(dayjs());
+        setStart(null);
         setFrequency("");
     };
 
