@@ -21,7 +21,7 @@ interface props {
 const NewEntry = ({accountId}:props) => {
     const dispatch = useDispatch();
     const [entryType, setEntryType] = useState<string>("User");
-    const [amount, setAmount] = useState<number|null>(null);
+    const [amount, setAmount] = useState<number|string>("");
     const [creditDebit, setCreditDebit] = useState<string>("");
     const [title, setTitle] = useState<string>("");
     const [start, setStart] = useState<Dayjs|null>(null);
@@ -69,7 +69,7 @@ const NewEntry = ({accountId}:props) => {
             const updatedEntryCopies = makeEntryCopies(updatedEntries.data)
             dispatch(setReoccurEntries(updatedEntryCopies)); 
         };
-        setAmount(null);
+        setAmount("");
         setCreditDebit("");
         setTitle("");
         setNote("");
