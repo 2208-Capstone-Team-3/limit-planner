@@ -1,11 +1,29 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 export interface accountsInitialStateType {
-  accounts: [];
+  accounts: [
+    {
+      goals?: [];
+      entries?: [];
+      userId?: string;
+      id?: string;
+      accountType: string;
+      accountName: string;
+      institution: string;
+      balance: number;
+    }
+  ];
 }
 
 const initialState: accountsInitialStateType = {
-  accounts: [],
+  accounts: [
+    {
+      accountType: "Undefined",
+      accountName: "Undefined",
+      institution: "Undefined",
+      balance: 0,
+    },
+  ],
 };
 
 export const accountsSlice = createSlice({
@@ -16,7 +34,14 @@ export const accountsSlice = createSlice({
       state.accounts = action.payload;
     },
     resetAccounts: (state) => {
-      state.accounts = [];
+      state.accounts = [
+        {
+          accountType: "Undefined",
+          accountName: "Undefined",
+          institution: "Undefined",
+          balance: 0,
+        },
+      ];
     },
   },
 });

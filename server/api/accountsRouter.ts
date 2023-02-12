@@ -5,43 +5,43 @@ import { UserAttributes } from "../db/models/User.model.js";
 import { authenticateUser } from "./helpers/authUserMiddleware.js";
 const router = express.Router();
 
-// GET  /api/accounts
-router.get("/", async (req: Request, res: Response, next: NextFunction) => {
+router.get(
+  "/", 
+  authenticateUser,
+  async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const header = req.headers.authorization;
-    const token = header && header.split(" ")[1];
-
-    if (!token) return res.sendStatus(404);
-
-    const foundUser: UserAttributes = await User.prototype.findByToken(token);
-
-    const foundUserInfo: UserAttributes | null = await User.findByPk(
-      foundUser.id,
-      {
-        include: [Account],
-      }
-    );
-    if (foundUserInfo) {
-      const accountInfoOnly = foundUserInfo.accounts;
-      res.status(200).send(accountInfoOnly);
-    }
+    const foundUser: UserAttributes | null = await User.findByPk(req.body.user.id);
+    if(!foundUser){
+      res.sendStatus(404);
+    }else{
+      const foundUserInfo: UserAttributes | null = await User.findByPk(foundUser.id,{
+          include: [Account],
+        }
+      );
+      if (!foundUserInfo) {
+        res.sendStatus(404);
+      }else{
+        const accountInfoOnly = foundUserInfo.accounts;
+        res.status(200).send(accountInfoOnly);
+      };
+    };
   } catch (err) {
     res.sendStatus(404);
     next(err);
   }
 });
 
-// GET  /api/accounts/:accountId
 router.get(
-  "/accounts/:accountId",
+  "/:accountId",
   authenticateUser,
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      // if (real user) {
-      const accountId: string = req.params.accountId;
-      const foundAccount = await Account.findByPk(accountId);
-      res.send(foundAccount);
-      // }  otherwise throw error
+      const foundAccount:AccountAttributes | null = await Account.findByPk(req.params.accountId);
+      if(!foundAccount){
+        res.sendStatus(404);
+      }else{
+        res.send(foundAccount);
+      };
     } catch (err) {
       res.sendStatus(404);
       next(err);
@@ -49,7 +49,6 @@ router.get(
   }
 );
 
-// POST  /api/accounts
 router.post(
   "/",
   authenticateUser,

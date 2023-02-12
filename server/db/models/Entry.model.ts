@@ -67,21 +67,12 @@ const Entry = db.define<EntryAttributes>("entry", {
       notEmpty: true,
     },
   },
-  // groupId: {
-  //   type: STRING,
-  //   allowNull: true
-  // },
   title: {
     type: STRING,
     allowNull: false,
   },
-  // daysOfWeek:{
-  //   type:ARRAY(INTEGER),
-  //   allowNull:true
-  // },
   note: {
     type: STRING,
-    allowNull: false,
   },
   allDay:{
     type: BOOLEAN,

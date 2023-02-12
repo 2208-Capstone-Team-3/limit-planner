@@ -1,6 +1,6 @@
 import { VIRTUAL } from "sequelize";
 import db from "./db.js";
-import { Account, Entry, Goal, User, Event } from "./index.js";
+import { Account, Entry, Goal, User } from "./index.js";
 import Chance from "chance";
 const chance = new Chance();
 
@@ -168,13 +168,19 @@ const accountData = [
   },
   {
     accountType: "internal",
-    accountName: "My internal account",
+    accountName: "Limit account",
     institution: "Citizens",
     balance: 2500.0,
   },
   {
     accountType: "checking",
     accountName: "HSBC Checking account",
+    institution: "HSBC",
+    balance: 6000.0,
+  },
+  {
+    accountType: "savings",
+    accountName: "HSBC Savings account",
     institution: "HSBC",
     balance: 6000.0,
   },
@@ -193,7 +199,7 @@ const seed = async () => {
     // --------------ACCOUNTS--------------
 
     console.log("adding accounts");
-    const [accountOne, accountTwo, accountThree, accountFour] =
+    const [accountOne, accountTwo, accountThree, accountFour, accountFive] =
       await Promise.all(accountData.map((account) => Account.create(account)));
 
     // --------------ENTRIES--------------
@@ -210,9 +216,9 @@ const seed = async () => {
     //     start: new Date(chance.date({ year: 2023 })),
     //     creditDebit: chance.pickone(["Credit", "Debit"]),
     //     amount: chance.integer({ min: 0, max: 5000 }),
+    //     allDay: true,
     //     title: chance.word(),
     //     note: chance.sentence(),
-    //     allDay:true,
     //     frequency: "ByDate",
     //   });
     //   accountFour.addEntry(newEntry);
@@ -221,14 +227,9 @@ const seed = async () => {
     // --------------GOALS--------------
 
     console.log("adding goals");
-
     const [goalOne, goalTwo, goalThree, goalFour, goalFive] = await Promise.all(
       goalData.map((goal) => Goal.create(goal))
     );
-
-    // --------------EVENTS--------------
-
-    // console.log("adding events");
 
     // --------------ASSOCIATIONS--------------
 
@@ -238,10 +239,10 @@ const seed = async () => {
     userTwo.addAccount(accountTwo);
     userThree.addAccount(accountThree);
     userFour.addAccount(accountFour);
+    userFour.addAccount(accountFive);
 
     // Account.hasMany(Entry);
     // Entry.belongsTo(Account);
-
     accountOne.addEntry(entryOne);
     accountTwo.addEntry(entryTwo);
     accountThree.addEntry(entryThree);
@@ -256,6 +257,8 @@ const seed = async () => {
     accountTwo.addGoal(goalTwo);
     accountThree.addGoal(goalOne);
     accountFour.addGoal(goalFive);
+    userFour.addGoal(goalFive);
+    
   } catch (err) {
     console.log("error");
     console.log(err);

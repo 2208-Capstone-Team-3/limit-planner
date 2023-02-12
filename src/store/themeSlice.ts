@@ -4,13 +4,17 @@ interface initialStateType {
   theme: {
     homeDrawerOpen: boolean;
     dateSelector: Date | string;
+    accountSelector: string
+    goalSelector: string
   };
 }
 
 const initialState: initialStateType = {
   theme: {
     homeDrawerOpen: true,
-    dateSelector: "052023",
+    dateSelector: "05-05-2023",
+    accountSelector: "",
+    goalSelector: ""
   },
 };
 
@@ -27,6 +31,12 @@ export const themeSlice = createSlice({
     setDateSelector: (state, action) => {
       state.theme.dateSelector = action.payload;
     },
+    setAccountSelector: (state, action) => {
+      state.theme.accountSelector = action.payload;
+    },
+    setGoalSelector: (state, action) => {
+      state.theme.goalSelector = action.payload;
+    },
     setLightorDark: (state, action) => {
       localStorage.setItem("colorModeCookie", action.payload);
     },
@@ -34,6 +44,8 @@ export const themeSlice = createSlice({
       state.theme = {
         homeDrawerOpen: true,
         dateSelector: new Date(),
+        accountSelector: "",
+        goalSelector: ""
       };
     },
   },
@@ -45,5 +57,7 @@ export const {
   setLightorDark,
   resetTheme,
   setDateSelector,
+  setAccountSelector,
+  setGoalSelector,
 } = themeSlice.actions;
 export default themeSlice.reducer;

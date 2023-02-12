@@ -1,14 +1,12 @@
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 import {
-  Tuple,
   VictoryChart,
   VictoryLine,
   VictoryTheme,
   VictoryVoronoiContainer,
 } from "victory";
 import { RootState } from "../../store";
-import * as d3 from "d3";
 import { addMonths, subMonths } from "date-fns";
 
 const MainLineChart = () => {
@@ -17,16 +15,16 @@ const MainLineChart = () => {
   let dateSelector = useSelector(
     (state: RootState) => state.theme.theme.dateSelector
   );
-  console.log(entries);
+  // console.log(entries);
   const data: { x: any; y: any }[] = [];
   let accountTotal = 0;
-  console.log(accounts);
+  // console.log(accounts);
   entries
-    .flat()
+    .flat(Infinity)
     .forEach(
-      (ele: { date: Date; amount: number; creditDebit: string }, id, arr) => {
+      (ele: { start: Date; amount: number; creditDebit: string }, id, arr) => {
         data.push({
-          x: new Date(ele.date),
+          x: new Date(ele.start),
           y:
             ele.creditDebit === "Credit"
               ? (accountTotal += ele.amount)
@@ -54,21 +52,34 @@ const MainLineChart = () => {
 
   return (
     <VictoryChart
+      domain={{
+        x: [
+          subMonths(new Date(dateSelector), 1),
+          addMonths(new Date(dateSelector), 1),
+        ],
+      }}
       theme={VictoryTheme.material}
       containerComponent={
         <VictoryVoronoiContainer
-          labels={({ datum }) => `${datum.x.toLocaleDateString()}, $${datum.y}`}
+          labels={({ datum }) => `${datum.x.toDateString()}, $${datum.y}`}
           theme={VictoryTheme.material}
+          voronoiDimension={"x"}
         />
       }
     >
       <VictoryLine
+        style={{
+          data: { stroke: "#c43a31" },
+          parent: { border: "1px solid #ccc" },
+        }}
         interpolation="linear"
         name="line"
         animate={{
           duration: 2000,
           onLoad: { duration: 1000 },
         }}
+        // minDomain={{ x: Number(subMonths(new Date(dateSelector), 1)) }}
+        // maxDomain={{ x: Number(addMonths(new Date(dateSelector), 1)) }}
         domain={{
           x: [
             subMonths(new Date(dateSelector), 1),
