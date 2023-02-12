@@ -1,7 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+interface reoccurEntry {
+  id: string;
+}
+
 export interface entriesInitialStateType {
-    reoccurEntries: [];
+  reoccurEntries: reoccurEntry[];
 }
 
 const initialState: entriesInitialStateType = {
@@ -18,8 +22,14 @@ export const reoccurEntriesSlice = createSlice({
     resetReoccurEntries: (state) => {
       state.reoccurEntries = [];
     },
+    deleteReoccurEntries: (state, action) => {
+      const reoccurrEntryToDeleteId = action.payload
+      state.reoccurEntries = state.reoccurEntries.filter(
+        (entries) => entries.id !== reoccurrEntryToDeleteId
+      );
+    },
   },
 });
 
-export const { setReoccurEntries, resetReoccurEntries } = reoccurEntriesSlice.actions;
+export const { setReoccurEntries, resetReoccurEntries, deleteReoccurEntries } = reoccurEntriesSlice.actions;
 export default reoccurEntriesSlice.reducer;

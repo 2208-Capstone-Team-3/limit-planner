@@ -18,5 +18,5 @@
     "jsx": "react-jsx"
   },
   "esm": true,
-  "include": ["../server"]
+  "include": ["../server", "../src/helpers/makeEntryCopies.ts"]
 }

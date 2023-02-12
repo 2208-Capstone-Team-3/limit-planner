@@ -22,7 +22,7 @@ const MainLineChart = () => {
   entries
     .flat(Infinity)
     .forEach(
-      (ele: { start: Date; amount: number; creditDebit: string }, id, arr) => {
+      (ele: { start: Date; amount: number; creditDebit: string }) => {
         data.push({
           x: new Date(ele.start),
           y:
