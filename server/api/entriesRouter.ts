@@ -57,23 +57,23 @@ router.post(
       }else{
         const {
           entryType,
-          start,
-          creditDebit,
           amount,
+          creditDebit,
           title,
           note,
+          start,
           allDay,
           frequency,
-        }: EntryAttributes = req.body;
+        }:EntryAttributes = req.body;
         const createdEntry = await Entry.create({
           entryType,
-          start,
-          creditDebit,
           amount,
+          creditDebit,
           title,
           note,
+          start,
           allDay,
-          frequency
+          frequency,
         });
         account.addEntry(createdEntry);
         res.sendStatus(204);

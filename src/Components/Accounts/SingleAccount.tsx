@@ -1,18 +1,12 @@
 import React, { useState,useEffect } from "react";
 import axios from "axios";
-import { useSelector,useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
-import { Box, Card, CardActions, CardContent, Button, Typography } from "@mui/material";
-import { RootState } from "../../store";
-import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
-import { Link } from 'react-router-dom';
-import { EntryAttributes } from "../../../server/db/models/Entry.model";
+import { useParams } from 'react-router-dom';
+import NewEntry from "../Entry/NewEntry";
 
 const SingleAccount = () => {
     const { accountId } = useParams();
-
     const [loading,setLoading] = useState<boolean>(false);
-    const [account,setAccount] = useState<EntryAttributes | any>({});
+    const [account,setAccount] = useState<any>({});
 
     const fetchAccount = async() => {
         setLoading(true);
@@ -36,6 +30,7 @@ const SingleAccount = () => {
     return (
         <div>
             <h1>{account.accountName}</h1>
+            <NewEntry accountId={accountId}/>
         </div>
     );
 };
