@@ -168,7 +168,7 @@ const accountData = [
   },
   {
     accountType: "internal",
-    accountName: "My internal account",
+    accountName: "Limit account",
     institution: "Citizens",
     balance: 2500.0,
   },
@@ -180,7 +180,7 @@ const accountData = [
   },
   {
     accountType: "savings",
-    accountName: "HSBC savings account",
+    accountName: "HSBC Savings account",
     institution: "HSBC",
     balance: 6000.0,
   },
