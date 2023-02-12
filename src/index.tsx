@@ -11,6 +11,7 @@ import {
 import { Provider } from "react-redux";
 import store from "./store/index";
 import Landing from "./Components/Landing/Landing";
+import ProjectionsComponent from "./Components/Projections/Projections";
 import LoginPage from "./Components/Login/LoginPage";
 import Home from "./Components/Home/Home";
 import CreateUserPage from "./Components/UserCreation/UserCreationPage";
@@ -59,6 +60,11 @@ const router = createBrowserRouter([
         path: "createuser",
         element: <CreateUserPage />,
         loader: userTokenTestTrue,
+      },
+      {
+        path: "projections",
+        element: <ProjectionsComponent />,
+       
       },
       {
         path: "home",
