@@ -18,6 +18,7 @@ import { AccountAttributes } from "./Account.model.js";
 import { PlaceType } from "../../../src/Components/UserCreation/UserGoogleLocation.js";
 import { JWT } from "../../api/helpers/superSecret.js";
 import { SkipDateAttributes } from "./Skipdate.model.js";
+import { GoalAttributes } from "./Goal.model.js";
 
 export interface UserAttributes
   extends Model<
