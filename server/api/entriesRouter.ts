@@ -1,5 +1,5 @@
 import express, { Request, Response, NextFunction } from "express";
-import { Account, Entry, User } from "../db/index.js";
+import { Account, Entry, User, Skipdate } from "../db/index.js";
 import { AccountAttributes } from "../db/models/Account.model.js";
 import { EntryAttributes } from "../db/models/Entry.model.js";
 import { UserAttributes } from "../db/models/User.model.js";

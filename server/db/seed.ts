@@ -1,8 +1,8 @@
 import { VIRTUAL } from "sequelize";
 import db from "./db.js";
-import { Account, Entry, Goal, User } from "./index.js";
-import Chance from "chance";
-const chance = new Chance();
+import { Account, Entry, Goal, User, Skipdate } from "./index.js";
+// import Chance from "chance";
+// const chance = new Chance();
 
 const entryData = [
   {
@@ -49,11 +49,41 @@ const entryData = [
     entryType: "API",
     amount: 30000,
     creditDebit: "Debit",
-    title: "Daily coffee",
+    title: "tuition",
     note: "Bought coffee",
-    start: new Date("2023-02-07"),
+    start: new Date("2023-02-08"),
     allDay: true,
-    frequency:'ByDate'
+    frequency:'Weekly'
+  },
+  { 
+    entryType: "API",
+    amount: 30000,
+    creditDebit: "Debit",
+    title: "mortgage",
+    note: "Bought coffee",
+    start: new Date("2023-02-09"),
+    allDay: true,
+    frequency:'Weekly'
+  },
+  { 
+    entryType: "API",
+    amount: 30000,
+    creditDebit: "Debit",
+    title: "some other thing",
+    note: "Bought coffee",
+    start: new Date("2023-02-10"),
+    allDay: true,
+    frequency:'Weekly'
+  },
+  { 
+    entryType: "API",
+    amount: 30000,
+    creditDebit: "Debit",
+    title: "weekly activity thing",
+    note: "Bought coffee",
+    start: new Date("2023-02-12"),
+    allDay: true,
+    frequency:'Weekly'
   }
 ];
 
@@ -186,6 +216,12 @@ const accountData = [
   },
 ];
 
+const skipDatesEntry = [
+  {
+    skippeddate: new Date("2023-01-01")
+  }
+]
+
 const seed = async () => {
   await db.sync({ force: true });
   try {
@@ -207,6 +243,10 @@ const seed = async () => {
     console.log("adding entries");
     const [entryOne, entryTwo, entryThree, entryFour, entryFive] =
       await Promise.all(entryData.map((entry) => Entry.create(entry)));
+
+    // -------------SKIPDATES---------------
+    console.log("adding skip dates")
+    const skipOne = await Skipdate.create(skipDatesEntry[0]);
 
     // let i = 0;
     // // const entryList = [];
@@ -257,7 +297,13 @@ const seed = async () => {
     accountTwo.addGoal(goalTwo);
     accountThree.addGoal(goalOne);
     accountFour.addGoal(goalFive);
-    userFour.addGoal(goalFive);
+
+    //Entry.hasMany(SkipDates)
+    //SkipDates.belongsTo(Entry)
+    entryThree.addSkipdate(skipOne)
+    accountThree.addSkipdate(skipOne)
+    userThree.addSkipdate(skipOne)
+  
     
   } catch (err) {
     console.log("error");
