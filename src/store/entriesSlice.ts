@@ -1,5 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+// interface entry {
+//   id: string;
+// }
+
 export interface entriesInitialStateType {
   entries: [];
 }
@@ -18,6 +22,12 @@ export const entriesSlice = createSlice({
     resetEntries: (state) => {
       state.entries = [];
     },
+    // deleteEntries: (state, action) => {
+    //   const entryToDeleteId = action.payload
+    //   state.entries = state.entries.filter(
+    //     (entrys) => entrys.id !== entryToDeleteId
+    //   );
+    // },
   },
 });
 

@@ -6,6 +6,7 @@ import Calendar from "./Calendar";
 import Selectors from "./Selectors";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
+import ProjectionsComponent from "../Projections/Projections";
 import MainHistogram from "../Charts/MainHistogram";
 import MainScatterChart from "../Charts/MainScatterChart";
 import { Box, Typography } from "@mui/material";
@@ -22,6 +23,7 @@ const HomeBasePortal = () => {
       <Grid2 xs={5} padding={1}>
         <Selectors />
         <Calendar />
+        <ProjectionsComponent />
       </Grid2>
       <Grid2
         container
@@ -36,6 +38,7 @@ const HomeBasePortal = () => {
             Account Progression
           </Typography>
           <MainLineChart />
+          
           </Box>
         </Grid2>
         <Grid2 xs={6} sx={{display: "flex", flexDirection: "column", placeItems: "center" }}>
@@ -55,6 +58,7 @@ const HomeBasePortal = () => {
             Expenses
           </Typography>
           <MainScatterChart />
+          
         </Grid2>
       </Grid2>
     </Grid2>

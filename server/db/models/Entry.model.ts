@@ -6,13 +6,12 @@ import {
   UUID,
   UUIDV4,
   STRING,
-  ARRAY,
   FLOAT,
   DATE,
   ENUM,
   BOOLEAN,
-  INTEGER
 } from "sequelize";
+import { SkipDateAttributes } from "./Skipdate.model.js";
 
 // order of InferAttributes & InferCreationAttributes is important.
 export interface EntryAttributes
@@ -20,6 +19,7 @@ export interface EntryAttributes
     InferAttributes<EntryAttributes>,
     InferCreationAttributes<EntryAttributes>
   > {
+    addSkipdate(skipdate: SkipDateAttributes): unknown;
     id?: string;
     entryType: string;
     amount: number;
@@ -71,13 +71,8 @@ const Entry = db.define<EntryAttributes>("entry", {
     type: STRING,
     allowNull: false,
   },
-  // daysOfWeek:{
-  //   type:ARRAY(INTEGER),
-  //   allowNull:true
-  // },
   note: {
     type: STRING,
-    allowNull: false,
   },
   allDay:{
     type: BOOLEAN,

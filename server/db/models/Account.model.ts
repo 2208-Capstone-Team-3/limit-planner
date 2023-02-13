@@ -11,6 +11,7 @@ import {
 } from "sequelize";
 import { EntryAttributes } from "./Entry.model.js";
 import { GoalAttributes } from "./Goal.model.js";
+import { SkipDateAttributes } from "./Skipdate.model.js";
 
 // order of InferAttributes & InferCreationAttributes is important.
 export interface AccountAttributes
@@ -20,6 +21,7 @@ export interface AccountAttributes
   > {
   addGoal(goal: GoalAttributes): unknown;
   addEntry(entry: EntryAttributes): unknown;
+  addSkipdate(skipdate: SkipDateAttributes): unknown;
   goals?: []
   entries?: []
   userId?: string;
