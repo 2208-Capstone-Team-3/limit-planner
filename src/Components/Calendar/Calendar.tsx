@@ -124,10 +124,12 @@ const Calendar = () => {
       const filteredEntries = updatedEntryCopies.filter((entry: EntryAttributes) => entry.id !== id);
       dispatch(setReoccurEntries(filteredEntries));
       handleModalClose();
-    } else { 
-      console.log("single button is clicked")
-    // if (event.target.value === "single")
-    // delete entries based off of what :/
+    } 
+    if (event.target.value === "single") {
+      // delete one instance of reoccuring entry
+      // inject skipDate to the copyFuncton so it skips over that date
+      // entryCopy(entry, start)
+
     }
   }
 

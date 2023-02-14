@@ -1,19 +1,25 @@
 import {addDays, addMonths} from 'date-fns';
 import { EntryAttributes } from '../../server/db/models/Entry.model';
 
-const makeEntryCopies = (entryData:EntryAttributes[]) => {
+const makeEntryCopies = (entryData:EntryAttributes[], skipDate?: Date[], duration?: string) => {
     let newEntries: EntryAttributes[] = [];
     entryData.forEach((entry: EntryAttributes) => {
         let newDate = new Date(entry.start);
         if (entry.frequency === "Monthly") {
+          //for (let i=0; i<duration;i++) more accessibility/selectivity for duration. so we are not hardcapped at 1 years
             for (let i = 0; i <= 12; i++) {
                 // check if entry[i].skip matches skipdate we provide. if it includes skipdate we want then dont copy it
                 // if (!entry[i].skip === skipDate)
-            let newEntry = structuredClone(entry);
-            console.log("date seed info:", newEntry.start)
-            newEntry.start = newDate.toISOString();
-            newEntries = [...newEntries,newEntry];
-            newDate = addMonths(newDate,1);
+                // put in jan 1st -> feb 1st(SKIPDATE)
+                // put in feb 1st -> march 1st 
+                if (skipDate?.includes(newDate)) {
+                    newDate=addMonths(newDate, 1)
+                } else {
+                    let newEntry = structuredClone(entry);
+                    newEntry.start = newDate.toISOString(); 
+                    newEntries = [...newEntries,newEntry]; 
+                    newDate = addMonths(newDate,1);
+                        }
             };
         };
         if (entry.frequency === "Bi-Weekly") {
@@ -37,7 +43,6 @@ const makeEntryCopies = (entryData:EntryAttributes[]) => {
             newEntries = [...newEntries,newEntry];
         };
     });
-    console.log("cloning entries complete: ",newEntries)
     return newEntries;
 };
 
