@@ -15,10 +15,8 @@ const MainLineChart = () => {
   let dateSelector = useSelector(
     (state: RootState) => state.theme.theme.dateSelector
   );
-  // console.log(entries);
   const data: { x: any; y: any }[] = [];
   let accountTotal = 0;
-  // console.log(accounts);
   entries
     .flat(Infinity)
     .forEach(
@@ -32,24 +30,6 @@ const MainLineChart = () => {
         });
       }
     );
-  // const startSelected: Tuple<Date> = [
-  //   subMonths(new Date(dateSelector), 3),
-  //   addMonths(new Date(dateSelector), 3),
-  // ];
-  // let currentSelected = useRef({
-  //   x: startSelected,
-  // });
-
-  // useEffect(() => {
-  //   currentSelected.current = {
-  //     x: [
-  //       subMonths(new Date(dateSelector), 3),
-  //       addMonths(new Date(dateSelector), 3),
-  //     ],
-  //   };
-  //   console.log(currentSelected)
-  // }, [dateSelector]);
-
   return (
     <VictoryChart
       domain={{
@@ -61,7 +41,7 @@ const MainLineChart = () => {
       theme={VictoryTheme.material}
       containerComponent={
         <VictoryVoronoiContainer
-          labels={({ datum }) => `${datum.x.toDateString()}, $${datum.y}`}
+          labels={({ datum }) => `${datum.x?.toDateString()}, $${datum.y}`}
           theme={VictoryTheme.material}
           voronoiDimension={"x"}
         />

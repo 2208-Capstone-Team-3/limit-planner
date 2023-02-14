@@ -1,6 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 interface reoccurEntry {
+  amount: any;
+  creditDebit: string;
+  start: string | number | Date;
   id: string;
 }
 
