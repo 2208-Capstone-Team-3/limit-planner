@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { RootState } from "../../store";
 import { resetUser, userInitialStateType } from "../../store/userSlice";
-import { useTheme } from "@mui/material";
+import { styled, SvgIcon, Switch, useTheme } from "@mui/material";
 import lightLogo from "../../resources/LimitName.svg";
 import darkLogo from "../../resources/ad-logo.svg";
 import icarusLogo from "../../resources/logo.svg";
@@ -20,6 +20,8 @@ import { ColorModeContext } from "../../App";
 import { Brightness4, Brightness7 } from "@mui/icons-material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { setHomeDrawerOpen } from "../../store/themeSlice";
+import DarkModeIcon from '@mui/icons-material/DarkMode';
+import LightModeIcon from '@mui/icons-material/LightMode';
 
 function LimitAppBar() {
   const homeDrawerOpen: boolean = useSelector(
@@ -158,6 +160,17 @@ function LimitAppBar() {
                     <Typography textAlign="center">{setting}</Typography>
                   </MenuItem>
                 ))}
+            <MenuItem>
+              <Switch
+              sx={{ backgroundColor: "inherit"}}
+              checked={theme.palette.mode === "light"}
+              icon={<DarkModeIcon sx={{ backgroundColor: "black", borderRadius: "50%" }} color="inherit"/>}
+              checkedIcon={<LightModeIcon sx={{ backgroundColor: "white", borderRadius: "50%" }} color="primary" />}
+                key={"switcher"}
+                onClick={colorMode.toggleColorMode}
+              />
+              <Typography>{theme.palette.mode === "light" ? "Light" : "Dark"}</Typography>
+            </MenuItem>
           </Menu>
           {user.username ? (
             <Typography color={"white"} sx={{ ml: 1 }}>
@@ -170,9 +183,6 @@ function LimitAppBar() {
               </Typography>
             </Link>
           )}
-          <IconButton onClick={colorMode.toggleColorMode} color="inherit">
-            {theme.palette.mode === "dark" ? <Brightness7 /> : <Brightness4 />}
-          </IconButton>
         </Box>
       </Box>
     </AppBar>

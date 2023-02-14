@@ -4,7 +4,6 @@ import {
   VictoryChart,
   VictoryScatter,
   VictoryTheme,
-  VictoryVoronoiContainer,
   VictoryZoomContainer,
 } from "victory";
 import { RootState } from "../../store";
