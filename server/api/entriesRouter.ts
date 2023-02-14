@@ -36,7 +36,7 @@ router.get(
       if(!foundUserAccounts){
         res.sendStatus(404);
       }else{
-        const userEntries = foundUserAccounts.map((acc) => acc.entries);
+        const userEntries = foundUserAccounts.flatMap((acc) => acc.entries);
         res.send(userEntries);
       };
     };

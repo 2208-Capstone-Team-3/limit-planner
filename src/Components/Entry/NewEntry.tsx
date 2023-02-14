@@ -1,7 +1,10 @@
 import React, { useState, BaseSyntheticEvent } from "react";
 import axios from "axios";
+import { useSelector,useDispatch } from "react-redux";
 import { Box, TextField, Select, MenuItem, FormControl, SelectChangeEvent, InputLabel, Button } from '@mui/material';
-
+import { setReoccurEntries } from "../../store/reoccurEntriesSlice";
+import { setEntries} from "../../store/entriesSlice";
+import makeEntryCopies from "./../../helpers/makeEntryCopies";
 import dayjs, { Dayjs } from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -16,6 +19,7 @@ interface props {
 };
 
 const NewEntry = ({accountId}:props) => {
+    const dispatch = useDispatch();
     const [entryType, setEntryType] = useState<string>("User");
     const [amount, setAmount] = useState<number|null>(null);
     const [creditDebit, setCreditDebit] = useState<string>("");
@@ -58,7 +62,12 @@ const NewEntry = ({accountId}:props) => {
                     authorization: `Bearer ${token}`,
                 },
             });
-            
+            const updatedEntries = await axios.get("/api/entries", {
+                headers: { Authorization: "Bearer " + token }
+              })
+            dispatch(setEntries(updatedEntries.data));
+            const updatedEntryCopies = makeEntryCopies(updatedEntries.data)
+            dispatch(setReoccurEntries(updatedEntryCopies)); 
         };
         setAmount(null);
         setCreditDebit("");
