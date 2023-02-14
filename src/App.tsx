@@ -147,7 +147,7 @@ function App() {
           authorization: `Bearer ${token}`,
         },
       });
-      const entryCopies = makeEntryCopies(entries.data[0]);
+      const entryCopies = makeEntryCopies(entries.data);
       dispatch(setReoccurEntries(entryCopies));
     };
   },[dispatch]);
