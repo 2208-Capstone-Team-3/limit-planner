@@ -36,9 +36,9 @@ const MainScatterChart = () => {
     >
       <VictoryScatter
         name="ScatterChart"
-        size={({ datum }) => datum.amount / 1000}
+        size={({ datum }) => Math.ceil(Math.sqrt(datum.amount))}
         animate={{
-          duration: 2000,
+          duration: 4000,
           onLoad: { duration: 1000 },
         }}
         style={{
@@ -47,11 +47,6 @@ const MainScatterChart = () => {
         data={data.sort().map((ele) => {
           return { x: ele.x, y: ele.y, amount: ele.amount };
         })}
-        //     labels={({ datum }) =>
-        //     `${new Date(datum.x).toLocaleDateString(undefined, {
-        //       month: "long",
-        //     })}, $${datum.amount}`
-        //   }
       ></VictoryScatter>
     </VictoryChart>
   );

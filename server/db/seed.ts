@@ -1,8 +1,8 @@
 import { VIRTUAL } from "sequelize";
 import db from "./db.js";
 import { Account, Entry, Goal, User, Skipdate } from "./index.js";
-// import Chance from "chance";
-// const chance = new Chance();
+import Chance from "chance";
+const chance = new Chance();
 
 const entryData = [
   {
@@ -248,21 +248,21 @@ const seed = async () => {
     console.log("adding skip dates");
     const skipOne = await Skipdate.create(skipDatesEntry[0]);
 
-    // let i = 0;
-    // // const entryList = [];
-    // while (i++ < 500) {
-    //   const newEntry = await Entry.create({
-    //     entryType: chance.pickone(["User", "API"]),
-    //     start: new Date(chance.date({ year: 2023 })),
-    //     creditDebit: chance.pickone(["Credit", "Debit"]),
-    //     amount: chance.integer({ min: 0, max: 5000 }),
-    //     allDay: true,
-    //     title: chance.word(),
-    //     note: chance.sentence(),
-    //     frequency: "ByDate",
-    //   });
-    //   accountFour.addEntry(newEntry);
-    // }
+    let i = 0;
+    // const entryList = [];
+    while (i++ < 500) {
+      const newEntry = await Entry.create({
+        entryType: chance.pickone(["User", "API"]),
+        start: new Date(chance.date({ year: 2023 })),
+        creditDebit: chance.pickone(["Credit", "Debit"]),
+        amount: chance.integer({ min: 0, max: 5000 }),
+        allDay: true,
+        title: chance.word(),
+        note: chance.sentence(),
+        frequency: "ByDate",
+      });
+      accountFour.addEntry(newEntry);
+    }
 
     // --------------GOALS--------------
 
