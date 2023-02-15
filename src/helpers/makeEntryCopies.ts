@@ -10,7 +10,6 @@ const makeEntryCopies = (entryData: EntryAttributes[]) => {
         // check if entry[i].skip matches skipdate we provide. if it includes skipdate we want then dont copy it
         // if (!entry[i].skip === skipDate)
         let newEntry = structuredClone(entry);
-        console.log("date seed info:", newEntry.start);
         newEntry.start = newDate.toISOString();
         newEntries = [...newEntries, newEntry];
         newDate = addMonths(newDate, 1);
@@ -37,7 +36,6 @@ const makeEntryCopies = (entryData: EntryAttributes[]) => {
       newEntries = [...newEntries, newEntry];
     }
   });
-  console.log("cloning entries complete: ", newEntries);
   return newEntries;
 };
 

@@ -15,7 +15,7 @@ const MainScatterChart = () => {
   entries
     .flat(Infinity)
     .forEach(
-      (ele: { start: Date; amount: number; creditDebit: string }, id, arr) => {
+      (ele: { start: Date; amount: number; creditDebit: string }) => {
         data.push({
           x: new Date(ele.start),
           y:
@@ -38,7 +38,7 @@ const MainScatterChart = () => {
       <VictoryScatter
         name="ScatterChart"
         key={"MainScatterChart"}
-        size={({ datum }) => Math.pow(datum.amount,.2)}
+        size={({ datum }) => Math.pow(datum.amount, .2)}
         style={{
           data: { fill: "#c43a31" },
         }}

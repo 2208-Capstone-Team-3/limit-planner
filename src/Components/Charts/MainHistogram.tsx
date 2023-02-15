@@ -12,6 +12,7 @@ const MainHistogram = () => {
   const entries = useSelector((state: RootState) => state.entries.entries);
   const data: { x: Date; y: number }[] = [];
   let total = 0;
+
   entries
     .flat(Infinity)
     .forEach(
@@ -29,6 +30,10 @@ const MainHistogram = () => {
   return (
     <VictoryChart
       theme={VictoryTheme.material}
+      animate={{
+        duration: 2000,
+        onLoad: { duration: 1000 },
+      }}
       containerComponent={
         <VictoryVoronoiContainer
           labels={({ datum }) =>
@@ -41,10 +46,6 @@ const MainHistogram = () => {
       }
     >
       <VictoryHistogram
-        animate={{
-          duration: 2000,
-          onLoad: { duration: 1000 },
-        }}
         style={{
           data: { fill: "#c43a31" },
         }}

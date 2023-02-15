@@ -12,6 +12,10 @@ const MainGoalPercentageChart = () => {
     <VictoryChart
       theme={VictoryTheme.material}
       name={"GoalChart"}
+      animate={{
+        duration: 2000,
+        onLoad: { duration: 1000 },
+      }}
       containerComponent={
         <VictoryVoronoiContainer
           labels={({ datum }) => `${Math.round(datum.y)}`}
@@ -19,10 +23,7 @@ const MainGoalPercentageChart = () => {
       }
     >
       <VictoryBar
-        animate={{
-          duration: 2000,
-          onLoad: { duration: 1000 },
-        }}
+
         style={{
           data: { fill: "#c43a31" },
         }}

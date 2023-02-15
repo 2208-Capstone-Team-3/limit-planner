@@ -12,8 +12,6 @@ const ProjectionsComponent = () => {
   const todayDate = useMemo(() => new Date(), []);
   const endDate = theme.theme.dateSelector;
 
-  console.log("console log ", todayDate);
-
   const [projAmount, setProjAmount] = useState("0");
 
   const projectionAmount = useCallback(() => {

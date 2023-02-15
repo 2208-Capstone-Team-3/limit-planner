@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import "./App.css";
 import { CssBaseline, PaletteMode } from "@mui/material/";
 import { Outlet } from "react-router-dom";
@@ -12,6 +12,7 @@ import { setGoals } from "./store/goalsSlice";
 import { setEntries } from "./store/entriesSlice";
 import makeEntryCopies from "./../src/helpers/makeEntryCopies";
 import { setReoccurEntries } from "./store/reoccurEntriesSlice";
+import { setDateSelector } from "./store/themeSlice";
 
 export const ColorModeContext = React.createContext({
   toggleColorMode: () => {},
@@ -19,7 +20,10 @@ export const ColorModeContext = React.createContext({
 
 function App() {
   const dispatch = useDispatch();
+  const todayDate = useMemo(() => new Date().toString(), []);
   const [mode, setMode] = React.useState<"light" | "dark">("light");
+
+
 
   const colorMode = React.useMemo(
     () => ({
@@ -155,6 +159,7 @@ function App() {
     goalsWithToken();
     entriesWithToken();
     reoccurEntriesFetch();
+    dispatch(setDateSelector(todayDate));
 
     const existingPreference = localStorage.getItem("colorModeCookie");
     if (existingPreference) {
@@ -163,13 +168,7 @@ function App() {
       setMode("light");
       localStorage.setItem("colorModeCookie", "light");
     }
-  }, [
-    accountsWithToken,
-    entriesWithToken,
-    goalsWithToken,
-    loginWithToken,
-    reoccurEntriesFetch,
-  ]);
+  }, [accountsWithToken, dispatch, entriesWithToken, goalsWithToken, loginWithToken, reoccurEntriesFetch, todayDate]);
 
   return (
     <ColorModeContext.Provider value={colorMode}>
