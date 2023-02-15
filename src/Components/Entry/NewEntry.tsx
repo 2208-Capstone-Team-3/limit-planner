@@ -18,6 +18,7 @@ import { Dayjs } from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
+import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 
 const inputStyle = {
   width: "150px",
@@ -92,74 +93,88 @@ const NewEntry = ({ accountId }: props) => {
   };
 
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box sx={{display: "flex", flexDirection: "column", placeItems: "center"}}>
+    <Grid2 container sx={{padding: "5%", gap: 1, placeContent: "center"}}>
       {/* input for Credit/Debit */}
-      <TextField
-        sx={inputStyle}
-        id="outlined-basic"
-        label="Amount"
-        variant="outlined"
-        value={amount}
-        onChange={handleAmountChange}
-      />
-      <FormControl sx={inputStyle}>
-        <InputLabel htmlFor="credit/debit">Entry Type</InputLabel>
-        <Select
-          id="credit/debit"
-          label="Credit/Debit"
-          value={creditDebit}
-          onChange={handleCreditDebitChange}
-        >
-          <MenuItem value="Credit">Credit +</MenuItem>
-          <MenuItem value="Debit">Debit -</MenuItem>
-        </Select>
-      </FormControl>
-      {/* input for start date */}
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <DesktopDatePicker
-          label="Date"
-          inputFormat="MM/DD/YYYY"
-          value={start}
-          onChange={handleDateChange}
-          renderInput={(params) => <TextField {...params} sx={inputStyle} />}
+      <Grid2 xs={3}>
+        <TextField
+          sx={inputStyle}
+          id="outlined-basic"
+          label="Amount"
+          variant="outlined"
+          value={amount}
+          onChange={handleAmountChange}
         />
-      </LocalizationProvider>
+      </Grid2>
+      <Grid2 xs={3}>
+        <FormControl sx={inputStyle}>
+          <InputLabel htmlFor="credit/debit">Entry Type</InputLabel>
+          <Select
+            id="credit/debit"
+            label="Credit/Debit"
+            value={creditDebit}
+            onChange={handleCreditDebitChange}
+          >
+            <MenuItem value="Credit">Credit +</MenuItem>
+            <MenuItem value="Debit">Debit -</MenuItem>
+          </Select>
+        </FormControl>
+      </Grid2>
+      {/* input for start date */}
+      <Grid2 xs={3}>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DesktopDatePicker
+            label="Date"
+            inputFormat="MM/DD/YYYY"
+            value={start}
+            onChange={handleDateChange}
+            renderInput={(params) => <TextField {...params} sx={inputStyle} />}
+          />
+        </LocalizationProvider>
+      </Grid2>
       {/* input for title */}
-      <TextField
-        sx={inputStyle}
-        id="outlined-basic"
-        label="Title"
-        variant="outlined"
-        value={title}
-        onChange={handleTitleChange}
-      />
+      <Grid2 xs={3}>
+        <TextField
+          sx={inputStyle}
+          id="outlined-basic"
+          label="Title"
+          variant="outlined"
+          value={title}
+          onChange={handleTitleChange}
+        />
+      </Grid2>
       {/* input for note */}
-      <TextField
-        sx={inputStyle}
-        id="outlined-basic"
-        label="Note"
-        variant="outlined"
-        value={note}
-        onChange={handleNoteChange}
-      />
+      <Grid2 xs={3}>
+        <TextField
+          sx={inputStyle}
+          id="outlined-basic"
+          label="Note"
+          variant="outlined"
+          value={note}
+          onChange={handleNoteChange}
+        />
+      </Grid2>
       {/* input for frequency */}
-      <FormControl sx={inputStyle}>
-        <InputLabel htmlFor="frequency">Entry Type</InputLabel>
-        <Select
-          id="frequency"
-          label="Frequency"
-          value={frequency}
-          onChange={handleFrequencyChange}
-        >
-          <MenuItem value="Monthly">Monthly</MenuItem>
-          <MenuItem value="Bi-Weekly">Every two weeks</MenuItem>
-          <MenuItem value="Weekly">Once a week</MenuItem>
-          <MenuItem value="ByDate">Single day event</MenuItem>
-        </Select>
-      </FormControl>
-      <Button variant="contained" onClick={submitEntry}>
-        Submit
-      </Button>
+      <Grid2 xs={3}>
+        <FormControl sx={inputStyle}>
+          <InputLabel htmlFor="frequency">Entry Type</InputLabel>
+          <Select
+            id="frequency"
+            label="Frequency"
+            value={frequency}
+            onChange={handleFrequencyChange}
+          >
+            <MenuItem value="Monthly">Monthly</MenuItem>
+            <MenuItem value="Bi-Weekly">Every two weeks</MenuItem>
+            <MenuItem value="Weekly">Once a week</MenuItem>
+            <MenuItem value="ByDate">Single day event</MenuItem>
+          </Select>
+        </FormControl>
+      </Grid2>
+    </Grid2>
+        <Button sx={{width: "10vw"}} size="large" variant="contained" onClick={submitEntry}>
+          Submit
+        </Button>
     </Box>
   );
 };

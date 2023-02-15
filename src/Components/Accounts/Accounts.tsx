@@ -3,6 +3,7 @@ import {
   Box,
   Card,
   CardContent,
+  Container,
   Typography,
 } from "@mui/material";
 import { RootState } from "../../store";
@@ -12,8 +13,8 @@ import { Link } from "react-router-dom";
 const Accounts = () => {
   const accounts = useSelector((state: RootState) => state.accounts.accounts);
   return (
-    <div>
-      <div style={{ display: "flex", gap: "25px", marginTop: "20px" }}>
+    <Box>
+      <Container sx={{ display: "flex", gap: "25px", marginTop: "20px" }}>
         {accounts.map((account) => {
           return (
             <Card
@@ -36,8 +37,8 @@ const Accounts = () => {
             </Card>
           );
         })}
-      </div>
-    </div>
+      </Container>
+    </Box>
   );
 };
 
