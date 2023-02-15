@@ -15,8 +15,6 @@ import { setReoccurEntries } from "./store/reoccurEntriesSlice";
 // import {addDays, addMonths} from 'date-fns';
 // import { EntryAttributes } from './../server/db/models/Entry.model';
 
-
-
 export const ColorModeContext = React.createContext({
   toggleColorMode: () => {},
 });
@@ -132,16 +130,16 @@ function App() {
         });
         //console.log(response.data)
         dispatch(setEntries(response.data));
-      };
+      }
     } catch (error) {
       console.error(error);
     }
   }, [dispatch]);
 
-  /** creates and saves reoccuring entries */ 
-  const reoccurEntriesFetch = useCallback(async() => {
+  /** creates and saves reoccuring entries */
+  const reoccurEntriesFetch = useCallback(async () => {
     const token = window.localStorage.getItem("token");
-    if(token){
+    if (token) {
       const entries = await axios.get("/api/entries", {
         headers: {
           authorization: `Bearer ${token}`,
@@ -149,8 +147,8 @@ function App() {
       });
       const entryCopies = makeEntryCopies(entries.data);
       dispatch(setReoccurEntries(entryCopies));
-    };
-  },[dispatch]);
+    }
+  }, [dispatch]);
 
   const theme = React.useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
 
@@ -168,7 +166,13 @@ function App() {
       setMode("light");
       localStorage.setItem("colorModeCookie", "light");
     }
-  }, [accountsWithToken, entriesWithToken, goalsWithToken, loginWithToken, reoccurEntriesFetch]);
+  }, [
+    accountsWithToken,
+    entriesWithToken,
+    goalsWithToken,
+    loginWithToken,
+    reoccurEntriesFetch,
+  ]);
 
   return (
     <ColorModeContext.Provider value={colorMode}>
@@ -179,6 +183,5 @@ function App() {
     </ColorModeContext.Provider>
   );
 }
-
 
 export default App;

@@ -26,7 +26,7 @@ export const reoccurEntriesSlice = createSlice({
       state.reoccurEntries = [];
     },
     deleteReoccurEntries: (state, action) => {
-      const reoccurrEntryToDeleteId = action.payload
+      const reoccurrEntryToDeleteId = action.payload;
       state.reoccurEntries = state.reoccurEntries.filter(
         (entries) => entries.id !== reoccurrEntryToDeleteId
       );
@@ -34,5 +34,6 @@ export const reoccurEntriesSlice = createSlice({
   },
 });
 
-export const { setReoccurEntries, resetReoccurEntries, deleteReoccurEntries } = reoccurEntriesSlice.actions;
+export const { setReoccurEntries, resetReoccurEntries, deleteReoccurEntries } =
+  reoccurEntriesSlice.actions;
 export default reoccurEntriesSlice.reducer;

@@ -19,17 +19,15 @@ const MainLineChart = () => {
   let accountTotal = 0;
   entries
     .flat(Infinity)
-    .forEach(
-      (ele: { start: Date; amount: number; creditDebit: string }) => {
-        data.push({
-          x: new Date(ele.start),
-          y:
-            ele.creditDebit === "Credit"
-              ? (accountTotal += ele.amount)
-              : (accountTotal -= ele.amount),
-        });
-      }
-    );
+    .forEach((ele: { start: Date; amount: number; creditDebit: string }) => {
+      data.push({
+        x: new Date(ele.start),
+        y:
+          ele.creditDebit === "Credit"
+            ? (accountTotal += ele.amount)
+            : (accountTotal -= ele.amount),
+      });
+    });
   return (
     <VictoryChart
       domain={{

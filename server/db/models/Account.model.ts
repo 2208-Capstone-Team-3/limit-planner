@@ -22,8 +22,8 @@ export interface AccountAttributes
   addGoal(goal: GoalAttributes): unknown;
   addEntry(entry: EntryAttributes): unknown;
   addSkipdate(skipdate: SkipDateAttributes): unknown;
-  goals?: []
-  entries?: []
+  goals?: [];
+  entries?: [];
   userId?: string;
   id?: string;
   accountType: string;

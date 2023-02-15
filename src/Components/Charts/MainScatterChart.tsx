@@ -35,7 +35,7 @@ const MainScatterChart = () => {
       }
     >
       <VictoryScatter
-      name="ScatterChart"
+        name="ScatterChart"
         size={({ datum }) => datum.amount / 1000}
         animate={{
           duration: 2000,

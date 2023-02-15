@@ -25,39 +25,51 @@ const HomeBasePortal = () => {
         <Calendar />
         <ProjectionsComponent />
       </Grid2>
-      <Grid2
-        container
-        height={"100vh"}
-        xs={7}
-        padding={1}
-      >
-        <Grid2 xs={6}  >
-          <Box sx={{display: "flex", flexDirection: "column", placeItems: "center"}}>
-          <Typography variant="overline">
-            Account Progression
-          </Typography>
-          <MainLineChart />
-          
+      <Grid2 container height={"100vh"} xs={7} padding={1}>
+        <Grid2 xs={6}>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              placeItems: "center",
+            }}
+          >
+            <Typography variant="overline">Account Progression</Typography>
+            <MainLineChart />
           </Box>
         </Grid2>
-        <Grid2 xs={6} sx={{display: "flex", flexDirection: "column", placeItems: "center" }}>
-        <Typography variant="overline">
-            Percent To Goal
-          </Typography>
+        <Grid2
+          xs={6}
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            placeItems: "center",
+          }}
+        >
+          <Typography variant="overline">Percent To Goal</Typography>
           <MainGoalPercentageChart />
         </Grid2>
-        <Grid2 xs={6} sx={{display: "flex", flexDirection: "column", placeItems: "center" }}>
-        <Typography variant="overline">
-            Transactions Per Month
-          </Typography>
+        <Grid2
+          xs={6}
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            placeItems: "center",
+          }}
+        >
+          <Typography variant="overline">Transactions Per Month</Typography>
           <MainHistogram />
         </Grid2>
-        <Grid2 xs={6} sx={{display: "flex", flexDirection: "column", placeItems: "center" }}>
-        <Typography variant="overline">
-            Expenses
-          </Typography>
+        <Grid2
+          xs={6}
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            placeItems: "center",
+          }}
+        >
+          <Typography variant="overline">Expenses</Typography>
           <MainScatterChart />
-          
         </Grid2>
       </Grid2>
     </Grid2>

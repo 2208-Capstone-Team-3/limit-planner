@@ -11,6 +11,7 @@ import { RootState } from "../../store";
 
 const MainGoalPercentageChart = () => {
   const entries = useSelector((state: RootState) => state.entries.entries);
+
   return (
     <VictoryChart
       theme={VictoryTheme.material}
@@ -20,6 +21,7 @@ const MainGoalPercentageChart = () => {
         />
       }
     >
+      {" "}
       <VictoryBar
         animate={{
           duration: 2000,
