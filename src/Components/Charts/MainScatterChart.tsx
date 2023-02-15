@@ -38,7 +38,7 @@ const MainScatterChart = () => {
       <VictoryScatter
         name="ScatterChart"
         key={"MainScatterChart"}
-        size={({ datum }) => Math.pow(datum.amount, .2)}
+        size={({ datum }) => Math.pow(datum.amount, .2) ? Math.pow(datum.amount, .2) : 0 }
         style={{
           data: { fill: "#c43a31" },
         }}
