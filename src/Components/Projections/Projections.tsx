@@ -49,7 +49,7 @@ const ProjectionsComponent = () => {
       sx={{ display: "flex", flexDirection: "column", placeItems: "center" }}
     >
       <Typography variant="h4">Current Balance: {currentBalance}</Typography>
-      {endDate === "05-05-2023" ? (
+      {new Date(endDate).toLocaleDateString() === new Date().toLocaleDateString() ? (
         <Typography variant="h5">
           Click on date for projected balance
         </Typography>
