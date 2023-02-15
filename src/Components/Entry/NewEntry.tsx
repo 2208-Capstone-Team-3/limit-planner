@@ -38,9 +38,6 @@ const NewEntry = ({ accountId }: props) => {
   const [note, setNote] = useState<string>("");
   const [frequency, setFrequency] = useState<string>("");
 
-  // const handleTypeChange = (event: SelectChangeEvent<string> ) => {
-  //     setEntryType(event.target.value);
-  // };
   const handleAmountChange = (event: BaseSyntheticEvent) => {
     setAmount(event.target.value);
   };
@@ -96,14 +93,6 @@ const NewEntry = ({ accountId }: props) => {
 
   return (
     <Box sx={{ display: "flex" }}>
-      {/* input for Entry type */}
-      {/* <FormControl sx={inputStyle}>
-            <InputLabel htmlFor="age-select">Entry Type</InputLabel>
-            <Select id="age-select" label="Entry type" onChange={handleTypeChange}>
-                <MenuItem value="User">User</MenuItem>
-                <MenuItem value="API">API</MenuItem>
-            </Select>
-        </FormControl> */}
       {/* input for Credit/Debit */}
       <TextField
         sx={inputStyle}

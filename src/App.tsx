@@ -12,8 +12,6 @@ import { setGoals } from "./store/goalsSlice";
 import { setEntries } from "./store/entriesSlice";
 import makeEntryCopies from "./../src/helpers/makeEntryCopies";
 import { setReoccurEntries } from "./store/reoccurEntriesSlice";
-// import {addDays, addMonths} from 'date-fns';
-// import { EntryAttributes } from './../server/db/models/Entry.model';
 
 export const ColorModeContext = React.createContext({
   toggleColorMode: () => {},
@@ -128,7 +126,6 @@ function App() {
             authorization: `Bearer ${token}`,
           },
         });
-        //console.log(response.data)
         dispatch(setEntries(response.data));
       }
     } catch (error) {

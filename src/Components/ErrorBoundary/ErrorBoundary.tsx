@@ -12,9 +12,7 @@ const ErrorBoundary = () => {
         backgroundImage: `url(${errorBoundaryPNG})`,
         backgroundSize: "cover",
       }}
-    >
-
-    </Box>
+    ></Box>
   );
 };
 

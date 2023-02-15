@@ -8,17 +8,16 @@ import {
 } from "victory";
 
 const MainGoalPercentageChart = () => {
-
   return (
     <VictoryChart
       theme={VictoryTheme.material}
+      name={"GoalChart"}
       containerComponent={
         <VictoryVoronoiContainer
           labels={({ datum }) => `${Math.round(datum.y)}`}
         />
       }
     >
-      {" "}
       <VictoryBar
         animate={{
           duration: 2000,
