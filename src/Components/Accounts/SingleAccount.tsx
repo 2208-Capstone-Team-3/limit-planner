@@ -6,14 +6,14 @@ import NewEntry from "../Entry/NewEntry";
 import { RootState } from "../../store";
 import {EntryAttributes} from '../../../server/db/models/Entry.model';
 import {AccountAttributes} from '../../../server/db/models/Account.model';
-//import sortEntries from '../../helpers/sortEntries';
+import sortEntries from '../../helpers/sortEntries';
 
 const SingleAccount = () => {
     const { accountId } = useParams();
     const reoccurEntries = useSelector((state:RootState) => state.reoccurEntries.reoccurEntries);
     const [loading,setLoading] = useState<boolean>(false);
-    const [account,setAccount] = useState<any>({});
-    const [entries,setEntries] = useState<EntryAttributes[]>([]);
+    const [account,setAccount] = useState<AccountAttributes | null>(null);
+    const [entries,setEntries] = useState<EntryAttributes[] | []>([]);
     const [lastCredit,setLastCredit] = useState<any>({});
     const [lastDebit,setLastDebit] = useState<any>({});
 
@@ -27,29 +27,34 @@ const SingleAccount = () => {
                 },
             });
             setAccount(account.data);
-            // need to sort reoccuring entries to create recent activity
             setLoading(false);
         };
     },[accountId]);
+
+    const fetchEntries = useCallback(() => {
+        const sortedEntries = sortEntries(reoccurEntries);
+        setEntries(sortedEntries);
+    },[reoccurEntries]);
     
     useEffect(()=>{
         fetchAccount();
-    },[fetchAccount]);
+        fetchEntries();
+    },[fetchAccount,fetchEntries]);
 
     if(loading) return <p>Loading...</p>
     return (
         <div>
-            <h1>{account.accountName}</h1>
-            <p>Account type: {account.accountType}</p>
-            <p>Institution: {account.institution}</p>
-            <p>Account balance: {account.balance}</p>
+            <h1>{account?.accountName}</h1>
+            <p>Account type: {account?.accountType}</p>
+            <p>Institution: {account?.institution}</p>
+            <p>Account balance: {account?.balance}</p>
             <p>Last credit: ${lastCredit.amount} - {lastCredit.title}</p>
             <p>Last credit date: {lastCredit.start}</p>
             <p>Last debit: ${lastDebit.amount} - {lastDebit.title}</p>
             <p>Last debit date: {lastDebit.start}</p>
             <NewEntry accountId={accountId}/>
             <h2>Recent activity</h2>
-            {reoccurEntries.map((entry:any)=>{
+            {entries.map((entry:any)=>{
                 return (
                     <p>{entry.start} - {entry.title} - ${entry.amount}</p>
                     )
