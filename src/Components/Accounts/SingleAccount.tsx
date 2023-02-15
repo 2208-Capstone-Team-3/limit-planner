@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useCallback,useState,useEffect } from "react";
 import axios from "axios";
 import { useSelector,useDispatch } from "react-redux";
 import { useParams } from 'react-router-dom';
@@ -6,7 +6,7 @@ import NewEntry from "../Entry/NewEntry";
 import { RootState } from "../../store";
 import {EntryAttributes} from '../../../server/db/models/Entry.model';
 import {AccountAttributes} from '../../../server/db/models/Account.model';
-import sortEntries from '../../helpers/sortEntries';
+//import sortEntries from '../../helpers/sortEntries';
 
 const SingleAccount = () => {
     const { accountId } = useParams();
@@ -17,7 +17,7 @@ const SingleAccount = () => {
     const [lastCredit,setLastCredit] = useState<any>({});
     const [lastDebit,setLastDebit] = useState<any>({});
 
-    const fetchAccount = async() => {
+    const fetchAccount = useCallback(async() => {
         setLoading(true);
         const token = window.localStorage.getItem("token");
         if(token){
@@ -27,27 +27,14 @@ const SingleAccount = () => {
                 },
             });
             setAccount(account.data);
-            const allEntries = await axios.get(`/api/entries`, {
-                headers: {
-                    authorization: `Bearer ${token}`,
-                },
-            });
-            const sortedEntries = sortEntries(allEntries.data);
-            setEntries(sortedEntries);
-            const credit = sortedEntries.find(entry=>entry.creditDebit==='Credit');
-            setLastCredit(credit);
-            const debit = sortedEntries.find(entry=>entry.creditDebit==='Debit');
-            setLastDebit(debit);
+            // need to sort reoccuring entries to create recent activity
             setLoading(false);
         };
-    };
-
+    },[accountId]);
     
     useEffect(()=>{
         fetchAccount();
-    },[]);
-
-    console.log(reoccurEntries);
+    },[fetchAccount]);
 
     if(loading) return <p>Loading...</p>
     return (
@@ -62,7 +49,7 @@ const SingleAccount = () => {
             <p>Last debit date: {lastDebit.start}</p>
             <NewEntry accountId={accountId}/>
             <h2>Recent activity</h2>
-            {entries.map((entry:any)=>{
+            {reoccurEntries.map((entry:any)=>{
                 return (
                     <p>{entry.start} - {entry.title} - ${entry.amount}</p>
                     )
