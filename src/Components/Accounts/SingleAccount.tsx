@@ -6,7 +6,6 @@ import NewEntry from "../Entry/NewEntry";
 import { RootState } from "../../store";
 import {EntryAttributes} from '../../../server/db/models/Entry.model';
 import {AccountAttributes} from '../../../server/db/models/Account.model';
-import sortEntries from '../../helpers/sortEntries';
 
 const SingleAccount = () => {
     const { accountId } = useParams();
@@ -31,9 +30,17 @@ const SingleAccount = () => {
         };
     },[accountId]);
 
+    /** sorting entries and find recent activity */
     const fetchEntries = useCallback(() => {
-        const sortedEntries = sortEntries(reoccurEntries);
-        setEntries(sortedEntries);
+        let sortedEntries = [...reoccurEntries];
+        sortedEntries.sort((a, b)=>{
+            return new Date(b.start).getTime() - new Date(a.start).getTime();
+        });
+        sortedEntries = sortedEntries.filter(entry=>{
+            const diff = new Date().getTime() - new Date(entry.start).getTime();
+            if(diff>=0) return entry;
+        });
+        setEntries(sortedEntries)
     },[reoccurEntries]);
     
     useEffect(()=>{
