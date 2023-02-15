@@ -1,6 +1,6 @@
 import React, { useState, BaseSyntheticEvent } from "react";
 import axios from "axios";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
   Box,
   TextField,
@@ -14,7 +14,7 @@ import {
 import { setReoccurEntries } from "../../store/reoccurEntriesSlice";
 import { setEntries } from "../../store/entriesSlice";
 import makeEntryCopies from "./../../helpers/makeEntryCopies";
-import dayjs, { Dayjs } from "dayjs";
+import { Dayjs } from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
@@ -29,12 +29,12 @@ interface props {
 
 const NewEntry = ({ accountId }: props) => {
   const dispatch = useDispatch();
-  const [entryType, setEntryType] = useState<string>("User");
+  const [entryType] = useState<string>("User");
   const [amount, setAmount] = useState<number | null>(null);
   const [creditDebit, setCreditDebit] = useState<string>("");
   const [title, setTitle] = useState<string>("");
   const [start, setStart] = useState<Dayjs | null>(null);
-  const [allDay, setAllDay] = useState<boolean>(true);
+  const [allDay] = useState<boolean>(true);
   const [note, setNote] = useState<string>("");
   const [frequency, setFrequency] = useState<string>("");
 

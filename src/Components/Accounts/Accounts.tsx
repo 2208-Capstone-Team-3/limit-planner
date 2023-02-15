@@ -1,11 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import {
   Box,
   Card,
-  CardActions,
   CardContent,
-  Button,
   Typography,
 } from "@mui/material";
 import { RootState } from "../../store";

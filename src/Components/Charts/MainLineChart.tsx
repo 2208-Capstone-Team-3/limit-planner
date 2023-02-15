@@ -11,7 +11,6 @@ import { addMonths, subMonths } from "date-fns";
 
 const MainLineChart = () => {
   let entries = useSelector((state: RootState) => state.entries.entries);
-  let accounts = useSelector((state: RootState) => state.accounts.accounts);
   let dateSelector = useSelector(
     (state: RootState) => state.theme.theme.dateSelector
   );
