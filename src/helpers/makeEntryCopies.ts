@@ -13,7 +13,7 @@ const makeEntryCopies = (entryData:EntryAttributes[], skipDate?: Date[], duratio
                 // put in jan 1st -> feb 1st(SKIPDATE)
                 // put in feb 1st -> march 1st 
                 if (skipDate?.includes(newDate)) {
-                    newDate=addMonths(newDate, 1)
+                    newDate = addMonths(newDate, 1)
                 } else {
                     let newEntry = structuredClone(entry);
                     newEntry.start = newDate.toISOString(); 

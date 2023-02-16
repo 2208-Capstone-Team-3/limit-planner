@@ -1,10 +1,22 @@
-import express, { Request, Response, NextFunction } from "express";
+import express, { Request, Response, NextFunction, response } from "express";
 import { Account, Entry, User, Skipdate } from "../db/index.js";
 import { AccountAttributes } from "../db/models/Account.model.js";
 import { EntryAttributes } from "../db/models/Entry.model.js";
 import { UserAttributes } from "../db/models/User.model.js";
 import { authenticateUser } from "./helpers/authUserMiddleware.js";
 const router = express.Router();
+
+//TEST API
+// api/entries/skipdates
+router.get(
+  "/skipdates", 
+  async (req: Request, res: Response, next: NextFunction) => {
+    const foundUser = await Entry.findAll({
+      include: [Skipdate]
+    });
+    if(foundUser) {res.send(foundUser)} 
+    else {res.send([{name: "couldnt find anything"}])}
+});
 
 router.get(
   "/:entryId", 
@@ -19,6 +31,8 @@ router.get(
     next(err);
   };
 });
+
+
 
 router.get(
   "/", 

@@ -219,7 +219,11 @@ const accountData = [
 const skipDatesEntry = [
   {
     skippeddate: new Date("2023-01-01")
-  }
+  },
+  {
+    skippeddate: new Date("2022-02-02")
+  },
+
 ]
 
 const seed = async () => {
@@ -246,7 +250,7 @@ const seed = async () => {
 
     // -------------SKIPDATES---------------
     console.log("adding skip dates")
-    const skipOne = await Skipdate.create(skipDatesEntry[0]);
+    const [skipOne, skipTwo] = await Promise.all(skipDatesEntry.map((eachSkip) => Skipdate.create(eachSkip)));
 
     // let i = 0;
     // // const entryList = [];
@@ -304,7 +308,15 @@ const seed = async () => {
     accountThree.addSkipdate(skipOne)
     userThree.addSkipdate(skipOne)
   
-    
+    //just testing below
+    entryTwo.addSkipdate(skipTwo)
+    accountTwo.addSkipdate(skipTwo)
+    userTwo.addSkipdate(skipTwo)
+
+    //only accounts is associated :/ 
+
+
+
   } catch (err) {
     console.log("error");
     console.log(err);
