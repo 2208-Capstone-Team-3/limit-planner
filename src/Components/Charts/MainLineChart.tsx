@@ -8,8 +8,11 @@ import {
 } from "victory";
 import { RootState } from "../../store";
 import { addMonths, subMonths } from "date-fns";
+import { useTheme } from "@mui/material";
+import { blueGrey, deepOrange } from "@mui/material/colors";
 
 const MainLineChart = () => {
+  const theme = useTheme();
   let entries = useSelector((state: RootState) => state.entries.entries);
 
   let dateSelector = useSelector(
@@ -19,7 +22,7 @@ const MainLineChart = () => {
   const data: { x: any; y: any }[] = [];
 
   let accountTotal = 0;
-  
+
   entries
     .flat(Infinity)
     .forEach((ele: { start: Date; amount: number; creditDebit: string }) => {
@@ -47,7 +50,11 @@ const MainLineChart = () => {
       theme={VictoryTheme.material}
       containerComponent={
         <VictoryVoronoiContainer
-          labels={({ datum }) => `${typeof datum.x === "object" ? datum.x.toDateString(): datum.x}, $${datum.y}`}
+          labels={({ datum }) =>
+            `${
+              typeof datum.x === "object" ? datum.x.toDateString() : datum.x
+            }, $${datum.y}`
+          }
           theme={VictoryTheme.material}
           voronoiDimension={"x"}
         />
@@ -55,7 +62,10 @@ const MainLineChart = () => {
     >
       <VictoryLine
         style={{
-          data: { stroke: "#c43a31" },
+          data: {
+            stroke: () =>
+              theme.palette.mode === "light" ? blueGrey[500] : deepOrange[900],
+          },
         }}
         interpolation="linear"
         name="line"

@@ -1,3 +1,5 @@
+import { useTheme } from "@mui/material";
+import { blueGrey, deepOrange } from "@mui/material/colors";
 import React from "react";
 import { useSelector } from "react-redux";
 import {
@@ -9,6 +11,7 @@ import {
 import { RootState } from "../../store";
 
 const MainHistogram = () => {
+  const theme = useTheme();
   const entries = useSelector((state: RootState) => state.entries.entries);
   const data: { x: Date; y: number }[] = [];
   let total = 0;
@@ -47,7 +50,10 @@ const MainHistogram = () => {
     >
       <VictoryHistogram
         style={{
-          data: { fill: "#c43a31" },
+          data: {
+            fill: () =>
+              theme.palette.mode === "light" ? blueGrey[500] : deepOrange[900],
+          },
         }}
         data={data.sort().map((ele) => {
           return { x: ele.x, y: ele.y };
