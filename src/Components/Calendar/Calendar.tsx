@@ -107,7 +107,7 @@ const Calendar = () => {
     const updatedEntries = await axios.get("/api/entries", {
       headers: { Authorization: "Bearer " + token },
     });
-    const updatedEntryCopies = makeEntryCopies(updatedEntries.data[0]);
+    const updatedEntryCopies = makeEntryCopies(updatedEntries.data);
     dispatch(setEntries(updatedEntryCopies));
     dispatch(setReoccurEntries(updatedEntryCopies));
     handleModalClose();
@@ -133,6 +133,22 @@ const Calendar = () => {
       // delete entries based off of what :/
     }
   };
+
+  const showStart = () => {
+    console.log(start)
+  }
+  const testStart = async () => {
+    const updatedEntries = await axios.get("/api/entries/skipdates")
+    const newerEntries = updatedEntries.data
+    newerEntries.map((entry: any)=> {
+      let badDates = entry.skipdates
+      badDates.map((dates: any)=>{
+        console.log(dates.skippeddate)
+        return dates.skippeddate
+      })
+    })
+
+  }
 
   if (reoccurEntries.length === 0) return <Skeleton animation={"wave"} variant="rectangular" />;
 
@@ -212,6 +228,8 @@ const Calendar = () => {
           <button onClick={deleteEntry} value="single">
             Delete Single
           </button>
+          <button onClick={showStart}>Show start date</button>
+          <button onClick={testStart}>Test start api date</button>
         </Box>
       </Modal>
     </Box>

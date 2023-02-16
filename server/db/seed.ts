@@ -220,6 +220,9 @@ const skipDatesEntry = [
   {
     skippeddate: new Date("2023-01-01"),
   },
+  {
+    skippeddate: new Date("2022-02-02"),
+  },
 ];
 
 const seed = async () => {
@@ -300,21 +303,8 @@ const seed = async () => {
 
     //Entry.hasMany(SkipDates)
     //SkipDates.belongsTo(Entry)
-    entryThree.addSkipdate(skipOne);
-    accountThree.addSkipdate(skipOne);
-    userThree.addSkipdate(skipOne);
     entryThree.addSkipdate(skipOne)
-    accountThree.addSkipdate(skipOne)
-    userThree.addSkipdate(skipOne)
-  
-    //just testing below
     entryTwo.addSkipdate(skipTwo)
-    accountTwo.addSkipdate(skipTwo)
-    userTwo.addSkipdate(skipTwo)
-
-    //only accounts is associated :/ 
-
-
 
   } catch (err) {
     console.log("error");

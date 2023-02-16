@@ -51,13 +51,14 @@ router.get(
         const foundUserAccounts: AccountAttributes[] | null =
           await Account.findAll({
             where: { userId: foundUser?.id },
-            include: [Entry],
+            include: [Entry]
           });
         if (!foundUserAccounts) {
           res.sendStatus(404);
         } else {
           const userEntries = foundUserAccounts.flatMap((acc) => acc.entries);
           res.send(userEntries);
+          
         }
       }
     } catch (err) {

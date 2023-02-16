@@ -41,7 +41,7 @@ router.get(
 router.get(
   "/skipdates", 
   async (req: Request, res: Response, next: NextFunction) => {
-    const foundUser = await User.findAll({
+    const foundUser = await Account.findAll({
       include: [Skipdate]
     });
     res.send(foundUser)
