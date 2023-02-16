@@ -4,8 +4,10 @@ import { useSelector,useDispatch } from "react-redux";
 import { useParams } from 'react-router-dom';
 import NewEntry from "../Entry/NewEntry";
 import { RootState } from "../../store";
-import {EntryAttributes} from '../../../server/db/models/Entry.model';
-import {AccountAttributes} from '../../../server/db/models/Account.model';
+import { EntryAttributes } from '../../../server/db/models/Entry.model';
+import { AccountAttributes } from '../../../server/db/models/Account.model';
+// MUI Components
+import {Box,Grid,Typography} from '@mui/material';
 
 const SingleAccount = () => {
     const { accountId } = useParams();
@@ -13,8 +15,10 @@ const SingleAccount = () => {
     const [loading,setLoading] = useState<boolean>(false);
     const [account,setAccount] = useState<AccountAttributes | null>(null);
     const [entries,setEntries] = useState<EntryAttributes[] | []>([]);
-    const [lastCredit,setLastCredit] = useState<any>({});
-    const [lastDebit,setLastDebit] = useState<any>({});
+    const [lastCreditDate,setLastCreditDate] = useState<string>("");
+    const [lastCreditAmount,setLastCreditAmount] = useState<number>(0);
+    const [lastDebitDate,setLastDebitDate] = useState<string>("");
+    const [lastDebitAmount,setLastDebitAmount] = useState<number>(0);
 
     const fetchAccount = useCallback(async() => {
         setLoading(true);
@@ -31,42 +35,72 @@ const SingleAccount = () => {
     },[accountId]);
 
     /** sorting entries and find recent activity */
-    const fetchEntries = useCallback(() => {
-        let sortedEntries = [...reoccurEntries];
-        sortedEntries.sort((a, b)=>{
+    const findRecentEntries = useCallback(() => {
+        setLoading(true);
+        let recentEntries = [...reoccurEntries];
+        recentEntries = recentEntries.filter(entry=>{
+            const diff = new Date().getTime() - new Date(entry.start).getTime();
+            if(entry.accountId===accountId && diff>=0) return entry;
+        });
+        recentEntries.sort((a, b)=>{
             return new Date(b.start).getTime() - new Date(a.start).getTime();
         });
-        sortedEntries = sortedEntries.filter(entry=>{
-            const diff = new Date().getTime() - new Date(entry.start).getTime();
-            if(diff>=0) return entry;
-        });
-        setEntries(sortedEntries)
-    },[reoccurEntries]);
+        setEntries(recentEntries)
+        const lastCreditEntry = recentEntries.find(entry=>entry.creditDebit==='Credit');
+        setLastCreditDate(new Date(lastCreditEntry?.start).toDateString());
+        setLastCreditAmount(lastCreditEntry?.amount);
+        const lastDebitEntry = recentEntries.find(entry=>entry.creditDebit==='Debit');
+        setLastDebitDate(new Date(lastDebitEntry?.start).toDateString());
+        setLastDebitAmount(lastDebitEntry?.amount);
+        setLoading(false);
+    },[accountId,reoccurEntries]);
     
     useEffect(()=>{
         fetchAccount();
-        fetchEntries();
-    },[fetchAccount,fetchEntries]);
+        findRecentEntries();
+    },[fetchAccount,findRecentEntries]);
 
     if(loading) return <p>Loading...</p>
     return (
-        <div>
-            <h1>{account?.accountName}</h1>
-            <p>Account type: {account?.accountType}</p>
-            <p>Institution: {account?.institution}</p>
-            <p>Account balance: {account?.balance}</p>
-            <p>Last credit: ${lastCredit.amount} - {lastCredit.title}</p>
-            <p>Last credit date: {lastCredit.start}</p>
-            <p>Last debit: ${lastDebit.amount} - {lastDebit.title}</p>
-            <p>Last debit date: {lastDebit.start}</p>
-            <NewEntry accountId={accountId}/>
-            <h2>Recent activity</h2>
-            {entries.map((entry:any)=>{
-                return (
-                    <p>{entry.start} - {entry.title} - ${entry.amount}</p>
-                    )
-            })}
-        </div>
+        <Box sx={{width:'50%'}}>
+            <Box>
+                <h1>{account?.accountName}</h1>
+                <Grid container rowSpacing={1} columnSpacing={{ xs: 2, sm: 2, md: 3 }}>
+                    <Grid xs={4}>
+                        <Typography><b>Account type:</b> {account?.accountType}</Typography>
+                    </Grid>
+                    <Grid xs={4}>
+                        <Typography><b>Institution:</b> {account?.institution}</Typography>
+                    </Grid>
+                    <Grid xs={4}>
+                        <Typography><b>Account balance:</b> {account?.balance}</Typography>
+                    </Grid>
+                    <Grid xs={4}>
+                        <Typography><b>Last credit:</b> ${lastCreditAmount}</Typography>
+                    </Grid>
+                    <Grid xs={4}>
+                        <Typography><b>Last credit date:</b> {lastCreditDate}</Typography>
+                    </Grid>
+                    <Grid xs={4}>
+                        <Typography><b>Last debit:</b> ${lastDebitAmount}</Typography>
+                    </Grid>
+                    <Grid xs={4}>
+                        <Typography><b>Last debit date:</b> {lastDebitDate}</Typography>
+                    </Grid>
+                </Grid>
+            </Box>
+            <Box>
+                <NewEntry accountId={accountId}/>
+            </Box>
+            <Box>
+                <h2>Recent activity</h2>
+                {entries.map((entry:any)=>{
+                    return (
+                        <p>{entry.creditDebit} | {new Date(entry.start).toDateString()} - {entry.title} - ${entry.amount}</p>
+                        )
+                })}
+            </Box>
+        </Box>
     );
 };
 
