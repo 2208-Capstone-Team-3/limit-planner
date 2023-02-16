@@ -14,6 +14,7 @@ const MainGoalPercentageChart = () => {
   return (
     <VictoryChart
       theme={VictoryTheme.material}
+      padding={{top: 0, bottom: 60, left: 60, right : 0}}
       name={"GoalChart"}
       animate={{
         duration: 2000,

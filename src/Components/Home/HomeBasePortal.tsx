@@ -31,10 +31,10 @@ const HomeBasePortal = () => {
           <ProjectionsComponent />
         </Grid2>
       </Grid2>
-      <Grid2 container paddingLeft={1} paddingTop={1} xs={7}>
+      <Grid2 container padding={1} xs={7}>
         <Grid2 container xs={6}>
           <Grid2 sx={{ display: "flex", placeContent: "center" }} xs={12}>
-            <Typography variant="overline">Account Progression</Typography>
+            <Typography sx={{marginLeft: "15%"}} variant="overline">Account Progression</Typography>
           </Grid2>
           <Grid2 xs={12}>
             <MainLineChart />
@@ -42,7 +42,7 @@ const HomeBasePortal = () => {
         </Grid2>
         <Grid2 container xs={6}>
           <Grid2 sx={{ display: "flex", placeContent: "center" }} xs={12}>
-            <Typography variant="overline">Percent To Goal</Typography>
+            <Typography sx={{marginLeft: "15%"}} variant="overline">Percent To Goal</Typography>
           </Grid2>
           <Grid2 xs={12}>
             <MainGoalPercentageChart />
@@ -50,7 +50,7 @@ const HomeBasePortal = () => {
         </Grid2>
         <Grid2 container xs={6}>
           <Grid2 sx={{ display: "flex", placeContent: "center" }} xs={12}>
-            <Typography variant="overline">Transactions Per Month</Typography>
+            <Typography sx={{marginLeft: "15%"}}  variant="overline">Transactions Per Month</Typography>
           </Grid2>
           <Grid2 xs={12}>
             <MainHistogram />
@@ -58,7 +58,7 @@ const HomeBasePortal = () => {
         </Grid2>
         <Grid2 container xs={6}>
           <Grid2 sx={{ display: "flex", placeContent: "center" }} xs={12}>
-            <Typography variant="overline">Expenses</Typography>
+            <Typography sx={{marginLeft: "15%"}} variant="overline">Expenses</Typography>
           </Grid2>
           <Grid2 xs={12}>
             <MainScatterChart />

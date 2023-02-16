@@ -38,7 +38,7 @@ const MainLineChart = () => {
   return (
     <VictoryChart
     scale={{ x: "time", y: "linear" }}
-      padding={60}
+    padding={{top: 0, bottom: 60, left: 60, right : 0}}
       domain={{
         x: [
           subMonths(new Date(dateSelector), 1),

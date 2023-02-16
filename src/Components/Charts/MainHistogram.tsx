@@ -33,6 +33,7 @@ const MainHistogram = () => {
   return (
     <VictoryChart
       theme={VictoryTheme.material}
+      padding={{top: 0, bottom: 60, left: 60, right : 0}}
       animate={{
         duration: 2000,
         onLoad: { duration: 1000 },
