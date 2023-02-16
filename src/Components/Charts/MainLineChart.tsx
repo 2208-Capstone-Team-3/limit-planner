@@ -37,12 +37,17 @@ const MainLineChart = () => {
 
   return (
     <VictoryChart
+    scale={{ x: "time", y: "linear" }}
+      padding={60}
       domain={{
         x: [
           subMonths(new Date(dateSelector), 1),
           addMonths(new Date(dateSelector), 1),
         ],
       }}
+      
+      title={"Account Progression"}
+      key="LineChartMainContainer"
       animate={{
         duration: 2000,
         onLoad: { duration: 1000 },
@@ -50,13 +55,17 @@ const MainLineChart = () => {
       theme={VictoryTheme.material}
       containerComponent={
         <VictoryVoronoiContainer
+          voronoiPadding={60}
           labels={({ datum }) =>
             `${
-              typeof datum.x === "object" ? datum.x.toDateString() : datum.x
+              typeof datum.x === "object"
+                ? datum.x.toLocaleDateString()
+                : datum.x
             }, $${datum.y}`
           }
           theme={VictoryTheme.material}
           voronoiDimension={"x"}
+          key="LineChartVoronoiContainer"
         />
       }
     >
@@ -69,6 +78,7 @@ const MainLineChart = () => {
         }}
         interpolation="linear"
         name="line"
+        key="LineChartMain"
         minDomain={{ x: Number(subMonths(new Date(dateSelector), 1)) }}
         maxDomain={{ x: Number(addMonths(new Date(dateSelector), 1)) }}
         domain={{

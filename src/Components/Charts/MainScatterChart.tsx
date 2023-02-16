@@ -1,6 +1,6 @@
+import React from "react";
 import { useTheme } from "@mui/material";
 import { blueGrey, deepOrange } from "@mui/material/colors";
-import React from "react";
 import { useSelector } from "react-redux";
 import {
   VictoryChart,
@@ -32,6 +32,7 @@ const MainScatterChart = () => {
     <VictoryChart
       theme={VictoryTheme.material}
       key={"ScatterChartContainer"}
+
       containerComponent={
         <VictoryZoomContainer
           key={"ScatterZoomContainer"}
