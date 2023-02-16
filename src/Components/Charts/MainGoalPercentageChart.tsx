@@ -1,5 +1,4 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import {
   VictoryBar,
   VictoryChart,
@@ -7,13 +6,16 @@ import {
   VictoryTheme,
   VictoryVoronoiContainer,
 } from "victory";
-import { RootState } from "../../store";
 
 const MainGoalPercentageChart = () => {
-  const entries = useSelector((state: RootState) => state.entries.entries);
   return (
     <VictoryChart
       theme={VictoryTheme.material}
+      name={"GoalChart"}
+      animate={{
+        duration: 2000,
+        onLoad: { duration: 1000 },
+      }}
       containerComponent={
         <VictoryVoronoiContainer
           labels={({ datum }) => `${Math.round(datum.y)}`}
@@ -21,10 +23,7 @@ const MainGoalPercentageChart = () => {
       }
     >
       <VictoryBar
-        animate={{
-          duration: 2000,
-          onLoad: { duration: 1000 },
-        }}
+
         style={{
           data: { fill: "#c43a31" },
         }}
