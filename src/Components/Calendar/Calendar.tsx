@@ -1,8 +1,8 @@
 import React, { BaseSyntheticEvent, useState } from "react";
 import axios from "axios";
-import "./calendar.css"
+import "./calendar.css";
 import { useSelector, useDispatch } from "react-redux";
-import { Box, Modal, Skeleton } from "@mui/material";
+import { Box, Modal, Skeleton, useTheme } from "@mui/material";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -15,6 +15,7 @@ import { setReoccurEntries } from "../../store/reoccurEntriesSlice";
 import { setEntries } from "../../store/entriesSlice";
 import makeEntryCopies from "./../../helpers/makeEntryCopies";
 import { EntryAttributes } from "../../../server/db/models/Entry.model";
+import { blueGrey, deepOrange } from "@mui/material/colors";
 
 const modalStyle = {
   position: "absolute",
@@ -32,7 +33,7 @@ const modalStyle = {
 const Calendar = () => {
   const dispatch = useDispatch();
   const token = window.localStorage.getItem("token");
-
+  const theme = useTheme();
   const [id, setId] = useState<string>("");
   const [entryType, setEntryType] = useState<string>("");
   const [amount, setAmount] = useState<number>(0);
@@ -135,7 +136,8 @@ const Calendar = () => {
     }
   };
 
-  if (reoccurEntries.length === 0) return <Skeleton animation={"wave"} variant="rectangular" />;
+  if (reoccurEntries.length === 0)
+    return <Skeleton animation={"wave"} variant="rectangular" />;
 
   return (
     <Box>
@@ -143,7 +145,6 @@ const Calendar = () => {
         <FullCalendar
           loading={() => reoccurEntries.length === 0}
           key={"Calendar"}
-          
           plugins={[
             dayGridPlugin,
             timeGridPlugin,
@@ -165,7 +166,10 @@ const Calendar = () => {
           select={handleSelect}
           eventClick={handleModalOpen}
           moreLinkHint={"More Events if Clicked"}
-          
+          eventColor={
+            theme.palette.mode === "light" ? blueGrey[400] : deepOrange[900]
+          }
+          eventTextColor="white"
         />
       </Box>
       <Modal

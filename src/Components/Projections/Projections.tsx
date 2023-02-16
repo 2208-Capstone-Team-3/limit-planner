@@ -48,13 +48,13 @@ const ProjectionsComponent = () => {
     <Box
       sx={{ display: "flex", flexDirection: "column", placeItems: "center" }}
     >
-      <Typography variant="h4">Current Balance: {currentBalance}</Typography>
+      <Typography component={"h3"} variant="h4">Current Balance: {currentBalance}</Typography>
       {new Date(endDate).toLocaleDateString() === new Date().toLocaleDateString() ? (
-        <Typography variant="h5">
+        <Typography component={"h3"} variant="h5">
           Click on date for projected balance
         </Typography>
       ) : (
-        <Typography variant="h5">{`Projected Balance for ${new Date(
+        <Typography component={"h3"} variant="h5">{`Projected Balance for ${new Date(
           endDate
         ).toLocaleDateString()} is: ${projAmount}`}</Typography>
       )}
