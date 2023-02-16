@@ -24,19 +24,27 @@ const makeEntryCopies = (entryData:EntryAttributes[], skipDate?: Date[], duratio
         };
         if (entry.frequency === "Bi-Weekly") {
             for (let i = 0; i <= 26; i++) {
+                if (skipDate?.includes(newDate)) {
+                    newDate = addDays(newDate, 1)
+                } else {
             let newEntry = structuredClone(entry);
             newEntry.start = newDate.toISOString();
             newEntries = [...newEntries,newEntry];
             newDate = addDays(newDate,14);
+            }
             };
         };
         if (entry.frequency === "Weekly") {
             for (let i = 0; i <= 52; i++) {
+                if (skipDate?.includes(newDate)) {
+                    newDate = addDays(newDate, 1)
+                } else {
             let newEntry = structuredClone(entry);
             newEntry.start = newDate.toISOString();
             newEntries = [...newEntries,newEntry];
             newDate = addDays(newDate,7);
             };
+        }
         };
         if (entry.frequency === "ByDate") {
             let newEntry = structuredClone(entry);
