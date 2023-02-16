@@ -129,7 +129,8 @@ const Calendar = () => {
       // delete one instance of reoccuring entry
       // inject skipDate to the copyFuncton so it skips over that date
       // entryCopy(entry, start)
-
+      console.log("single delete button was pressed!")
+      handleModalClose()
     }
   }
 
