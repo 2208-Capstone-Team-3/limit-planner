@@ -6,7 +6,7 @@ import { EntryAttributes } from "../../server/db/models/Entry.model";
 // }
 
 export interface entriesInitialStateType {
-  reoccurEntries: EntryAttributes[];
+  reoccurEntries: any[];
 };
 
 const initialState: entriesInitialStateType = {
