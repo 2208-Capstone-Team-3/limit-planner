@@ -4,6 +4,7 @@ import { useSelector,useDispatch } from "react-redux";
 import { useParams } from 'react-router-dom';
 import NewEntry from "../Entry/NewEntry";
 import { RootState } from "../../store";
+import reoccurEntry from '../../store/reoccurEntriesSlice';
 import { EntryAttributes } from '../../../server/db/models/Entry.model';
 import { AccountAttributes } from '../../../server/db/models/Account.model';
 // MUI Components
@@ -29,7 +30,7 @@ const SingleAccount = () => {
                     authorization: `Bearer ${token}`,
                 },
             });
-            setAccount(account.data);
+            if(account) setAccount(account.data);
             setLoading(false);
         };
     },[accountId]);
@@ -46,12 +47,16 @@ const SingleAccount = () => {
             return new Date(b.start).getTime() - new Date(a.start).getTime();
         });
         setEntries(recentEntries)
-        // const lastCreditEntry = recentEntries.find(entry=>entry.creditDebit==='Credit');
-        // setLastCreditDate(new Date(lastCreditEntry?.start).toDateString());
-        // setLastCreditAmount(lastCreditEntry?.amount);
-        // const lastDebitEntry = recentEntries.find(entry=>entry.creditDebit==='Debit');
-        // setLastDebitDate(new Date(lastDebitEntry?.start).toDateString());
-        // setLastDebitAmount(lastDebitEntry?.amount);
+        const lastCreditEntry = recentEntries.find(entry=>entry.creditDebit==='Credit');
+        if(lastCreditEntry){
+            setLastCreditDate(new Date(lastCreditEntry.start).toDateString());
+            setLastCreditAmount(lastCreditEntry.amount);
+        };
+        const lastDebitEntry = recentEntries.find(entry=>entry.creditDebit==='Debit');
+        if(lastDebitEntry){
+            setLastDebitDate(new Date(lastDebitEntry.start).toDateString());
+            setLastDebitAmount(lastDebitEntry.amount);
+        };
         setLoading(false);
     },[accountId,reoccurEntries]);
     
