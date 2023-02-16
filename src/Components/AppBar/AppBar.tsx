@@ -95,7 +95,7 @@ function LimitAppBar() {
         </IconButton>
         <Link href="/home">
           <Avatar
-            alt="Limit Logo"
+          alt="Limit Logo"
             variant="square"
             src={theme.palette.mode === "light" ? lightLogo : darkLogo}
             sx={{
@@ -179,21 +179,9 @@ function LimitAppBar() {
                 key={"switcher"}
                 onClick={colorMode.toggleColorMode}
               />
-              {theme.palette.mode === "light" ? (
-                <Typography
-                  key={"ColorModeSwitchText"}
-                  className="LightModeSwitchText"
-                >
-                  Light
-                </Typography>
-              ) : (
-                <Typography
-                  key={"ColorModeSwitchText"}
-                  className="DarkModeSwitchText"
-                >
-                  Dark
-                </Typography>
-              )}
+              <Typography key={"ColorModeSwitchText"} className="ColorModeSwitchText">
+                {theme.palette.mode === "light" ? "Light" : "Dark"}
+              </Typography>
             </MenuItem>
           </Menu>
           {user.firstName ? (
