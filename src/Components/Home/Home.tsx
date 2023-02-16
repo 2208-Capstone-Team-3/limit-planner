@@ -19,8 +19,8 @@ import {
 import React from "react";
 import { Outlet } from "react-router-dom";
 import LimitAppBar from "../AppBar/AppBar";
-import MedalIcon from '@mui/icons-material/WorkspacePremium';
-import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
+import MedalIcon from "@mui/icons-material/WorkspacePremium";
+import AccountBalanceIcon from "@mui/icons-material/AccountBalance";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { setHomeDrawerOpen } from "../../store/themeSlice";
@@ -35,7 +35,7 @@ const Home = () => {
   const toggleDrawer = (): void => {
     dispatch(setHomeDrawerOpen(!homeDrawerOpen));
   };
- 
+
   return (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
       <LimitAppBar />

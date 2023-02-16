@@ -19,12 +19,13 @@ import CreateUserPage from "./Components/UserCreation/UserCreationPage";
 import HomeBasePortal from "./Components/Home/HomeBasePortal";
 import Accounts from "./Components/Accounts/Accounts";
 import SingleAccount from "./Components/Accounts/SingleAccount";
+import ErrorBoundary from "./Components/ErrorBoundary/ErrorBoundary";
 
 const userTokenTestTrue = async () => {
   try {
     const token = window.localStorage.getItem("token");
     if (token) throw redirect("/home");
-    return true
+    return true;
   } catch (error) {
     return false;
   }
@@ -38,7 +39,7 @@ const userTokenTestFalse = async () => {
     }
     return true;
   } catch (error) {
-    return false
+    return false;
   }
 };
 
@@ -46,7 +47,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
-    // errorElement: <ErrorBoundary />,
+    errorElement: <ErrorBoundary />,
     children: [
       {
         path: "",
@@ -66,7 +67,6 @@ const router = createBrowserRouter([
       {
         path: "projections",
         element: <ProjectionsComponent />,
-       
       },
       {
         path: "home",

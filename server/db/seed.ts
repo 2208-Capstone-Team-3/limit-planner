@@ -1,8 +1,8 @@
 import { VIRTUAL } from "sequelize";
 import db from "./db.js";
 import { Account, Entry, Goal, User, Skipdate } from "./index.js";
-// import Chance from "chance";
-// const chance = new Chance();
+import Chance from "chance";
+const chance = new Chance();
 
 const entryData = [
   {
@@ -13,9 +13,9 @@ const entryData = [
     note: "Got paid today!",
     start: new Date("2023-01-13"),
     allDay: true,
-    frequency:'Bi-Weekly'
+    frequency: "Bi-Weekly",
   },
-  { 
+  {
     entryType: "User",
     amount: 60000,
     creditDebit: "Debit",
@@ -23,9 +23,9 @@ const entryData = [
     note: "Paid ConEd",
     start: new Date("2023-01-24"),
     allDay: true,
-    frequency:'Monthly'
+    frequency: "Monthly",
   },
-  { 
+  {
     entryType: "API",
     amount: 70000,
     creditDebit: "Debit",
@@ -33,9 +33,9 @@ const entryData = [
     note: "Bought groceries",
     start: new Date("2023-01-01"),
     allDay: true,
-    frequency:'Weekly'
+    frequency: "Weekly",
   },
-  { 
+  {
     entryType: "API",
     amount: 30000,
     creditDebit: "Debit",
@@ -43,9 +43,9 @@ const entryData = [
     note: "Bought coffee",
     start: new Date("2023-01-15"),
     allDay: true,
-    frequency:'ByDate'
+    frequency: "ByDate",
   },
-  { 
+  {
     entryType: "API",
     amount: 30000,
     creditDebit: "Debit",
@@ -53,9 +53,9 @@ const entryData = [
     note: "Bought coffee",
     start: new Date("2023-02-08"),
     allDay: true,
-    frequency:'Weekly'
+    frequency: "Weekly",
   },
-  { 
+  {
     entryType: "API",
     amount: 30000,
     creditDebit: "Debit",
@@ -63,9 +63,9 @@ const entryData = [
     note: "Bought coffee",
     start: new Date("2023-02-09"),
     allDay: true,
-    frequency:'Weekly'
+    frequency: "Weekly",
   },
-  { 
+  {
     entryType: "API",
     amount: 30000,
     creditDebit: "Debit",
@@ -73,9 +73,9 @@ const entryData = [
     note: "Bought coffee",
     start: new Date("2023-02-10"),
     allDay: true,
-    frequency:'Weekly'
+    frequency: "Weekly",
   },
-  { 
+  {
     entryType: "API",
     amount: 30000,
     creditDebit: "Debit",
@@ -83,8 +83,8 @@ const entryData = [
     note: "Bought coffee",
     start: new Date("2023-02-12"),
     allDay: true,
-    frequency:'Weekly'
-  }
+    frequency: "Weekly",
+  },
 ];
 
 const goalData = [
@@ -218,13 +218,9 @@ const accountData = [
 
 const skipDatesEntry = [
   {
-    skippeddate: new Date("2023-01-01")
+    skippeddate: new Date("2023-01-01"),
   },
-  {
-    skippeddate: new Date("2022-02-02")
-  },
-
-]
+];
 
 const seed = async () => {
   await db.sync({ force: true });
@@ -252,21 +248,21 @@ const seed = async () => {
     console.log("adding skip dates")
     const [skipOne, skipTwo] = await Promise.all(skipDatesEntry.map((eachSkip) => Skipdate.create(eachSkip)));
 
-    // let i = 0;
-    // // const entryList = [];
-    // while (i++ < 500) {
-    //   const newEntry = await Entry.create({
-    //     entryType: chance.pickone(["User", "API"]),
-    //     start: new Date(chance.date({ year: 2023 })),
-    //     creditDebit: chance.pickone(["Credit", "Debit"]),
-    //     amount: chance.integer({ min: 0, max: 5000 }),
-    //     allDay: true,
-    //     title: chance.word(),
-    //     note: chance.sentence(),
-    //     frequency: "ByDate",
-    //   });
-    //   accountFour.addEntry(newEntry);
-    // }
+    let i = 0;
+    // const entryList = [];
+    while (i++ < 500) {
+      const newEntry = await Entry.create({
+        entryType: chance.pickone(["User", "API"]),
+        start: new Date(chance.date({ year: 2023 })),
+        creditDebit: chance.pickone(["Credit", "Debit"]),
+        amount: chance.integer({ min: 0, max: 5000 }),
+        allDay: true,
+        title: chance.word(),
+        note: chance.sentence(),
+        frequency: "ByDate",
+      });
+      accountFour.addEntry(newEntry);
+    }
 
     // --------------GOALS--------------
 
@@ -304,6 +300,9 @@ const seed = async () => {
 
     //Entry.hasMany(SkipDates)
     //SkipDates.belongsTo(Entry)
+    entryThree.addSkipdate(skipOne);
+    accountThree.addSkipdate(skipOne);
+    userThree.addSkipdate(skipOne);
     entryThree.addSkipdate(skipOne)
     accountThree.addSkipdate(skipOne)
     userThree.addSkipdate(skipOne)
@@ -320,7 +319,7 @@ const seed = async () => {
   } catch (err) {
     console.log("error");
     console.log(err);
-  };
+  }
 };
 
 seed();

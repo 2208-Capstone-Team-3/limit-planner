@@ -4,7 +4,6 @@ import {
   VictoryChart,
   VictoryScatter,
   VictoryTheme,
-  VictoryVoronoiContainer,
   VictoryZoomContainer,
 } from "victory";
 import { RootState } from "../../store";
@@ -16,7 +15,7 @@ const MainScatterChart = () => {
   entries
     .flat(Infinity)
     .forEach(
-      (ele: { start: Date; amount: number; creditDebit: string }, id, arr) => {
+      (ele: { start: Date; amount: number; creditDebit: string }) => {
         data.push({
           x: new Date(ele.start),
           y:
@@ -31,28 +30,21 @@ const MainScatterChart = () => {
   return (
     <VictoryChart
       theme={VictoryTheme.material}
+      key={"ScatterChartContainer"}
       containerComponent={
-        <VictoryZoomContainer theme={VictoryTheme.material} />
+        <VictoryZoomContainer key={"ScatterZoomContainer"} theme={VictoryTheme.material} />
       }
     >
       <VictoryScatter
-      name="ScatterChart"
-        size={({ datum }) => datum.amount / 1000}
-        animate={{
-          duration: 2000,
-          onLoad: { duration: 1000 },
-        }}
+        name="ScatterChart"
+        key={"MainScatterChart"}
+        size={({ datum }) => Math.pow(datum.amount, .2) ? Math.pow(datum.amount, .2) : 0 }
         style={{
           data: { fill: "#c43a31" },
         }}
         data={data.sort().map((ele) => {
           return { x: ele.x, y: ele.y, amount: ele.amount };
         })}
-        //     labels={({ datum }) =>
-        //     `${new Date(datum.x).toLocaleDateString(undefined, {
-        //       month: "long",
-        //     })}, $${datum.amount}`
-        //   }
       ></VictoryScatter>
     </VictoryChart>
   );
