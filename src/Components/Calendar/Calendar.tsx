@@ -1,5 +1,6 @@
 import React, { BaseSyntheticEvent, useState } from "react";
 import axios from "axios";
+import "./calendar.css"
 import { useSelector, useDispatch } from "react-redux";
 import { Box, Modal, Skeleton } from "@mui/material";
 import FullCalendar from "@fullcalendar/react";
@@ -142,6 +143,7 @@ const Calendar = () => {
         <FullCalendar
           loading={() => reoccurEntries.length === 0}
           key={"Calendar"}
+          
           plugins={[
             dayGridPlugin,
             timeGridPlugin,
@@ -162,6 +164,8 @@ const Calendar = () => {
           events={reoccurEntries}
           select={handleSelect}
           eventClick={handleModalOpen}
+          moreLinkHint={"More Events if Clicked"}
+          
         />
       </Box>
       <Modal
