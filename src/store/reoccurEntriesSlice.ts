@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { EntryAttributes } from "../../server/db/models/Entry.model";
 
-interface reoccurEntry extends EntryAttributes {
+export interface reoccurEntry extends EntryAttributes {
   accountId: string;
 }
 
