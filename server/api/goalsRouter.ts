@@ -42,16 +42,14 @@ router.post(
       const {
         name,
         goalAmount,
-        startAmount,
-        startDate,
+  
         endDate,
         victory,
       }: GoalAttributes = req.body;
       const createdGoal = await Goal.create({
         name,
         goalAmount,
-        startAmount,
-        startDate,
+   
         endDate,
         victory,
       });

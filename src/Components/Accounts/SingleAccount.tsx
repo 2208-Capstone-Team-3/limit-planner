@@ -2,6 +2,7 @@ import React, { useState,useEffect } from "react";
 import axios from "axios";
 import { useParams } from 'react-router-dom';
 import NewEntry from "../Entry/NewEntry";
+import NewGoal from "../Goals/NewGoal";
 
 const SingleAccount = () => {
     const { accountId } = useParams();
@@ -31,6 +32,7 @@ const SingleAccount = () => {
         <div>
             <h1>{account.accountName}</h1>
             <NewEntry accountId={accountId}/>
+            <NewGoal accountId={accountId}/>
         </div>
     );
 };
