@@ -1,3 +1,4 @@
+import React from "react";
 import {
   BarChart,
   ChevronLeft,
@@ -16,7 +17,6 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import React from "react";
 import { Outlet } from "react-router-dom";
 import LimitAppBar from "../AppBar/AppBar";
 import MedalIcon from "@mui/icons-material/WorkspacePremium";
@@ -56,7 +56,7 @@ const Home = () => {
           }}
         >
           <Typography variant="button">Collapse</Typography>
-          <IconButton onClick={toggleDrawer} style={{ position: "sticky" }}>
+          <IconButton aria-label="Navigation Drawer Open or Close" onClick={toggleDrawer} style={{ position: "sticky" }}>
             {homeDrawerOpen ? <ChevronLeft /> : <ChevronRight />}
           </IconButton>
         </Toolbar>
