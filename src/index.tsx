@@ -21,6 +21,8 @@ import Accounts from "./Components/Accounts/Accounts";
 import SingleAccount from "./Components/Accounts/SingleAccount";
 import ErrorBoundary from "./Components/ErrorBoundary/ErrorBoundary";
 import AdvancedCharting from "./Components/Charts/AdvancedCharting";
+import Goals from "./Components/Goals/Goals";
+import SingleGoal from "./Components/Goals/SingleGoal";
 
 const userTokenTestTrue = async () => {
   try {
@@ -91,7 +93,11 @@ const router = createBrowserRouter([
           },
           {
             path: "goals",
-            element: <Home />,
+            element: <Goals />,
+          },
+          {
+            path: "single-goal/:goalId",
+            element: <SingleGoal />,
           },
         ],
         loader: userTokenTestFalse,
