@@ -68,19 +68,19 @@ const Home = () => {
             </ListItemIcon>
             <ListItemText primary="Dashboard" />
           </ListItemButton>
-          <ListItemButton href="/charts">
+          <ListItemButton href="/home/advancedcharts">
             <ListItemIcon>
               <BarChart />
             </ListItemIcon>
             <ListItemText primary="Advanced Charts" />
           </ListItemButton>
-          <ListItemButton href="/goals">
+          <ListItemButton href="/home/goals">
             <ListItemIcon>
               <MedalIcon />
             </ListItemIcon>
             <ListItemText primary="Goals" />
           </ListItemButton>
-          <ListItemButton href="/accounts">
+          <ListItemButton href="/home/accounts">
             <ListItemIcon>
               <AccountBalanceIcon />
             </ListItemIcon>

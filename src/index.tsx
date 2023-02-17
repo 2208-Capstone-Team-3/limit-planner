@@ -20,8 +20,7 @@ import HomeBasePortal from "./Components/Home/HomeBasePortal";
 import Accounts from "./Components/Accounts/Accounts";
 import SingleAccount from "./Components/Accounts/SingleAccount";
 import ErrorBoundary from "./Components/ErrorBoundary/ErrorBoundary";
-
-
+import AdvancedCharting from "./Components/Charts/AdvancedCharting";
 
 const userTokenTestTrue = async () => {
   try {
@@ -70,7 +69,7 @@ const router = createBrowserRouter([
         path: "projections",
         element: <ProjectionsComponent />,
       },
-        {
+      {
         path: "home",
         element: <Home />,
         children: [
@@ -78,27 +77,21 @@ const router = createBrowserRouter([
             path: "",
             element: <HomeBasePortal />,
           },
-        ],
-        loader: userTokenTestFalse,
-      },
-      {
-        path: "accounts",
-        element: <Home />,
-        children: [
           {
-            path: "",
+            path: "accounts",
             element: <Accounts />,
           },
-        ],
-        loader: userTokenTestFalse,
-      },
-      {
-        path: "single-account/:accountId",
-        element: <Home />,
-        children: [
           {
-            path: "",
+            path: "single-account/:accountId",
             element: <SingleAccount />,
+          },
+          {
+            path: "advancedcharts",
+            element: <AdvancedCharting />,
+          },
+          {
+            path: "goals",
+            element: <Home />,
           },
         ],
         loader: userTokenTestFalse,

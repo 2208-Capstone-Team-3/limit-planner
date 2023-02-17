@@ -14,7 +14,7 @@ const Accounts = () => {
             <Card
               sx={{ minWidth: 275 }}
               component={Link}
-              to={`/single-account/${account.id}`}
+              to={`/home/single-account/${account.id}`}
             >
               <CardContent sx={{ display: "flex", flexDirection: "column" }}>
                 <Box sx={{ display: "flex", justifyContent: "center" }}>

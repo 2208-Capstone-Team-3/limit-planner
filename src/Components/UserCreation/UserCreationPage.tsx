@@ -14,6 +14,8 @@ import GoogleLocation from "./UserGoogleLocation";
 import { setUserToCreate } from "../../store/userToCreateSlice";
 import { setUser } from "../../store/userSlice";
 import { RootState } from "../../store";
+import { Avatar, Box, Link } from "@mui/material";
+import Logo from "../../resources/logo.svg";
 
 const CreateUserPage = () => {
   const userToCreate = useSelector(
@@ -76,156 +78,174 @@ const CreateUserPage = () => {
   };
 
   return (
-    <Container
-      sx={{ display: "flex", flexDirection: "column", placeSelf: "center" }}
-    >
-      <Typography sx={{ placeSelf: "center" }} variant={"h2"}>
-        Create Your Account
-      </Typography>
-      <Form className="form">
-        <div className="userForm">
-          <FormControl error={validity.username} required>
-            <InputLabel htmlFor="username-input">Your Username</InputLabel>
-            <Input
-              name="username"
-              id="username-input"
-              aria-describedby="username-helper-text"
-              onChange={(event) => {
-                handleUserStateChange(event);
-                validateUsername(event);
-              }}
-            />
-            <FormHelperText id="username-helper-text">
-              {validity.username
-                ? "Your username must be unique."
-                : "Other users will see this username."}
-            </FormHelperText>
-          </FormControl>
-
-          <FormControl required>
-            <InputLabel htmlFor="password-input">Your Password</InputLabel>
-            <Input
-              name="password"
-              id="password-input"
-              aria-describedby="password-helper-text"
-              onChange={handleUserStateChange}
-            />
-            <FormHelperText id="password-helper-text">
-              Your password should include a number.
-            </FormHelperText>
-          </FormControl>
-
-          <FormControl required>
-            <InputLabel htmlFor="firstName-input">First Name</InputLabel>
-            <Input
-              name="firstName"
-              id="firstName-input"
-              aria-describedby="firstName-helper-text"
-              onChange={handleUserStateChange}
-            />
-            <FormHelperText id="firstName-helper-text">
-              Please enter your first name only.
-            </FormHelperText>
-          </FormControl>
-
-          <FormControl required>
-            <InputLabel htmlFor="lastName-input">Last Name</InputLabel>
-            <Input
-              name="lastName"
-              id="lastName-input"
-              aria-describedby="lastName-helper-text"
-              onChange={handleUserStateChange}
-            />
-            <FormHelperText id="lastName-helper-text">
-              Please enter your last name only.
-            </FormHelperText>
-          </FormControl>
-          <FormControl error={validity.email} required>
-            <InputLabel htmlFor="email-input">Your Email</InputLabel>
-            <Input
-              error={validity.email}
-              name="email"
-              id="email-input"
-              aria-describedby="email-helper-text"
-              onChange={(event) => {
-                handleUserStateChange(event);
-                validateEmail(event);
-              }}
-            />
-            <FormHelperText id="email-helper-text">
-              {validity.email
-                ? "This email address has already been used."
-                : "Please enter your email address."}
-            </FormHelperText>
-          </FormControl>
-
-          <FormControl required>
-            <InputLabel htmlFor="phoneNum-input">Your Phone Number</InputLabel>
-            <Input
-              name="phoneNum"
-              id="phoneNum-input"
-              aria-describedby="phoneNum-helper-text"
-              onChange={handleUserStateChange}
-            />
-            <FormHelperText id="phoneNum-helper-text">
-              Please enter your phone number with area code.
-            </FormHelperText>
-          </FormControl>
-
-          <FormControl required>
-            <InputLabel htmlFor="avatar-input">Your Avatar</InputLabel>
-            <Input
-              name="avatarUrl"
-              id="avatar-input"
-              aria-describedby="avatar-helper-text"
-              onChange={handleUserStateChange}
-            />
-            <FormHelperText id="avatar-helper-text">
-              Please provide an avatar image URL for your avatar.
-            </FormHelperText>
-          </FormControl>
-          <FormControl required>
-            <InputLabel shrink htmlFor="birthday-input">
-              Birthday
-            </InputLabel>
-            <Input
-              type="date"
-              name="birthday"
-              id="birthday-input"
-              aria-describedby="birthday-helper-text"
-              onChange={handleUserStateChange}
-            />
-            <FormHelperText id="birthday-helper-text">
-              Please provide your birth date.
-            </FormHelperText>
-          </FormControl>
-
-          <FormControl required>
-            <GoogleLocation />
-            <FormHelperText id="address-helper-text">
-              Please provide your current address.
-            </FormHelperText>
-          </FormControl>
-        </div>
-        <Button
-          size="large"
-          sx={{ width: "20vw", height: "10vh" }}
-          onClick={handleSubmit}
-          variant="contained"
-        >
-          <Typography
+    <Box>
+        <Link sx={{position: "absolute"}} aria-label="Link back to Limit Landing page" href="/">
+          <Avatar
+            role={"navigation"}
+            alt="Limit Logo"
+            variant="square"
             sx={{
-              display: { xs: "none", md: "flex" },
-              fontWeight: 500,
-              letterSpacing: ".2rem",
+              mr: 10,
+              height: "20vh",
+              width: "max-content",
+              padding: 1,
             }}
-            variant={"h4"}
+            src={Logo}
+          ></Avatar>
+        </Link>
+      <Container
+        sx={{ display: "flex", flexDirection: "column", placeSelf: "center" }}
+      >
+        <Typography sx={{ placeSelf: "center" }} variant={"h2"}>
+          Create Your Account
+        </Typography>
+        <Form className="form">
+          <div className="userForm">
+            <FormControl error={validity.username} required>
+              <InputLabel htmlFor="username-input">Your Username</InputLabel>
+              <Input
+                name="username"
+                id="username-input"
+                aria-describedby="username-helper-text"
+                onChange={(event) => {
+                  handleUserStateChange(event);
+                  validateUsername(event);
+                }}
+              />
+              <FormHelperText id="username-helper-text">
+                {validity.username
+                  ? "Your username must be unique."
+                  : "Other users will see this username."}
+              </FormHelperText>
+            </FormControl>
+
+            <FormControl required>
+              <InputLabel htmlFor="password-input">Your Password</InputLabel>
+              <Input
+                name="password"
+                id="password-input"
+                aria-describedby="password-helper-text"
+                onChange={handleUserStateChange}
+              />
+              <FormHelperText id="password-helper-text">
+                Your password should include a number.
+              </FormHelperText>
+            </FormControl>
+
+            <FormControl required>
+              <InputLabel htmlFor="firstName-input">First Name</InputLabel>
+              <Input
+                name="firstName"
+                id="firstName-input"
+                aria-describedby="firstName-helper-text"
+                onChange={handleUserStateChange}
+              />
+              <FormHelperText id="firstName-helper-text">
+                Please enter your first name only.
+              </FormHelperText>
+            </FormControl>
+
+            <FormControl required>
+              <InputLabel htmlFor="lastName-input">Last Name</InputLabel>
+              <Input
+                name="lastName"
+                id="lastName-input"
+                aria-describedby="lastName-helper-text"
+                onChange={handleUserStateChange}
+              />
+              <FormHelperText id="lastName-helper-text">
+                Please enter your last name only.
+              </FormHelperText>
+            </FormControl>
+            <FormControl error={validity.email} required>
+              <InputLabel htmlFor="email-input">Your Email</InputLabel>
+              <Input
+                error={validity.email}
+                name="email"
+                id="email-input"
+                aria-describedby="email-helper-text"
+                onChange={(event) => {
+                  handleUserStateChange(event);
+                  validateEmail(event);
+                }}
+              />
+              <FormHelperText id="email-helper-text">
+                {validity.email
+                  ? "This email address has already been used."
+                  : "Please enter your email address."}
+              </FormHelperText>
+            </FormControl>
+
+            <FormControl required>
+              <InputLabel htmlFor="phoneNum-input">
+                Your Phone Number
+              </InputLabel>
+              <Input
+                name="phoneNum"
+                id="phoneNum-input"
+                aria-describedby="phoneNum-helper-text"
+                onChange={handleUserStateChange}
+              />
+              <FormHelperText id="phoneNum-helper-text">
+                Please enter your phone number with area code.
+              </FormHelperText>
+            </FormControl>
+
+            <FormControl required>
+              <InputLabel htmlFor="avatar-input">Your Avatar</InputLabel>
+              <Input
+                name="avatarUrl"
+                id="avatar-input"
+                aria-describedby="avatar-helper-text"
+                onChange={handleUserStateChange}
+              />
+              <FormHelperText id="avatar-helper-text">
+                Please provide an avatar image URL for your avatar.
+              </FormHelperText>
+            </FormControl>
+            <FormControl required>
+              <InputLabel shrink htmlFor="birthday-input">
+                Birthday
+              </InputLabel>
+              <Input
+                type="date"
+                name="birthday"
+                id="birthday-input"
+                aria-describedby="birthday-helper-text"
+                onChange={handleUserStateChange}
+              />
+              <FormHelperText id="birthday-helper-text">
+                Please provide your birth date.
+              </FormHelperText>
+            </FormControl>
+
+            <FormControl required>
+              <GoogleLocation />
+              <FormHelperText id="address-helper-text">
+                Please provide your current address.
+              </FormHelperText>
+            </FormControl>
+          </div>
+          <Button
+            size="large"
+            sx={{ width: "20vw", height: "10vh" }}
+            onClick={handleSubmit}
+            variant="contained"
           >
-            Submit
-          </Typography>
-        </Button>
-      </Form>
-    </Container>
+            <Typography
+              sx={{
+                display: { xs: "none", md: "flex" },
+                fontWeight: 500,
+                letterSpacing: ".2rem",
+              }}
+              variant={"h4"}
+            >
+              Submit
+            </Typography>
+          </Button>
+        </Form>
+      </Container>{" "}
+    </Box>
   );
 };
 
