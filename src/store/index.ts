@@ -15,7 +15,7 @@ const store = configureStore({
     theme: themeReducer,
     accounts: accountsReducer,
     goals: goalsReducer,
-    reoccurEntries: reoccurEntriesReducer
+    reoccurEntries: reoccurEntriesReducer,
   },
 });
 

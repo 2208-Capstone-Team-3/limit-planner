@@ -27,7 +27,7 @@ const userTokenTestTrue = async () => {
   try {
     const token = window.localStorage.getItem("token");
     if (token) throw redirect("/home");
-    return true
+    return true;
   } catch (error) {
     return false;
   }
@@ -41,7 +41,7 @@ const userTokenTestFalse = async () => {
     }
     return true;
   } catch (error) {
-    return false
+    return false;
   }
 };
 

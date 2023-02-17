@@ -10,14 +10,10 @@ import interactionPlugin from "@fullcalendar/interaction";
 import { DateSelectArg, EventClickArg } from "@fullcalendar/core";
 import { RootState } from "../../store";
 import { setDateSelector } from "../../store/themeSlice";
-import {
-  setReoccurEntries,
-  deleteReoccurEntries,
-} from "../../store/reoccurEntriesSlice";
+import { setReoccurEntries } from "../../store/reoccurEntriesSlice";
 import { setEntries } from "../../store/entriesSlice";
 import makeEntryCopies from "./../../helpers/makeEntryCopies";
 import { EntryAttributes } from "../../../server/db/models/Entry.model";
-// import { addDays, addMonths } from 'date-fns';
 
 const modalStyle = {
   position: "absolute",
@@ -68,7 +64,7 @@ const Calendar = () => {
   };
 
   const handleSelect = (selected: DateSelectArg) => {
-    dispatch(setDateSelector(selected.startStr));
+    dispatch(setDateSelector(selected.endStr));
   };
 
   const handleEntryTypeChange = (event: BaseSyntheticEvent) => {
@@ -138,7 +134,7 @@ const Calendar = () => {
     }
   };
 
-  if (reoccurEntries.length===0) return <Skeleton variant="rectangular" />;
+  if (reoccurEntries.length === 0) return <Skeleton animation={"wave"} variant="rectangular" />;
 
   return (
     <Box>

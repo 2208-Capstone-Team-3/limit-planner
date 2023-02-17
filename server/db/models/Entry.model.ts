@@ -31,7 +31,6 @@ export interface EntryAttributes
     start: Date | string;
     allDay: boolean;
     frequency:string;
-    
 }
 
 const Entry = db.define<EntryAttributes>("entry", {
@@ -77,16 +76,16 @@ const Entry = db.define<EntryAttributes>("entry", {
   note: {
     type: STRING,
   },
-  allDay:{
+  allDay: {
     type: BOOLEAN,
     defaultValue: true,
-    allowNull:false
+    allowNull: false,
   },
-  frequency:{
+  frequency: {
     type: ENUM,
-    values:['ByDate','Weekly','Bi-Weekly','Monthly'],
-    allowNull:false
-  }
+    values: ["ByDate", "Weekly", "Bi-Weekly", "Monthly"],
+    allowNull: false,
+  },
 });
 
 export default Entry;

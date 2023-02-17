@@ -4,8 +4,8 @@ interface initialStateType {
   theme: {
     homeDrawerOpen: boolean;
     dateSelector: Date | string;
-    accountSelector: string
-    goalSelector: string
+    accountSelector: string;
+    goalSelector: string;
   };
 }
 
@@ -14,7 +14,7 @@ const initialState: initialStateType = {
     homeDrawerOpen: true,
     dateSelector: "05-05-2023",
     accountSelector: "",
-    goalSelector: ""
+    goalSelector: "",
   },
 };
 
@@ -45,7 +45,7 @@ export const themeSlice = createSlice({
         homeDrawerOpen: true,
         dateSelector: new Date(),
         accountSelector: "",
-        goalSelector: ""
+        goalSelector: "",
       };
     },
   },
