@@ -1,12 +1,22 @@
-const Sequelize = require("sequelize");
-const db = new Sequelize(process.env.DATABASE_URL, {
-  dialectOptions: {
-    ssl: {
-      require: true,
-      rejectUnauthorized: false,
-    },
-  },
-});
+import { Sequelize } from "sequelize";
+
+const DB_NAME = "limit_planner_db";
+const URL = `postgres://localhost/${DB_NAME}`;
+const config = {
+  logging: false,
+};
+let db: Sequelize;
+
+process.env.DATABASE_URL
+  ? (db = new Sequelize(process.env.DATABASE_URL, {
+      dialectOptions: {
+        ssl: {
+          require: true,
+          rejectUnauthorized: false,
+        },
+      },
+    }))
+  : (db = new Sequelize(URL, config));
 
 db.authenticate()
   .then(() => {
@@ -16,4 +26,4 @@ db.authenticate()
     console.error("Unable to connect to the database:", err);
   });
 
-module.exports = db;
+export default db;
