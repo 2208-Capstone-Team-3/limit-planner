@@ -6,7 +6,7 @@ interface initialStateType {
 }
 
 const initialState: initialStateType = {
-    userToCreate: { address: null },
+  userToCreate: { address: null },
 };
 
 export const createUserSlice = createSlice({
