@@ -26,11 +26,8 @@ router.post(
   "/skipdates",
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-    console.log("1")
     const startDate  = req.body.startDate
-    console.log("2")
     await Skipdate.create({skippeddate: startDate})
-    console.log('3')
     res.send(202)
   } catch (err) {
     console.log(err)

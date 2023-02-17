@@ -133,8 +133,8 @@ const Calendar = () => {
       console.log("single button is clicked");
       console.log("this is the info being passed into post", start)
       const startDate = `${new Date(start)}`
-      console.log(startDate)
-      await axios.post("/api/entries/skipdates", startDate )
+      console.log("THIS IS POST CHANGE STARTDATE",startDate)
+      await axios.post("/api/entries/skipdates", startDate)
       const skipdates: SkipDateAttributes[] = await axios.get("/api/entries/skipdates")
       const updatedEntries = await axios.get("/api/entries", {
         headers: { Authorization: "Bearer " + token },
