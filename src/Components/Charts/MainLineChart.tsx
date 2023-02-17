@@ -55,7 +55,7 @@ const MainLineChart = () => {
       theme={VictoryTheme.material}
       containerComponent={
         <VictoryVoronoiContainer
-          voronoiPadding={60}
+          voronoiPadding={{top: 0, bottom: 60, left: 60, right : 0}}
           labels={({ datum }) =>
             `${
               typeof datum.x === "object"

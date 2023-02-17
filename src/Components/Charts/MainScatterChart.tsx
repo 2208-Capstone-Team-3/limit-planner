@@ -44,7 +44,7 @@ const MainScatterChart = () => {
         name="ScatterChart"
         key={"MainScatterChart"}
         size={({ datum }) =>
-          Math.pow(datum.amount, 0.2) ? Math.pow(datum.amount, 0.2) : 0
+          Math.floor(Math.pow(datum.amount, 0.2)) ? Math.pow(datum.amount, 0.2) : 2
         }
         style={{
           data: {
