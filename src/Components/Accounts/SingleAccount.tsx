@@ -3,12 +3,14 @@ import axios from "axios";
 import { useSelector,useDispatch } from "react-redux";
 import { useParams } from 'react-router-dom';
 import NewEntry from "../Entry/NewEntry";
+import NewGoal from "../Goals/NewGoal";
 import { RootState } from "../../store";
 import reoccurEntry from '../../store/reoccurEntriesSlice';
 import { EntryAttributes } from '../../../server/db/models/Entry.model';
 import { AccountAttributes } from '../../../server/db/models/Account.model';
 // MUI Components
 import {Box,CircularProgress,Container,Grid,Typography} from '@mui/material';
+
 
 const SingleAccount = () => {
     const { accountId } = useParams();
@@ -67,6 +69,10 @@ const SingleAccount = () => {
 
     if (loading) return <CircularProgress />;
     return (
+        <div>
+            <h1>{account.accountName}</h1>
+            <NewEntry accountId={accountId}/>
+            <NewGoal accountId={accountId}/>
         <Box sx={{display:'flex',flexDirection:'column',gap:'30px'}}>
           <Typography variant="h2">{account?.accountName}</Typography>
             <Container sx={{display: "flex", flexDirection: "column", placeItems: "center", placeContent: "center"}}>
@@ -104,6 +110,7 @@ const SingleAccount = () => {
                 })}
             </Container>
         </Box>
+                </div>
     );
 };
 

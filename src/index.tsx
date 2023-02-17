@@ -21,6 +21,8 @@ import Accounts from "./Components/Accounts/Accounts";
 import SingleAccount from "./Components/Accounts/SingleAccount";
 import ErrorBoundary from "./Components/ErrorBoundary/ErrorBoundary";
 
+
+
 const userTokenTestTrue = async () => {
   try {
     const token = window.localStorage.getItem("token");
@@ -68,7 +70,7 @@ const router = createBrowserRouter([
         path: "projections",
         element: <ProjectionsComponent />,
       },
-      {
+        {
         path: "home",
         element: <Home />,
         children: [
