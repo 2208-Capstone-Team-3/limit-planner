@@ -8,7 +8,7 @@ import reoccurEntry from '../../store/reoccurEntriesSlice';
 import { EntryAttributes } from '../../../server/db/models/Entry.model';
 import { AccountAttributes } from '../../../server/db/models/Account.model';
 // MUI Components
-import {Box,Grid,Typography} from '@mui/material';
+import {Box,CircularProgress,Container,Grid,Typography} from '@mui/material';
 
 const SingleAccount = () => {
     const { accountId } = useParams();
@@ -65,11 +65,11 @@ const SingleAccount = () => {
         findRecentEntries();
     },[fetchAccount,findRecentEntries]);
 
-    if(loading) return <p>Loading...</p>
+    if (loading) return <CircularProgress />;
     return (
-        <Box sx={{width:'50%'}}>
-            <Box>
-                <h1>{account?.accountName}</h1>
+        <Box sx={{display:'flex',flexDirection:'column',gap:'30px'}}>
+          <Typography variant="h2">{account?.accountName}</Typography>
+            <Container sx={{display: "flex", flexDirection: "column", placeItems: "center", placeContent: "center"}}>
                 <Grid container rowSpacing={1} columnSpacing={{ xs: 2, sm: 2, md: 3 }}>
                     <Grid xs={4}>
                         <Typography><b>Account type:</b> {account?.accountType}</Typography>
@@ -93,18 +93,16 @@ const SingleAccount = () => {
                         <Typography><b>Last debit date:</b> {lastDebitDate}</Typography>
                     </Grid>
                 </Grid>
-            </Box>
-            <Box>
-                <NewEntry accountId={accountId}/>
-            </Box>
-            <Box>
-                <h2>Recent activity</h2>
+                {/* <NewEntry accountId={accountId}/> */}
+            </Container>
+            <Container>
+                <Typography variant='h4'>Recent activity</Typography>
                 {entries.map((entry:any)=>{
                     return (
-                        <p>{entry.creditDebit} | {new Date(entry.start).toDateString()} - {entry.title} - ${entry.amount}</p>
+                        <Typography>{entry.creditDebit} | {new Date(entry.start).toDateString()} - {entry.title} - ${entry.amount}</Typography>
                         )
                 })}
-            </Box>
+            </Container>
         </Box>
     );
 };
