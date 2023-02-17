@@ -16,6 +16,7 @@ import { setEntries } from "../../store/entriesSlice";
 import makeEntryCopies from "./../../helpers/makeEntryCopies";
 import { EntryAttributes } from "../../../server/db/models/Entry.model";
 import { blueGrey, deepOrange } from "@mui/material/colors";
+import { update } from "lodash";
 
 const modalStyle = {
   position: "absolute",
@@ -109,7 +110,8 @@ const Calendar = () => {
     const updatedEntries = await axios.get("/api/entries", {
       headers: { Authorization: "Bearer " + token },
     });
-    const updatedEntryCopies = makeEntryCopies(updatedEntries.data[0]);
+    const updatedEntryCopies = makeEntryCopies(updatedEntries.data);
+    console.log({'Updated entry copies':updatedEntryCopies});
     dispatch(setEntries(updatedEntryCopies));
     dispatch(setReoccurEntries(updatedEntryCopies));
     handleModalClose();
@@ -123,7 +125,7 @@ const Calendar = () => {
       const updatedEntries = await axios.get("/api/entries", {
         headers: { Authorization: "Bearer " + token },
       });
-      const updatedEntryCopies = await makeEntryCopies(updatedEntries.data[0]);
+      const updatedEntryCopies = makeEntryCopies(updatedEntries.data);
       const filteredEntries = updatedEntryCopies.filter(
         (entry: EntryAttributes) => entry.id !== id
       );
