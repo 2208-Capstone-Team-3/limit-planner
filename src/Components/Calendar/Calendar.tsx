@@ -111,7 +111,7 @@ const Calendar = () => {
       headers: { Authorization: "Bearer " + token },
     });
     const updatedEntryCopies = makeEntryCopies(updatedEntries.data);
-    console.log({'Updated entry copies':updatedEntryCopies});
+    console.log(updatedEntryCopies);
     dispatch(setEntries(updatedEntryCopies));
     dispatch(setReoccurEntries(updatedEntryCopies));
     handleModalClose();
@@ -136,6 +136,16 @@ const Calendar = () => {
       // if (event.target.value === "single")
       // delete entries based off of what :/
     }
+  };
+
+  const updateEntryDate = async(selected: any) => {
+    console.log('An entry was moved!');
+    // need to update the front end 'reocurrEntries' component
+    // when clickin on an Entry in the calendar, that particular 
+    // entry might not exist in the DB - it might just be a copy
+    // created for the front end. This function should update the
+    // backend if the instance exists in the DB, and then update
+    // the front end
   };
 
   if (reoccurEntries.length === 0)
@@ -167,6 +177,7 @@ const Calendar = () => {
           events={reoccurEntries}
           select={handleSelect}
           eventClick={handleModalOpen}
+          eventDragStop={updateEntryDate}
           moreLinkHint={"More Events if Clicked"}
           eventColor={
             theme.palette.mode === "light" ? blueGrey[400] : deepOrange[900]
