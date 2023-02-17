@@ -133,8 +133,6 @@ const Calendar = () => {
       handleModalClose();
     } else {
       console.log("single button is clicked");
-      // if (event.target.value === "single")
-      // delete entries based off of what :/
     }
   };
 
