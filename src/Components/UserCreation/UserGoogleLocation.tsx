@@ -11,8 +11,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
 import { debounce } from "@mui/material";
 
-const GOOGLE_MAPS_API_KEY = "AIzaSyAyUkHRfBORgASbvySKo6-6Qk7WHVU9owA";
-
 function loadScript(src: string, position: HTMLHeadElement | null, id: string) {
   if (!position) {
     return;
@@ -64,7 +62,7 @@ export default function GoogleLocation() {
   if (typeof window !== "undefined" && !loaded.current) {
     if (!document.querySelector("#google-maps")) {
       loadScript(
-        `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&libraries=places`,
+        `https://maps.googleapis.com/maps/api/js?key=${process.env.GOOGLE_MAPS_API_KEY}&libraries=places`,
         document.querySelector("head"),
         "google-maps"
       );
