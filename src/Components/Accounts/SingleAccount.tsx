@@ -141,9 +141,12 @@ const SingleAccount = () => {
             <Typography variant="h4">Recent activity</Typography>
             {entries.map((entry: any) => {
               return (
+                entry.creditDebit==='Credit' ? 
                 <Typography>
-                  {entry.creditDebit} | {new Date(entry.start).toDateString()} -{" "}
-                  {entry.title} - ${entry.amount}
+                  + {new Date(entry.start).toDateString()} - {entry.title} - ${entry.amount}
+                  </Typography> : 
+                <Typography>
+                  - {new Date(entry.start).toDateString()} - {entry.title} - ${entry.amount}
                 </Typography>
               );
             })}
