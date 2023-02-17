@@ -70,7 +70,7 @@ const SingleAccount = () => {
     if (loading) return <CircularProgress />;
     return (
         <div>
-            <h1>{account.accountName}</h1>
+            <h1>{account?.accountName ?? "Guest"}</h1>
             <NewEntry accountId={accountId}/>
             <NewGoal accountId={accountId}/>
         <Box sx={{display:'flex',flexDirection:'column',gap:'30px'}}>
