@@ -13,8 +13,8 @@ const MainGoalPercentageChart = () => {
   const theme = useTheme();
   return (
     <VictoryChart
-      theme={VictoryTheme.material}
-      padding={{top: 0, bottom: 60, left: 60, right : 0}}
+      theme={VictoryTheme.material}  
+      padding={{top: 10, bottom: 30, left: 30, right : 0}}
       name={"GoalChart"}
       animate={{
         duration: 2000,
@@ -23,6 +23,7 @@ const MainGoalPercentageChart = () => {
       containerComponent={
         <VictoryVoronoiContainer
           labels={({ datum }) => `${Math.round(datum.y)}`}
+          voronoiPadding={{top: 10, bottom: 30, left: 30, right : 0}}
         />
       }
     >

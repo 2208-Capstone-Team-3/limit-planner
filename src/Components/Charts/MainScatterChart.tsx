@@ -32,7 +32,7 @@ const MainScatterChart = () => {
     <VictoryChart
       theme={VictoryTheme.material}
       key={"ScatterChartContainer"}
-      padding={{top: 0, bottom: 60, left: 60, right : 0}}
+      padding={{top: 10, bottom: 30, left: 30, right : 0}}
       containerComponent={
         <VictoryZoomContainer
           key={"ScatterZoomContainer"}

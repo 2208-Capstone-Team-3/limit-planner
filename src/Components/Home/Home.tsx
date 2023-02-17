@@ -37,7 +37,7 @@ const Home = () => {
   };
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "column" }}>
+    <Box sx={{ display: "flex", flexDirection: "column", height: "100vh" }}>
       <LimitAppBar />
       <Drawer
         variant="persistent"
@@ -56,12 +56,16 @@ const Home = () => {
           }}
         >
           <Typography variant="button">Collapse</Typography>
-          <IconButton aria-label="Navigation Drawer Open or Close" onClick={toggleDrawer} style={{ position: "sticky" }}>
+          <IconButton
+            aria-label="Navigation Drawer Open or Close"
+            onClick={toggleDrawer}
+            style={{ position: "sticky" }}
+          >
             {homeDrawerOpen ? <ChevronLeft /> : <ChevronRight />}
           </IconButton>
         </Toolbar>
         <Divider />
-        <List component="nav">
+        <List component="nav" sx={{height: "50vh"}}>
           <ListItemButton href="/home">
             <ListItemIcon>
               <Dashboard />

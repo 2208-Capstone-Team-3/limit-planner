@@ -99,7 +99,7 @@ const AdvancedCharting = () => {
               fullWidth
               labelId="goalSelectLabel"
               id="goalSelect"
-              value={goalSelector}
+              value={goalSelector ?? ""}
               renderValue={(ele) => <Typography>{ele}</Typography>}
               label="Goal"
               onChange={handleGoal}
