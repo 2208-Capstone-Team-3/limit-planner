@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { EntryAttributes } from "../../server/db/models/Entry.model";
 
 interface reoccurEntry {
   amount: any;
@@ -9,7 +10,7 @@ interface reoccurEntry {
 
 export interface entriesInitialStateType {
   reoccurEntries: reoccurEntry[];
-}
+};
 
 const initialState: entriesInitialStateType = {
   reoccurEntries: [],

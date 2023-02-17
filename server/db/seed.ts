@@ -286,9 +286,10 @@ const seed = async () => {
     accountOne.addEntry(entryOne);
     accountTwo.addEntry(entryTwo);
     accountThree.addEntry(entryThree);
+    accountFour.addEntry(entryOne);
+    accountFour.addEntry(entryThree);
     accountFour.addEntry(entryFour);
     accountFour.addEntry(entryFive);
-    accountFour.addEntry(entryThree);
 
     // Account.hasMany(Goal);
     // Goal.belongsTo(Account);
