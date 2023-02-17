@@ -1,7 +1,7 @@
 {
   "name": "limit-planner",
   "version": "0.1.0",
-  "private": true,
+  "build": "production",
   "type": "module",
   "dependencies": {
     "@emotion/react": "^11.10.5",
