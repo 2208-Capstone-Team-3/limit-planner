@@ -29,4 +29,6 @@ Skipdate.belongsTo(Account);
 User.hasMany(Skipdate);
 Skipdate.belongsTo(User);
 
+
+
 export { Account, User, Goal, Entry, Skipdate };

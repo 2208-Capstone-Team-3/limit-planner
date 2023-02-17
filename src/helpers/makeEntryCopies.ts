@@ -26,39 +26,46 @@ userId?: string,
 const makeEntryCopies = (entryData: EntryAttributes[], skipDate?: SkipDateAttributes[], duration?: number) => {
   let newEntries: EntryAttributes[] = [];
   entryData.forEach((entry: EntryAttributes) => {
-    let newDate = new Date(entry.start);
-    if(skipDate) {
-        // let badDates = skipDate.map((dates) => {
-        //     return dates.skippeddate
-        // })
-        console.log(skipDate)
-    }
-    
+    let newDate = new Date(entry.start)
+
+    const filteredSkipdates = skipDate?.filter((date) => date.entryId === entry.id)
+    .map((date) => new Date(date.skippeddate))
+
     if (entry.frequency === "Monthly") {
       for (let i = 0; i <= 12; i++) {
-        // check if entry[i].skip matches skipdate we provide. if it includes skipdate we want then dont copy it
-        // if (!entry[i].skip === skipDate)
+        if (filteredSkipdates?.includes(new Date(entry.start))) {
+            newDate = addMonths(newDate, 1)
+        } else {
         let newEntry = structuredClone(entry);
         newEntry.start = newDate.toISOString();
         newEntries = [...newEntries, newEntry];
         newDate = addMonths(newDate, 1);
+        }
       }
     }
     if (entry.frequency === "Bi-Weekly") {
       for (let i = 0; i <= 26; i++) {
+        if (filteredSkipdates?.includes(new Date(entry.start))) {
+            newDate = addDays(newDate, 14)
+        } else {
         let newEntry = structuredClone(entry);
         newEntry.start = newDate.toISOString();
         newEntries = [...newEntries, newEntry];
         newDate = addDays(newDate, 14);
       }
     }
+    }
     if (entry.frequency === "Weekly") {
       for (let i = 0; i <= 52; i++) {
+        if (filteredSkipdates?.includes(new Date(entry.start))) {
+            newDate = addDays(newDate, 7)
+        } else {
         let newEntry = structuredClone(entry);
         newEntry.start = newDate.toISOString();
         newEntries = [...newEntries, newEntry];
         newDate = addDays(newDate, 7);
       }
+    }
     }
     if (entry.frequency === "ByDate") {
       let newEntry = structuredClone(entry);

@@ -4,18 +4,39 @@ import { AccountAttributes } from "../db/models/Account.model.js";
 import { EntryAttributes } from "../db/models/Entry.model.js";
 import { UserAttributes } from "../db/models/User.model.js";
 import { authenticateUser } from "./helpers/authUserMiddleware.js";
+
 const router = express.Router();
 
-//TEST API
+// TEST API
 // api/entries/skipdates
 router.get(
-  "/skipdates", 
+  "/skipdates", authenticateUser,
   async (req: Request, res: Response, next: NextFunction) => {
-    const foundUser = await Entry.findAll({
-      include: [Skipdate]
-    });
-    if(foundUser) {res.send(foundUser)} 
-    else {res.send([{name: "couldnt find anything"}])}
+    const user: UserAttributes | null = req.body.user
+    const foundSkip = await Skipdate.findAll({
+      where: {
+        userId: user?.id
+      }
+    })
+    if (foundSkip.length) {res.send(foundSkip)}
+    else{res.send("found nothing")}
+});
+
+router.post(
+  "/skipdates",
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+    console.log("1")
+    const startDate  = req.body.startDate
+    console.log("2")
+    await Skipdate.create({skippeddate: startDate})
+    console.log('3')
+    res.send(202)
+  } catch (err) {
+    console.log(err)
+    res.sendStatus(404)
+    next(err)
+  }
 });
 
 router.get(
@@ -35,22 +56,20 @@ router.get(
   }
 );
 
-
-
 router.get(
   "/",
   authenticateUser,
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const foundUser: UserAttributes | null = await User.findByPk(
+      const foundEntry: UserAttributes | null = await User.findByPk(
         req.body.user.id
       );
-      if (!foundUser) {
+      if (!foundEntry) {
         res.sendStatus(404);
       } else {
         const foundUserAccounts: AccountAttributes[] | null =
           await Account.findAll({
-            where: { userId: foundUser?.id },
+            where: { userId: foundEntry?.id },
             include: [Entry]
           });
         if (!foundUserAccounts) {
@@ -58,7 +77,6 @@ router.get(
         } else {
           const userEntries = foundUserAccounts.flatMap((acc) => acc.entries);
           res.send(userEntries);
-          
         }
       }
     } catch (err) {

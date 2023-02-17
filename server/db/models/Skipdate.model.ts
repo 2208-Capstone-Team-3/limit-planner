@@ -16,6 +16,7 @@ export interface SkipDateAttributes
   > {
   id?: string;
   skippeddate: Date;
+  userId?: string 
 }
 
 const Skipdate = db.define<SkipDateAttributes>("skipdate", {

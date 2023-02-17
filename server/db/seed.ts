@@ -223,6 +223,9 @@ const skipDatesEntry = [
   {
     skippeddate: new Date("2022-02-02"),
   },
+  {
+    skippeddate: new Date("2023-03-03"),
+  },
 ];
 
 const seed = async () => {
@@ -249,7 +252,7 @@ const seed = async () => {
 
     // -------------SKIPDATES---------------
     console.log("adding skip dates")
-    const [skipOne, skipTwo] = await Promise.all(skipDatesEntry.map((eachSkip) => Skipdate.create(eachSkip)));
+    const [skipOne, skipTwo, skipThree] = await Promise.all(skipDatesEntry.map((eachSkip) => Skipdate.create(eachSkip)));
 
     let i = 0;
     // const entryList = [];
@@ -305,6 +308,12 @@ const seed = async () => {
     //SkipDates.belongsTo(Entry)
     entryThree.addSkipdate(skipOne)
     entryTwo.addSkipdate(skipTwo)
+    entryFive.addSkipdate(skipThree)
+
+    userThree.addSkipdate(skipOne)
+    userTwo.addSkipdate(skipTwo)
+    userFour.addSkipdate(skipThree)
+    //userFour is sailormoon acc
 
   } catch (err) {
     console.log("error");

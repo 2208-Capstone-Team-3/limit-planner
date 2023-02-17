@@ -14,6 +14,7 @@ import { setReoccurEntries } from "../../store/reoccurEntriesSlice";
 import { setEntries } from "../../store/entriesSlice";
 import makeEntryCopies from "./../../helpers/makeEntryCopies";
 import { EntryAttributes } from "../../../server/db/models/Entry.model";
+import { SkipDateAttributes } from "../../../server/db/models/Skipdate.model";
 
 const modalStyle = {
   position: "absolute",
@@ -121,16 +122,30 @@ const Calendar = () => {
       const updatedEntries = await axios.get("/api/entries", {
         headers: { Authorization: "Bearer " + token },
       });
-      const updatedEntryCopies = await makeEntryCopies(updatedEntries.data[0]);
+      const updatedEntryCopies = await makeEntryCopies(updatedEntries.data);
       const filteredEntries = updatedEntryCopies.filter(
         (entry: EntryAttributes) => entry.id !== id
       );
       dispatch(setReoccurEntries(filteredEntries));
+      dispatch(setEntries(filteredEntries));
       handleModalClose();
     } else {
       console.log("single button is clicked");
+      console.log("this is the info being passed into post", start)
+      const startDate = `${new Date(start)}`
+      console.log(startDate)
+      await axios.post("/api/entries/skipdates", startDate )
+      const skipdates: SkipDateAttributes[] = await axios.get("/api/entries/skipdates")
+      const updatedEntries = await axios.get("/api/entries", {
+        headers: { Authorization: "Bearer " + token },
+      });
+      const updatedEntryCopies = await makeEntryCopies(updatedEntries.data, skipdates);
       // if (event.target.value === "single")
       // delete entries based off of what :/
+      dispatch(setReoccurEntries(updatedEntryCopies))
+      dispatch(setEntries(updatedEntryCopies));
+      console.log("hello!!!!!!!!!!!!!!!!!")
+      handleModalClose()
     }
   };
 
@@ -147,7 +162,6 @@ const Calendar = () => {
         return dates.skippeddate
       })
     })
-
   }
 
   if (reoccurEntries.length === 0) return <Skeleton animation={"wave"} variant="rectangular" />;

@@ -20,6 +20,7 @@ export interface EntryAttributes
     InferCreationAttributes<EntryAttributes>
   > {
   addSkipdate(skipdate: SkipDateAttributes): unknown;
+  accounts?: any
   id?: string;
   entryType: string;
   amount: number;
