@@ -1,12 +1,7 @@
 import React, { useState, BaseSyntheticEvent } from "react";
 import axios from "axios";
-import {  useDispatch } from "react-redux";
-import {
-  Box,
-  TextField,
-  FormControl,
-  Button,
-} from "@mui/material";
+import { useDispatch } from "react-redux";
+import { Box, TextField, FormControl, Button } from "@mui/material";
 import { setGoals } from "../../store/goalsSlice";
 import { Dayjs } from "dayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -89,40 +84,42 @@ const NewGoal = ({ accountId }: props) => {
         </Grid2>
         {/* input for start date */}
         <Grid2 xs={3}>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DesktopDatePicker
-              label="End Date"
-              inputFormat="MM/DD/YYYY"
-              value={endDate}
-              onChange={handleEndDateChange}
-              renderInput={(params) => (
-                <TextField {...params} sx={inputStyle} />
-              )}
-            />
-          </LocalizationProvider>
+          <FormControl sx={inputStyle}>
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <DesktopDatePicker
+                label="End Date"
+                inputFormat="MM/DD/YYYY"
+                value={endDate}
+                onChange={handleEndDateChange}
+                renderInput={(params) => (
+                  <TextField {...params} sx={inputStyle} />
+                )}
+              />
+            </LocalizationProvider>
+          </FormControl>
         </Grid2>
         {/* input for name */}
         <Grid2 xs={3}>
-          <TextField
-            sx={inputStyle}
-            id="outlined-basic"
-            label="Name"
-            variant="outlined"
-            value={name}
-            onChange={handleNameChange}
-          />
-
-          <FormControl sx={inputStyle}></FormControl>
+          <FormControl sx={inputStyle}>
+            <TextField
+              sx={inputStyle}
+              id="outlined-basic"
+              label="Name"
+              variant="outlined"
+              value={name}
+              onChange={handleNameChange}
+            />
+          </FormControl>
         </Grid2>
       </Grid2>
-          <Button
-            sx={{ width: "10vw" }}
-            size="large"
-            variant="contained"
-            onClick={submitGoal}
-          >
-            Submit
-          </Button>
+      <Button
+        sx={{ width: "10vw" }}
+        size="large"
+        variant="contained"
+        onClick={submitGoal}
+      >
+        Submit
+      </Button>
     </Box>
   );
 };

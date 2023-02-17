@@ -33,7 +33,7 @@ const Selectors = () => {
   const allGoals = goals.flat(Infinity).map((ele) => ele);
   return (
     <Grid2 container padding={1}>
-      <Grid2 minWidth={"8vw"} paddingRight={1}>
+      <Grid2 xs={12} paddingRight={1}>
         <FormControl key={"accountFormControl"} fullWidth>
           <InputLabel id="accountSelectLabel">Account</InputLabel>
           <Select
@@ -47,14 +47,14 @@ const Selectors = () => {
             onChange={handleAccount}
           >
             {accounts.map((ele, id) => (
-              <MenuItem key={`${ele.id}` + id}  value={ele.accountName}>
+              <MenuItem key={`${ele.id}` + id} value={ele.accountName}>
                 {ele.accountName}
               </MenuItem>
             ))}
           </Select>
         </FormControl>
       </Grid2>
-      <Grid2 minWidth={"6vw"} paddingRight={1}>
+      <Grid2 xs={12} paddingRight={1}>
         <FormControl fullWidth>
           <InputLabel id="goalSelectLabel">Goal</InputLabel>
           <Select
