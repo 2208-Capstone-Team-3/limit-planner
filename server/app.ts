@@ -11,10 +11,10 @@ app.use("/api", api);
 
 // Pass back everything else / front-end
 app.use("/public", express.static(path.join(import.meta.url, "../public")));
-app.use(express.static(path.join(__dirname, "build")));
+app.use(express.static(path.join(import.meta.url, "build")));
 
 app.get("/", function (req, res) {
-  res.sendFile(path.join(__dirname, "build", "index.html"));
+  res.sendFile(path.join(import.meta.url, "build", "index.html"));
 });
 
 export default app;
