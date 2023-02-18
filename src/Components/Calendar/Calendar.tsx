@@ -150,7 +150,7 @@ const Calendar = () => {
         const updatedEntries = await axios.get("/api/entries", {
           headers: { Authorization: "Bearer " + token },
         });
-        //grab skipdates
+        //grab skipdates GET 
         const updatedEntryCopies = await makeEntryCopies(updatedEntries.data);
         dispatch(setReoccurEntries(updatedEntryCopies))
         dispatch(setEntries(updatedEntryCopies));
