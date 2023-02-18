@@ -46,11 +46,17 @@ const Selectors = () => {
             label="Account"
             onChange={handleAccount}
           >
-            {accounts?.map((ele, id) => (
-              <MenuItem key={`${ele.id}` + id} value={ele.accountName}>
-                {ele.accountName}
+            {accounts ? (
+              accounts?.map((ele, id) => (
+                <MenuItem key={`${ele.id}` + id} value={ele.accountName}>
+                  {ele.accountName}
+                </MenuItem>
+              ))
+            ) : (
+              <MenuItem key={`None Available`} value={""}>
+                {"None Available"}
               </MenuItem>
-            ))}
+            )}
           </Select>
         </FormControl>
       </Grid2>
@@ -67,7 +73,7 @@ const Selectors = () => {
             label="Goal"
             onChange={handleGoal}
           >
-            {allGoals.map((ele, id) => (
+            {allGoals?.map((ele, id) => (
               <MenuItem key={`${ele.id}` + id} value={ele.name}>
                 {ele.name ?? "None"}
               </MenuItem>
