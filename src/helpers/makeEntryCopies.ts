@@ -5,7 +5,6 @@ import {
     InferAttributes,
     InferCreationAttributes,
   } from "sequelize";
-import axios from "axios"
 
 export interface SkipDateAttributes
   extends Model<
@@ -21,24 +20,22 @@ accountId?: string,
 userId?: string,
 }
 
-const makeEntryCopies = async (entryData: EntryAttributes[], duration?: number) => {
+const makeEntryCopies = async (entryData: EntryAttributes[], skipdates?: { data: SkipDateAttributes[] }, duration?: number) => {
     const token = window.localStorage.getItem("token");
-    let skipdates: { data: SkipDateAttributes[] } = await axios.get("/api/entries/skipdates", {
-        headers: { Authorization: "Bearer " + token },
-      })
-      console.log("SKIPDATES!!",skipdates)
+    
+    //   console.log("SKIPDATES!!",skipdates)
   let newEntries: EntryAttributes[] = [];
 
   entryData.forEach((entry: EntryAttributes) => {
     let newDate = new Date(entry.start)
-    console.log("ENTRY.START DATE:", entry.start)
+    // console.log("ENTRY.START DATE:", entry.start)
     //ENTRY.START IS this format 2023-02-11T00:00:00.000Z
 
-    const filtered = skipdates.data.filter((date: SkipDateAttributes)=> {
+    const filtered = skipdates?.data.filter((date: SkipDateAttributes)=> {
         return date.entryId === entry.id
     })
     const mapped = filtered?.map((date: SkipDateAttributes)=> {
-        console.log("INSIDE MAPPED",date.skippeddate)
+        // console.log("INSIDE MAPPED",date.skippeddate)
         return date.skippeddate
     })
     // const grabDatesOnly = mapped?.map((date)=> {
@@ -52,13 +49,13 @@ const makeEntryCopies = async (entryData: EntryAttributes[], duration?: number) 
 
     if (entry.frequency === "Monthly") {
       for (let i = 0; i <= 12; i++) {
-        if (mapped.includes(new Date(entry.start))) {
+        if (mapped?.includes(new Date(entry.start))) {
             newDate = addMonths(newDate, 1)
         } else {
         let newEntry = structuredClone(entry);
-        console.log("BEFORE TURNED INTO ISO: ",newEntry.start)
+        // console.log("BEFORE TURNED INTO ISO: ",newEntry.start)
         newEntry.start = newDate.toISOString();
-        console.log("AFTER TURNED INTO ISO", newEntry.start)
+        // console.log("AFTER TURNED INTO ISO", newEntry.start)
         
         newEntries = [...newEntries, newEntry];
         newDate = addMonths(newDate, 1);
@@ -67,7 +64,7 @@ const makeEntryCopies = async (entryData: EntryAttributes[], duration?: number) 
     }
     if (entry.frequency === "Bi-Weekly") {
       for (let i = 0; i <= 26; i++) {
-        if (mapped.includes(new Date(entry.start))) {
+        if (mapped?.includes(new Date(entry.start))) {
             newDate = addDays(newDate, 14)
         } else {
         let newEntry = structuredClone(entry);
@@ -79,7 +76,7 @@ const makeEntryCopies = async (entryData: EntryAttributes[], duration?: number) 
     }
     if (entry.frequency === "Weekly") {
       for (let i = 0; i <= 52; i++) {
-        if (mapped.includes(new Date(entry.start))) {
+        if (mapped?.includes(new Date(entry.start))) {
             newDate = addDays(newDate, 7)
         } else {
         let newEntry = structuredClone(entry);

@@ -15,6 +15,7 @@ import { setReoccurEntries } from "../../store/reoccurEntriesSlice";
 import { setEntries } from "../../store/entriesSlice";
 import makeEntryCopies from "./../../helpers/makeEntryCopies";
 import { EntryAttributes } from "../../../server/db/models/Entry.model";
+import { SkipDateAttributes } from "./../../helpers/makeEntryCopies";
 import { blueGrey, deepOrange } from "@mui/material/colors";
 // import { update } from "lodash";
 
@@ -116,8 +117,7 @@ const Calendar = () => {
     const updatedEntries = await axios.get("/api/entries", {
       headers: { Authorization: "Bearer " + token },
     });
-    const updatedEntryCopies = makeEntryCopies(updatedEntries.data);
-    console.log({'Updated entry copies':updatedEntryCopies});
+    const updatedEntryCopies = await makeEntryCopies(updatedEntries.data);
     dispatch(setEntries(updatedEntryCopies));
     dispatch(setReoccurEntries(updatedEntryCopies));
     handleModalClose();
@@ -132,11 +132,11 @@ const Calendar = () => {
         headers: { Authorization: "Bearer " + token },
       });
       const updatedEntryCopies = await makeEntryCopies(updatedEntries.data);
-      const filteredEntries = updatedEntryCopies.filter(
+      const filteredEntries = await updatedEntryCopies.filter(
         (entry: EntryAttributes) => entry.id !== id
       );
-      dispatch(setReoccurEntries(filteredEntries));
       dispatch(setEntries(filteredEntries));
+      dispatch(setReoccurEntries(filteredEntries));
       handleModalClose();
     } else {
       console.log("single button is clicked");
@@ -155,9 +155,12 @@ const Calendar = () => {
           headers: { Authorization: "Bearer " + token },
         });
         //grab skipdates GET 
-        const updatedEntryCopies = await makeEntryCopies(updatedEntries.data);
-        dispatch(setReoccurEntries(updatedEntryCopies))
+        let skipdates: { data: SkipDateAttributes[] } = await axios.get("/api/entries/skipdates", {
+          headers: { Authorization: "Bearer " + token },
+        })
+        const updatedEntryCopies = await makeEntryCopies(updatedEntries.data, skipdates);
         dispatch(setEntries(updatedEntryCopies));
+        dispatch(setReoccurEntries(updatedEntryCopies))
         handleModalClose()
     }
   };
