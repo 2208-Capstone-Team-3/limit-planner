@@ -227,7 +227,6 @@ const seed = async () => {
     //Entry.hasMany(SkipDates)
     //SkipDates.belongsTo(Entry)
     entryThree.addSkipdate(skipOne);
-    accountOne.addSkipdate(skipOne);
     userOne.addSkipdate(skipOne);
     userOne.addSkipdate(skipTwo)
     userOne.addSkipdate(skipThree)
