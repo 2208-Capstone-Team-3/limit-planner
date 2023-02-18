@@ -13,7 +13,7 @@ app.use("/api", api);
 app.use("/public", express.static(path.join(import.meta.url, "../public")));
 app.use(express.static(path.join(import.meta.url, "../build")));
 
-app.get("/", function (req, res) {
-  res.sendFile("index.html", { root:  "./build" });
-});
+// app.get("/*", function (req, res) {
+//   res.sendFile("index.html", { root:  "./build" });
+// });
 export default app;
