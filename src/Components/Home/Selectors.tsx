@@ -47,7 +47,7 @@ const Selectors = () => {
             onChange={handleAccount}
           >
             {accounts.map((ele, id) => (
-              <MenuItem key={`${ele.id}` + id} value={ele.id}>
+              <MenuItem key={`${ele.id}` + id} value={ele.accountName}>
                 {ele.accountName}
               </MenuItem>
             ))}
