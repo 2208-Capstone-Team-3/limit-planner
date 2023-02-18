@@ -131,21 +131,28 @@ const Calendar = () => {
       handleModalClose();
     } else {
       console.log("single button is clicked");
-      console.log("this is the info being passed into post", start)
-      const startDate = `${new Date(start)}`
-      console.log("THIS IS POST CHANGE STARTDATE",startDate)
-      await axios.post("/api/entries/skipdates", startDate)
-      const skipdates: SkipDateAttributes[] = await axios.get("/api/entries/skipdates")
-      const updatedEntries = await axios.get("/api/entries", {
-        headers: { Authorization: "Bearer " + token },
-      });
-      const updatedEntryCopies = await makeEntryCopies(updatedEntries.data, skipdates);
-      // if (event.target.value === "single")
-      // delete entries based off of what :/
-      dispatch(setReoccurEntries(updatedEntryCopies))
-      dispatch(setEntries(updatedEntryCopies));
+      console.log("BEFORE ISOSTART START: ", start)
+        const isoStart = start.toISOString()
+      console.log("AFTER ISOSTRING: ",isoStart)
+        const databaseStart = isoStart.substring(0,10)
+      console.log("AFTER DATABASESTART CONVER: ",databaseStart)
+        const startDate = { 
+          skippeddate: databaseStart, 
+          userId: "a3c4258e-766c-4be1-acac-02e2573fe4a0", 
+          entryId: "cc652552-56b0-4c90-95f7-92baacf07f3b"}
+        await axios.post("/api/entries/skipdates", startDate)
+        // await axios.post("/api/entries/skipdates")
+        const skipdates: SkipDateAttributes[] = await axios.get("/api/entries/skipdates")
+        const updatedEntries = await axios.get("/api/entries", {
+          headers: { Authorization: "Bearer " + token },
+        });
+        const updatedEntryCopies = await makeEntryCopies(updatedEntries.data, skipdates);
+        // if (event.target.value === "single")
+        // delete entries based off of what :/
+        dispatch(setReoccurEntries(updatedEntryCopies))
+        dispatch(setEntries(updatedEntryCopies));
       console.log("hello!!!!!!!!!!!!!!!!!")
-      handleModalClose()
+        handleModalClose()
     }
   };
 
@@ -157,7 +164,7 @@ const Calendar = () => {
     const newerEntries = updatedEntries.data
     newerEntries.map((entry: any)=> {
       let badDates = entry.skipdates
-      badDates.map((dates: any)=>{
+       return badDates.map((dates: any)=>{
         console.log(dates.skippeddate)
         return dates.skippeddate
       })

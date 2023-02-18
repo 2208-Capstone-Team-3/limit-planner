@@ -12,23 +12,48 @@ const router = express.Router();
 router.get(
   "/skipdates", authenticateUser,
   async (req: Request, res: Response, next: NextFunction) => {
-    const user: UserAttributes | null = req.body.user
+    try {
+      const user: UserAttributes | null = req.body.user
     const foundSkip = await Skipdate.findAll({
       where: {
-        userId: user?.id
+        // userId: user?.id
+        userId: "a3c4258e-766c-4be1-acac-02e2573fe4a0"
       }
     })
-    if (foundSkip.length) {res.send(foundSkip)}
-    else{res.send("found nothing")}
+    console.log("BEFORE FOUNDSKIP!!!!!!!!!!!")
+    if (foundSkip.length) {
+      console.log("!!!!!!!!!!!!!!!!!!!got skipdates")
+      res.send(foundSkip)} 
+      else {
+      console.log("!!!!!!!!!!!!!!!!!!!!!!!failed GET skipdates")
+      res.send(404)
+      }
+    } catch (err) {
+      console.log("!!!!!!!!! HIT THE CATCHED")
+      console.log(err)
+      res.send(400)
+    }
+});
+
+router.get(
+  "/allskipdates",
+  async (req: Request, res: Response, next: NextFunction) => {
+   const allSkips = await Skipdate.findAll()
+   res.send(allSkips)
 });
 
 router.post(
   "/skipdates",
-  async (req: Request, res: Response, next: NextFunction) => {
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-    const startDate  = req.body.startDate
-    await Skipdate.create({skippeddate: startDate})
-    res.send(202)
+      const { skippeddate, userId, entryId } = req.body
+      console.log("between req.body/create")
+    const createdSkip = await Skipdate.create({ skippeddate })
+    const foundUser = await User.findByPk(userId)
+    const foundEntry = await Entry.findByPk(entryId)
+    foundUser?.addSkipdate(createdSkip)
+    foundEntry?.addSkipdate(createdSkip)
+    res.send(200)
   } catch (err) {
     console.log(err)
     res.sendStatus(404)
