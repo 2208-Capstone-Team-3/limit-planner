@@ -20,9 +20,12 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { useNavigate } from "react-router-dom";
-import { IconButton, useTheme } from "@mui/material";
+import { Switch, useTheme } from "@mui/material";
 import { ColorModeContext } from "../../App";
-import { Brightness4, Brightness7 } from "@mui/icons-material";
+
+import Logo from "../../resources/logo.svg";
+import DarkModeIcon from "@mui/icons-material/DarkMode";
+import LightModeIcon from "@mui/icons-material/LightMode";
 
 const LoginPage = () => {
   const theme = useTheme();
@@ -82,12 +85,38 @@ const LoginPage = () => {
 
   return (
     <Box>
-      <IconButton
-        sx={{ position: "absolute", zIndex: 6, left: "1vw", top: "1vw" }}
+              <Link sx={{position: "absolute"}} aria-label="Link back to Limit Landing page" href="/">
+          <Avatar
+            role={"navigation"}
+            alt="Limit Logo"
+            variant="square"
+            sx={{
+              mr: 10,
+              height: "20vh",
+              width: "max-content",
+              padding: 1,
+            }}
+            src={Logo}
+          ></Avatar>
+        </Link>
+        <Switch
+        sx={{ position: "absolute", zIndex: 6, right: "1vw", top: "1vw" }}
+        checked={theme.palette.mode === "light"}
+        icon={
+          <DarkModeIcon
+            sx={{ backgroundColor: "black", borderRadius: "50%" }}
+            color="inherit"
+          />
+        }
+        checkedIcon={
+          <LightModeIcon
+            sx={{ backgroundColor: "white", borderRadius: "50%" }}
+            color="primary"
+          />
+        }
+        key={"switcher"}
         onClick={colorMode.toggleColorMode}
-      >
-        {theme.palette.mode === "dark" ? <Brightness7 /> : <Brightness4 />}
-      </IconButton>
+      />
       <Container component="main" maxWidth="xs">
         <Box
           sx={{

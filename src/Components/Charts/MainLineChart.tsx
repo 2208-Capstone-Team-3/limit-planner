@@ -38,14 +38,13 @@ const MainLineChart = () => {
   return (
     <VictoryChart
     scale={{ x: "time", y: "linear" }}
-    padding={{top: 0, bottom: 60, left: 60, right : 0}}
+    padding={{top: 10, bottom: 30, left: 30, right : 0}}
       domain={{
         x: [
           subMonths(new Date(dateSelector), 1),
           addMonths(new Date(dateSelector), 1),
         ],
       }}
-      
       title={"Account Progression"}
       key="LineChartMainContainer"
       animate={{
@@ -55,7 +54,7 @@ const MainLineChart = () => {
       theme={VictoryTheme.material}
       containerComponent={
         <VictoryVoronoiContainer
-          voronoiPadding={60}
+          voronoiPadding={{top: 10, bottom: 30, left: 30, right : 0}}
           labels={({ datum }) =>
             `${
               typeof datum.x === "object"

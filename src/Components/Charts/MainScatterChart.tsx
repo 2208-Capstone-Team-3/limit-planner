@@ -32,7 +32,7 @@ const MainScatterChart = () => {
     <VictoryChart
       theme={VictoryTheme.material}
       key={"ScatterChartContainer"}
-      padding={{top: 0, bottom: 60, left: 60, right : 0}}
+      padding={{top: 10, bottom: 30, left: 30, right : 0}}
       containerComponent={
         <VictoryZoomContainer
           key={"ScatterZoomContainer"}
@@ -44,7 +44,7 @@ const MainScatterChart = () => {
         name="ScatterChart"
         key={"MainScatterChart"}
         size={({ datum }) =>
-          Math.pow(datum.amount, 0.2) ? Math.pow(datum.amount, 0.2) : 0
+          Math.floor(Math.pow(datum.amount, 0.2)) ? Math.pow(datum.amount, 0.2) : 2
         }
         style={{
           data: {

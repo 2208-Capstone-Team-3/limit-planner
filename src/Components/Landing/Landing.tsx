@@ -11,6 +11,7 @@ import {
   Grow,
   IconButton,
   Paper,
+  Switch,
   Typography,
 } from "@mui/material";
 import lightBackground from "../../resources/lightBackground.mp4";
@@ -24,17 +25,14 @@ import "swiper/css";
 import "swiper/css/effect-fade";
 import "swiper/css/mousewheel";
 import "swiper/css/keyboard";
-import {
-  Brightness4,
-  Brightness7,
-  KeyboardArrowDown,
-  KeyboardArrowUp,
-} from "@mui/icons-material/";
+import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material/";
 import { ColorModeContext } from "../../App";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { setUser } from "../../store/userSlice";
+import DarkModeIcon from "@mui/icons-material/DarkMode";
+import LightModeIcon from "@mui/icons-material/LightMode";
 
 function usePhotometer<Type>(lightRet: Type, darkRet: Type): Type {
   const theme = useTheme();
@@ -97,13 +95,24 @@ function Landing() {
 
   return (
     <Box>
-      <IconButton
+      <Switch
         sx={{ position: "absolute", zIndex: 6, left: "1vw", top: "1vw" }}
+        checked={theme.palette.mode === "light"}
+        icon={
+          <DarkModeIcon
+            sx={{ backgroundColor: "black", borderRadius: "50%" }}
+            color="inherit"
+          />
+        }
+        checkedIcon={
+          <LightModeIcon
+            sx={{ backgroundColor: "white", borderRadius: "50%" }}
+            color="primary"
+          />
+        }
+        key={"switcher"}
         onClick={colorMode.toggleColorMode}
-        color="inherit"
-      >
-        {theme.palette.mode === "dark" ? <Brightness7 /> : <Brightness4 />}
-      </IconButton>
+      />
       <Button
         variant="contained"
         sx={{
@@ -300,6 +309,7 @@ function Landing() {
               </Container>
             </Grow>
             <Button
+              href="/createuser"
               variant="contained"
               sx={{
                 fontSize: "5vh",
