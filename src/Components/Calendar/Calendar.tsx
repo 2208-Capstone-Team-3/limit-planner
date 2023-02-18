@@ -16,7 +16,7 @@ import { setEntries } from "../../store/entriesSlice";
 import makeEntryCopies from "./../../helpers/makeEntryCopies";
 import { EntryAttributes } from "../../../server/db/models/Entry.model";
 import { blueGrey, deepOrange } from "@mui/material/colors";
-import { update } from "lodash";
+// import { update } from "lodash";
 
 const modalStyle = {
   position: "absolute",
@@ -49,6 +49,7 @@ const Calendar = () => {
   const reoccurEntries = useSelector(
     (state: RootState) => state.reoccurEntries.reoccurEntries
   );
+  const user = useSelector((state: RootState) => state.user.user);
 
   const handleModalOpen = (selected: EventClickArg) => {
     setModalOpen(true);
@@ -127,10 +128,10 @@ const Calendar = () => {
       await axios.delete(`/api/entries/${id}`, {
         headers: { Authorization: "Bearer " + token },
       });
-      const updatedEntries = await axios.get("/api/entries", {
+      const updatedEntries: {data: EntryAttributes[]} = await axios.get("/api/entries", {
         headers: { Authorization: "Bearer " + token },
       });
-      const updatedEntryCopies = makeEntryCopies(updatedEntries.data);
+      const updatedEntryCopies = await makeEntryCopies(updatedEntries.data);
       const filteredEntries = updatedEntryCopies.filter(
         (entry: EntryAttributes) => entry.id !== id
       );
@@ -245,9 +246,7 @@ const Calendar = () => {
           <button onClick={deleteEntry} value="single">
             Delete Single
           </button>
-          <button onClick={showStart}>Show start date</button>
           <button onClick={showUserInfo}>Show userinfo button</button>
-          <button onClick={testStart}>Test start api date</button>
         </Box>
       </Modal>
     </Box>

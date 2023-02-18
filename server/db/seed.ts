@@ -1,7 +1,6 @@
 import { VIRTUAL } from "sequelize";
 import db from "./db.js";
 import { Account, Entry, Goal, User, Skipdate } from "./index.js";
-import Chance from "chance";
 // const chance = new Chance();
 
 const entryData = [
@@ -230,6 +229,9 @@ const seed = async () => {
     entryThree.addSkipdate(skipOne);
     accountOne.addSkipdate(skipOne);
     userOne.addSkipdate(skipOne);
+    userOne.addSkipdate(skipTwo)
+    userOne.addSkipdate(skipThree)
+
   } catch (err) {
     console.log("error");
     console.log(err);
