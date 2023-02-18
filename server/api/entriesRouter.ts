@@ -11,22 +11,6 @@ const router = express.Router();
 router.get(
   "/skipdates", authenticateUser,
   async (req: Request, res: Response, next: NextFunction) => {
-    // const user: UserAttributes | null = req.body.user
-    // console.log("ENTER GET ROUTE")
-    // console.log("userId req param", user?.id)
-    // const foundSkip = await Skipdate.findAll({
-    //   where: {
-    //     // userId: user?.id
-    //     userId: user?.id
-    //   }
-    // })
-    // if (foundSkip.length) {
-    //   console.log("!!!!!!!!!!!!!!!!!!!got skipdates")
-    //   res.send(foundSkip)} 
-    //   else {
-    //     console.log("!!!!!!!!! INSIDE ELSE")
-    //     res.send(403)
-    //   } 
     const user = req.body.user
     if (user) {
       console.log("USER EXIST")
@@ -35,7 +19,6 @@ router.get(
       console.log("!!!!!!!")
       const foundSkip = await Skipdate.findAll({
           where: {
-            // userId: user?.id
             userId: user.id
           }
         })

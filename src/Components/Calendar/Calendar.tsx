@@ -14,7 +14,6 @@ import { setReoccurEntries } from "../../store/reoccurEntriesSlice";
 import { setEntries } from "../../store/entriesSlice";
 import makeEntryCopies from "./../../helpers/makeEntryCopies";
 import { EntryAttributes } from "../../../server/db/models/Entry.model";
-import { SkipDateAttributes } from "../../../server/db/models/Skipdate.model";
 
 const modalStyle = {
   position: "absolute",
@@ -148,19 +147,13 @@ const Calendar = () => {
           entryId: id }
       console.log("startDate: ",startDate)
         await axios.post("/api/entries/skipdates", startDate)
-        // await axios.post("/api/entries/skipdates")
-        const skipdates: SkipDateAttributes[] = await axios.get("/api/entries/skipdates", {
-          headers: { Authorization: "Bearer " + token },
-        })
         const updatedEntries = await axios.get("/api/entries", {
           headers: { Authorization: "Bearer " + token },
         });
-        const updatedEntryCopies = await makeEntryCopies(updatedEntries.data, skipdates);
-        // if (event.target.value === "single")
-        // delete entries based off of what :/
+        //grab skipdates
+        const updatedEntryCopies = await makeEntryCopies(updatedEntries.data);
         dispatch(setReoccurEntries(updatedEntryCopies))
         dispatch(setEntries(updatedEntryCopies));
-      console.log("hello!!!!!!!!!!!!!!!!!")
         handleModalClose()
     }
   };
