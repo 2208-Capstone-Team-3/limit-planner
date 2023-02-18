@@ -13,6 +13,7 @@ declare module "*.svg" {
   export default src;
 }
 declare module "swiper";
+declare module "jsonwebtoken";
 
 type Secret =
   | string
