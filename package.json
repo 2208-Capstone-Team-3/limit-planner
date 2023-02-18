@@ -2,6 +2,7 @@
   "name": "limit-planner",
   "version": "0.1.0",
   "type": "module",
+  "homepage": "https://limit-financial-planner.herokuapp.com/",
   "dependencies": {
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
@@ -65,10 +66,9 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "concurrently \"npm run server\" \"npm run front\"",
+    "start": "npm run server",
     "seed": "npx ts-node-esm server/db/seed.ts",
     "server": "npx ts-node-esm server/index.ts --exec node",
-    "front": "npx ts-node-esm src/index.tsx --exec node",
     "dev": "concurrently \"npm start\" \"PORT=3001 npm run server\"",
     "build": "react-scripts build",
     "serve": "serve -s build",
@@ -111,5 +111,8 @@
     "ts-node": "^10.9.1",
     "tslib": "^2.4.1",
     "typescript": "^4.9.5"
+  },
+  "engines": {
+    "node": "19.3.0"
   }
 }
