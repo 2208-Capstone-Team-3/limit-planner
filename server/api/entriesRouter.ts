@@ -6,37 +6,48 @@ import { UserAttributes } from "../db/models/User.model.js";
 import { authenticateUser } from "./helpers/authUserMiddleware.js";
 
 const router = express.Router();
-
 // TEST API
 // api/entries/skipdates
 router.get(
   "/skipdates", authenticateUser,
   async (req: Request, res: Response, next: NextFunction) => {
-    try {
-      const user: UserAttributes | null = req.body.user
-    const foundSkip = await Skipdate.findAll({
-      where: {
-        // userId: user?.id
-        userId: "a3c4258e-766c-4be1-acac-02e2573fe4a0"
-      }
-    })
-    console.log("BEFORE FOUNDSKIP!!!!!!!!!!!")
-    if (foundSkip.length) {
-      console.log("!!!!!!!!!!!!!!!!!!!got skipdates")
-      res.send(foundSkip)} 
-      else {
-      console.log("!!!!!!!!!!!!!!!!!!!!!!!failed GET skipdates")
-      res.send(404)
-      }
-    } catch (err) {
-      console.log("!!!!!!!!! HIT THE CATCHED")
-      console.log(err)
-      res.send(400)
+    // const user: UserAttributes | null = req.body.user
+    // console.log("ENTER GET ROUTE")
+    // console.log("userId req param", user?.id)
+    // const foundSkip = await Skipdate.findAll({
+    //   where: {
+    //     // userId: user?.id
+    //     userId: user?.id
+    //   }
+    // })
+    // if (foundSkip.length) {
+    //   console.log("!!!!!!!!!!!!!!!!!!!got skipdates")
+    //   res.send(foundSkip)} 
+    //   else {
+    //     console.log("!!!!!!!!! INSIDE ELSE")
+    //     res.send(403)
+    //   } 
+    const user = req.body.user
+    if (user) {
+      console.log("USER EXIST")
+      console.log(user)
+      console.log("THIS IS THE USERS ID ",user.id)
+      console.log("!!!!!!!")
+      const foundSkip = await Skipdate.findAll({
+          where: {
+            // userId: user?.id
+            userId: user.id
+          }
+        })
+      console.log("WE ARE GOOD")
+      res.send(foundSkip)
+    } else {
+      res.send("WE ARE NOT GOOD")
     }
 });
 
 router.get(
-  "/allskipdates",
+  "/allskipdates", authenticateUser,
   async (req: Request, res: Response, next: NextFunction) => {
    const allSkips = await Skipdate.findAll()
    res.send(allSkips)
@@ -47,12 +58,12 @@ router.post(
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const { skippeddate, userId, entryId } = req.body
-      console.log("between req.body/create")
     const createdSkip = await Skipdate.create({ skippeddate })
     const foundUser = await User.findByPk(userId)
     const foundEntry = await Entry.findByPk(entryId)
     foundUser?.addSkipdate(createdSkip)
     foundEntry?.addSkipdate(createdSkip)
+    console.log("POST ROUTE WORKS WOOOO")
     res.send(200)
   } catch (err) {
     console.log(err)

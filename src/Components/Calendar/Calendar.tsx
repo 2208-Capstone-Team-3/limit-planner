@@ -32,6 +32,7 @@ const modalStyle = {
 const Calendar = () => {
   const dispatch = useDispatch();
   const token = window.localStorage.getItem("token");
+  const user = useSelector((state: RootState) => state.user.user);
 
   const [id, setId] = useState<string>("");
   const [entryType, setEntryType] = useState<string>("");
@@ -91,6 +92,11 @@ const Calendar = () => {
   const handleStartChange = (event: BaseSyntheticEvent) => {
     setStart(event.target.value);
   };
+  const showUserInfo = () => {
+    console.log("entryId: ",id)
+    console.log("userId: ", user.id)
+    console.log("user object: ",user)
+  }
 
   const updateEntry = async () => {
     const body = {
@@ -138,11 +144,14 @@ const Calendar = () => {
       console.log("AFTER DATABASESTART CONVER: ",databaseStart)
         const startDate = { 
           skippeddate: databaseStart, 
-          userId: "a3c4258e-766c-4be1-acac-02e2573fe4a0", 
-          entryId: "cc652552-56b0-4c90-95f7-92baacf07f3b"}
+          userId: user.id, 
+          entryId: id }
+      console.log("startDate: ",startDate)
         await axios.post("/api/entries/skipdates", startDate)
         // await axios.post("/api/entries/skipdates")
-        const skipdates: SkipDateAttributes[] = await axios.get("/api/entries/skipdates")
+        const skipdates: SkipDateAttributes[] = await axios.get("/api/entries/skipdates", {
+          headers: { Authorization: "Bearer " + token },
+        })
         const updatedEntries = await axios.get("/api/entries", {
           headers: { Authorization: "Bearer " + token },
         });
@@ -244,12 +253,13 @@ const Calendar = () => {
           </div>
           <button onClick={updateEntry}>Update</button>
           <button onClick={deleteEntry} value="all">
-            Delete All
+            Delete All  
           </button>
           <button onClick={deleteEntry} value="single">
             Delete Single
           </button>
           <button onClick={showStart}>Show start date</button>
+          <button onClick={showUserInfo}>Show userinfo button</button>
           <button onClick={testStart}>Test start api date</button>
         </Box>
       </Modal>

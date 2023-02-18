@@ -23,9 +23,6 @@ Goal.belongsTo(Account);
 Entry.hasMany(Skipdate);
 Skipdate.belongsTo(Entry);
 
-Account.hasMany(Skipdate);
-Skipdate.belongsTo(Account);
-
 User.hasMany(Skipdate);
 Skipdate.belongsTo(User);
 

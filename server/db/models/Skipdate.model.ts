@@ -18,6 +18,8 @@ export interface SkipDateAttributes
   skippeddate: Date;
   userId?: string 
   entryId?: string
+  createdAt?: string | undefined,
+  updatedAt?: string | undefined,
 }
 
 const Skipdate = db.define<SkipDateAttributes>("skipdate", {
