@@ -65,7 +65,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "concurrently \"serve -s build\" \"npm run server\"",
+    "start": "npm run server",
     "seed": "npx ts-node-esm server/db/seed.ts",
     "server": "npx ts-node-esm server/index.ts --exec node",
     "dev": "concurrently \"npm start\" \"PORT=3001 npm run server\"",
