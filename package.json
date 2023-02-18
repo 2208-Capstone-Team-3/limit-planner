@@ -2,7 +2,6 @@
   "name": "limit-planner",
   "version": "0.1.0",
   "type": "module",
-  "homepage": "https://limit-financial-planner.herokuapp.com/",
   "dependencies": {
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
@@ -62,6 +61,7 @@
     "serve": "^14.2.0",
     "suspense": "^0.0.1",
     "swiper": "^8.4.5",
+    "url": "^0.11.0",
     "victory": "^36.6.8",
     "web-vitals": "^2.1.4"
   },
