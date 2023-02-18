@@ -15,60 +15,80 @@ const HomeBasePortal = () => {
   const homeDrawerOpen: boolean = useSelector(
     (state: RootState) => state.theme.theme.homeDrawerOpen
   );
+  let goalSelector = useSelector(
+    (state: RootState) => state.theme.theme.goalSelector
+  );
 
   useEffect(() => {}, [homeDrawerOpen]);
 
   return (
-    <Grid2 container height={"100%"} width={"auto"} padding={0.5}>
-      <Grid2 xs={5} padding={1}>
-        <Selectors />
-        <Calendar />
-        <ProjectionsComponent />
+    <Grid2 container paddingLeft={1} height={"90vh"}>
+      <Grid2 container xs={5} height={"90vh"}>
+        <Grid2 xs={12}>
+          <Selectors />
+        </Grid2>
+        <Grid2 xs={12}>
+          <Calendar />
+        </Grid2>
+        <Grid2 xs={12}>
+          <ProjectionsComponent />
+        </Grid2>
       </Grid2>
-      <Grid2 container height={"100vh"} xs={7} padding={1}>
-        <Grid2 xs={6}>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              placeItems: "center",
-            }}
-          >
-            <Typography variant="overline">Account Progression</Typography>
-            <MainLineChart />
-          </Box>
+      <Grid2 container xs={7} height={"90vh"}>
+        <Grid2
+          xs={6}
+          height={"44%"}
+          sx={{
+            display: "flex",
+            placeItems: "center",
+            flexDirection: "column",
+          }}
+        >
+          <Typography sx={{ marginLeft: "15%" }} variant="overline">
+            Account Progression
+          </Typography>
+          <MainLineChart />
         </Grid2>
         <Grid2
           xs={6}
+          height={"44%"}
           sx={{
             display: "flex",
-            flexDirection: "column",
             placeItems: "center",
+            flexDirection: "column",
           }}
         >
-          <Typography variant="overline">Percent To Goal</Typography>
+          <Typography sx={{ marginLeft: "15%" }} variant="overline">
+            Percent To Goal
+          </Typography>
           <MainGoalPercentageChart />
         </Grid2>
         <Grid2
           xs={6}
+          height={"44%"}
           sx={{
             display: "flex",
-            flexDirection: "column",
             placeItems: "center",
+            flexDirection: "column",
           }}
         >
-          <Typography variant="overline">Transactions Per Month</Typography>
+          <Typography sx={{ marginLeft: "15%" }} variant="overline">
+            Transactions Per Month
+          </Typography>
           <MainHistogram />
         </Grid2>
         <Grid2
           xs={6}
+          height={"44%"}
           sx={{
             display: "flex",
-            flexDirection: "column",
             placeItems: "center",
+            flexDirection: "column",
           }}
         >
-          <Typography variant="overline">Expenses</Typography>
+          <Typography sx={{ marginLeft: "15%" }} variant="overline">
+            Expenses
+          </Typography>
           <MainScatterChart />
         </Grid2>
       </Grid2>

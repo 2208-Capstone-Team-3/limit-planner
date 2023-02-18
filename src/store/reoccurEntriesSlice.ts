@@ -1,15 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { EntryAttributes } from "../../server/db/models/Entry.model";
 
-interface reoccurEntry {
-  amount: any;
-  creditDebit: string;
-  start: string | number | Date;
-  id: string;
-}
+// interface reoccurEntry {
+//   amount: any;
+//   creditDebit: string;
+//   start: string | number | Date;
+//   id: string;
+// }
 
 export interface entriesInitialStateType {
-  reoccurEntries: reoccurEntry[];
-}
+  reoccurEntries: EntryAttributes[];
+};
 
 const initialState: entriesInitialStateType = {
   reoccurEntries: [],

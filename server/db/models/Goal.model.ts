@@ -20,8 +20,8 @@ export interface GoalAttributes
   id?: string;
   name: string;
   goalAmount: number;
-  startAmount: number;
-  startDate: Date;
+  // startAmount: number;
+  // startDate: Date;
   endDate: Date;
   victory: boolean;
 }
@@ -40,14 +40,14 @@ const Goal = db.define<GoalAttributes>("goal", {
     type: FLOAT,
     allowNull: false,
   },
-  startAmount: {
-    type: FLOAT,
-    allowNull: false,
-  },
-  startDate: {
-    type: DATE,
-    allowNull: false,
-  },
+  // startAmount: {
+  //   type: FLOAT,
+  //   allowNull: false,
+  // },
+  // startDate: {
+  //   type: DATE,
+  //   allowNull: false,
+  // },
   endDate: {
     type: DATE,
     allowNull: false,

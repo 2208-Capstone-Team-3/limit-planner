@@ -1,3 +1,4 @@
+import React from "react";
 import {
   BarChart,
   ChevronLeft,
@@ -16,7 +17,6 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import React from "react";
 import { Outlet } from "react-router-dom";
 import LimitAppBar from "../AppBar/AppBar";
 import MedalIcon from "@mui/icons-material/WorkspacePremium";
@@ -37,7 +37,7 @@ const Home = () => {
   };
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "column" }}>
+    <Box sx={{ display: "flex", flexDirection: "column", height: "100vh" }}>
       <LimitAppBar />
       <Drawer
         variant="persistent"
@@ -56,31 +56,35 @@ const Home = () => {
           }}
         >
           <Typography variant="button">Collapse</Typography>
-          <IconButton onClick={toggleDrawer} style={{ position: "sticky" }}>
+          <IconButton
+            aria-label="Navigation Drawer Open or Close"
+            onClick={toggleDrawer}
+            style={{ position: "sticky" }}
+          >
             {homeDrawerOpen ? <ChevronLeft /> : <ChevronRight />}
           </IconButton>
         </Toolbar>
         <Divider />
-        <List component="nav">
+        <List component="nav" sx={{height: "50vh"}}>
           <ListItemButton href="/home">
             <ListItemIcon>
               <Dashboard />
             </ListItemIcon>
             <ListItemText primary="Dashboard" />
           </ListItemButton>
-          <ListItemButton href="/charts">
+          <ListItemButton href="/home/advancedcharts">
             <ListItemIcon>
               <BarChart />
             </ListItemIcon>
             <ListItemText primary="Advanced Charts" />
           </ListItemButton>
-          <ListItemButton href="/goals">
+          <ListItemButton href="/home/goals">
             <ListItemIcon>
               <MedalIcon />
             </ListItemIcon>
             <ListItemText primary="Goals" />
           </ListItemButton>
-          <ListItemButton href="/accounts">
+          <ListItemButton href="/home/accounts">
             <ListItemIcon>
               <AccountBalanceIcon />
             </ListItemIcon>

@@ -1,3 +1,5 @@
+import { useTheme } from "@mui/material";
+import { blueGrey, deepOrange } from "@mui/material/colors";
 import React from "react";
 import {
   VictoryBar,
@@ -8,9 +10,11 @@ import {
 } from "victory";
 
 const MainGoalPercentageChart = () => {
+  const theme = useTheme();
   return (
     <VictoryChart
-      theme={VictoryTheme.material}
+      theme={VictoryTheme.material}  
+      padding={{top: 10, bottom: 30, left: 30, right : 0}}
       name={"GoalChart"}
       animate={{
         duration: 2000,
@@ -19,13 +23,16 @@ const MainGoalPercentageChart = () => {
       containerComponent={
         <VictoryVoronoiContainer
           labels={({ datum }) => `${Math.round(datum.y)}`}
+          voronoiPadding={{top: 10, bottom: 30, left: 30, right : 0}}
         />
       }
     >
       <VictoryBar
-
         style={{
-          data: { fill: "#c43a31" },
+          data: {
+            fill: () =>
+              theme.palette.mode === "light" ? blueGrey[500] : deepOrange[900],
+          },
         }}
         barRatio={10}
         domain={{ y: [0, 100] }}

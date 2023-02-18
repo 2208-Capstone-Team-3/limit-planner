@@ -19,8 +19,8 @@ import icarusLogo from "../../resources/logo.svg";
 import { ColorModeContext } from "../../App";
 import MenuIcon from "@mui/icons-material/Menu";
 import { setHomeDrawerOpen } from "../../store/themeSlice";
-import DarkModeIcon from '@mui/icons-material/DarkMode';
-import LightModeIcon from '@mui/icons-material/LightMode';
+import DarkModeIcon from "@mui/icons-material/DarkMode";
+import LightModeIcon from "@mui/icons-material/LightMode";
 
 function LimitAppBar() {
   const homeDrawerOpen: boolean = useSelector(
@@ -95,6 +95,7 @@ function LimitAppBar() {
         </IconButton>
         <Link href="/home">
           <Avatar
+          alt="Limit Logo"
             variant="square"
             src={theme.palette.mode === "light" ? lightLogo : darkLogo}
             sx={{
@@ -161,19 +162,31 @@ function LimitAppBar() {
                 ))}
             <MenuItem>
               <Switch
-              sx={{ backgroundColor: "inherit"}}
-              checked={theme.palette.mode === "light"}
-              icon={<DarkModeIcon sx={{ backgroundColor: "black", borderRadius: "50%" }} color="inherit"/>}
-              checkedIcon={<LightModeIcon sx={{ backgroundColor: "white", borderRadius: "50%" }} color="primary" />}
+                sx={{ backgroundColor: "inherit" }}
+                checked={theme.palette.mode === "light"}
+                icon={
+                  <DarkModeIcon
+                    sx={{ backgroundColor: "black", borderRadius: "50%" }}
+                    color="inherit"
+                  />
+                }
+                checkedIcon={
+                  <LightModeIcon
+                    sx={{ backgroundColor: "white", borderRadius: "50%" }}
+                    color="primary"
+                  />
+                }
                 key={"switcher"}
                 onClick={colorMode.toggleColorMode}
               />
-              <Typography>{theme.palette.mode === "light" ? "Light" : "Dark"}</Typography>
+              <Typography key={"ColorModeSwitchText"} className="ColorModeSwitchText">
+                {theme.palette.mode === "light" ? "Light" : "Dark"}
+              </Typography>
             </MenuItem>
           </Menu>
-          {user.username ? (
+          {user.firstName ? (
             <Typography color={"white"} sx={{ ml: 1 }}>
-              {`Welcome, ${user.username}!`}
+              {`Welcome, ${user.firstName}!`}
             </Typography>
           ) : (
             <Link href="/login">

@@ -33,7 +33,7 @@ const Selectors = () => {
   const allGoals = goals.flat(Infinity).map((ele) => ele);
   return (
     <Grid2 container padding={1}>
-      <Grid2 minWidth={"8vw"} paddingRight={1}>
+      <Grid2 xs={6} paddingRight={1}>
         <FormControl key={"accountFormControl"} fullWidth>
           <InputLabel id="accountSelectLabel">Account</InputLabel>
           <Select
@@ -54,7 +54,7 @@ const Selectors = () => {
           </Select>
         </FormControl>
       </Grid2>
-      <Grid2 minWidth={"6vw"} paddingRight={1}>
+      <Grid2 xs={6} paddingRight={1}>
         <FormControl fullWidth>
           <InputLabel id="goalSelectLabel">Goal</InputLabel>
           <Select
@@ -62,7 +62,7 @@ const Selectors = () => {
             fullWidth
             labelId="goalSelectLabel"
             id="goalSelect"
-            value={goalSelector}
+            value={goalSelector ?? ""}
             renderValue={(ele) => <Typography>{ele}</Typography>}
             label="Goal"
             onChange={handleGoal}

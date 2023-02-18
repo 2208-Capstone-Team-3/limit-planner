@@ -1,7 +1,8 @@
 import React, { BaseSyntheticEvent, useState } from "react";
 import axios from "axios";
+import "./calendar.css";
 import { useSelector, useDispatch } from "react-redux";
-import { Box, Modal, Skeleton } from "@mui/material";
+import { Box, Modal, Skeleton, useTheme } from "@mui/material";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -14,6 +15,8 @@ import { setReoccurEntries } from "../../store/reoccurEntriesSlice";
 import { setEntries } from "../../store/entriesSlice";
 import makeEntryCopies from "./../../helpers/makeEntryCopies";
 import { EntryAttributes } from "../../../server/db/models/Entry.model";
+import { blueGrey, deepOrange } from "@mui/material/colors";
+import { update } from "lodash";
 
 const modalStyle = {
   position: "absolute",
@@ -31,8 +34,7 @@ const modalStyle = {
 const Calendar = () => {
   const dispatch = useDispatch();
   const token = window.localStorage.getItem("token");
-  const user = useSelector((state: RootState) => state.user.user);
-
+  const theme = useTheme();
   const [id, setId] = useState<string>("");
   const [entryType, setEntryType] = useState<string>("");
   const [amount, setAmount] = useState<number>(0);
@@ -114,6 +116,7 @@ const Calendar = () => {
       headers: { Authorization: "Bearer " + token },
     });
     const updatedEntryCopies = makeEntryCopies(updatedEntries.data);
+    console.log({'Updated entry copies':updatedEntryCopies});
     dispatch(setEntries(updatedEntryCopies));
     dispatch(setReoccurEntries(updatedEntryCopies));
     handleModalClose();
@@ -127,7 +130,7 @@ const Calendar = () => {
       const updatedEntries = await axios.get("/api/entries", {
         headers: { Authorization: "Bearer " + token },
       });
-      const updatedEntryCopies = await makeEntryCopies(updatedEntries.data);
+      const updatedEntryCopies = makeEntryCopies(updatedEntries.data);
       const filteredEntries = updatedEntryCopies.filter(
         (entry: EntryAttributes) => entry.id !== id
       );
@@ -158,22 +161,8 @@ const Calendar = () => {
     }
   };
 
-  const showStart = () => {
-    console.log(start)
-  }
-  const testStart = async () => {
-    const updatedEntries = await axios.get("/api/entries/skipdates")
-    const newerEntries = updatedEntries.data
-    newerEntries.map((entry: any)=> {
-      let badDates = entry.skipdates
-       return badDates.map((dates: any)=>{
-        console.log(dates.skippeddate)
-        return dates.skippeddate
-      })
-    })
-  }
-
-  if (reoccurEntries.length === 0) return <Skeleton animation={"wave"} variant="rectangular" />;
+  if (reoccurEntries.length === 0)
+    return <Skeleton animation={"wave"} variant="rectangular" />;
 
   return (
     <Box>
@@ -201,6 +190,11 @@ const Calendar = () => {
           events={reoccurEntries}
           select={handleSelect}
           eventClick={handleModalOpen}
+          moreLinkHint={"More Events if Clicked"}
+          eventColor={
+            theme.palette.mode === "light" ? blueGrey[400] : deepOrange[900]
+          }
+          eventTextColor="white"
         />
       </Box>
       <Modal
