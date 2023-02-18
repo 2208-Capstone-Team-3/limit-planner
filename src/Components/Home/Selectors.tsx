@@ -30,7 +30,7 @@ const Selectors = () => {
   const handleGoal = (ele: SelectChangeEvent) => {
     dispatch(setGoalSelector(ele.target.value));
   };
-  const allGoals = goals.flat(Infinity).map((ele) => ele);
+  const allGoals = goals?.flat(Infinity)?.map((ele) => ele);
   return (
     <Grid2 container padding={1}>
       <Grid2 xs={6} paddingRight={1}>
@@ -46,7 +46,7 @@ const Selectors = () => {
             label="Account"
             onChange={handleAccount}
           >
-            {accounts.map((ele, id) => (
+            {accounts?.map((ele, id) => (
               <MenuItem key={`${ele.id}` + id} value={ele.accountName}>
                 {ele.accountName}
               </MenuItem>

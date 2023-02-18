@@ -38,7 +38,7 @@ const ProjectionsComponent = () => {
     projectionAmount();
   }, [projectionAmount, theme]);
 
-  const currentBalance = accounts[0].balance.toLocaleString("en-US", {
+  const currentBalance = accounts[0]?.balance?.toLocaleString("en-US", {
     style: "currency",
     currency: "USD",
   });

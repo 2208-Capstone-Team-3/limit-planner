@@ -3,7 +3,7 @@ import { EntryAttributes } from "../../server/db/models/Entry.model";
 
 const makeEntryCopies = (entryData: EntryAttributes[]) => {
   let newEntries: EntryAttributes[] = [];
-  entryData.forEach((entry: EntryAttributes) => {
+  entryData?.forEach((entry: EntryAttributes) => {
     let newDate = new Date(entry.start);
     if (entry.frequency === "Monthly") {
       for (let i = 0; i <= 12; i++) {
