@@ -136,6 +136,7 @@ const Calendar = () => {
       const updatedEntries: {data: EntryAttributes[]} = await axios.get("/api/entries", {
         headers: { Authorization: "Bearer " + token },
       });
+      dispatch(setEntries(updatedEntries.data))
       const updatedEntryCopies = await makeEntryCopies(updatedEntries.data, skipdates);
       const filteredEntries = updatedEntryCopies.filter(
         (entry: EntryAttributes) => entry.id !== id
@@ -144,41 +145,38 @@ const Calendar = () => {
       dispatch(setReoccurEntries(filteredEntries));
       handleModalClose();
     } else {
-      console.log("single button is clicked");
-      console.log("BEFORE ISOSTART START: ", start)
         const isoStart = start.toISOString()
-      console.log("AFTER ISOSTRING: ",isoStart)
         const databaseStart = isoStart.substring(0,10)
-      console.log("AFTER DATABASESTART CONVER: ",databaseStart)
         const startDate = { 
           skippeddate: databaseStart, 
           userId: user.id, 
           entryId: id }
-      console.log("startDate: ",startDate)
         await axios.post("/api/entries/skipdates", startDate)
         const updatedEntries = await axios.get("/api/entries", {
           headers: { Authorization: "Bearer " + token },
         });
+        dispatch(setEntries(updatedEntries.data))
         let returnedSkipdates: { data: SkipDateAttributes[] } = await axios.get("/api/entries/skipdates", {
           headers: { Authorization: "Bearer " + token },
         })
         dispatch(setSkipdates(returnedSkipdates.data))
         console.log("SKIPDATES IN CALENDAR", returnedSkipdates)
         const updatedEntryCopies = await makeEntryCopies(updatedEntries.data, skipdates)
-        dispatch(setEntries(updatedEntryCopies));
+        // dispatch(setEntries(updatedEntryCopies));
         dispatch(setReoccurEntries(updatedEntryCopies))
         handleModalClose()
     }
   };
 
-  if (reoccurEntries.length === 0)
+  if (reoccurEntries.length === null)
     return <Skeleton animation={"wave"} variant="rectangular" />;
 
   return (
     <Box>
       <Box>
         <FullCalendar
-          loading={() => reoccurEntries.length === 0}
+          // loading={() => reoccurEntries.length === 0}
+          // 
           key={"Calendar"}
           plugins={[
             dayGridPlugin,

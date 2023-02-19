@@ -14,7 +14,6 @@ const ProjectionsComponent = () => {
   const [projAmount, setProjAmount] = useState("0");
 
   const projectionAmount = useCallback(() => {
-    console.log("REOCCURRED ENTRIES PROJECTIONS HERE: ",reoccurEntries)
     if (reoccurEntries.length) {
       let filtered = reoccurEntries.filter(
         (entry) =>
@@ -34,7 +33,6 @@ const ProjectionsComponent = () => {
   
       setProjAmount(sum);
     }
-    
   }, [accounts, endDate, reoccurEntries, todayDate]);
 
   useEffect(() => {
@@ -46,7 +44,13 @@ const ProjectionsComponent = () => {
     currency: "USD",
   });
 
-  if (reoccurEntries.length === 0) return <CircularProgress />;
+  if (reoccurEntries.length === 0) { 
+    return (
+    <Box>
+      <Typography component={"h3"} variant="h4">Current Balance: {currentBalance} </Typography> 
+      <Typography component={"h3"} variant="h5">Add Entries to get your projected balance </Typography>
+  </Box>
+    )}
   return (
     <Box
       sx={{ display: "flex", flexDirection: "column", placeItems: "center" }}
@@ -64,5 +68,7 @@ const ProjectionsComponent = () => {
     </Box>
   );
 };
+
+
 
 export default ProjectionsComponent;

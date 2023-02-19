@@ -24,6 +24,7 @@ function App() {
   const dispatch = useDispatch();
   const todayDate = useMemo(() => new Date().toString(), []);
   const [mode, setMode] = React.useState<"light" | "dark">("light");
+  // const [loading, setLoading] = React.useState<true |false>(true)
 
 
   const skipdates = useSelector(
@@ -143,15 +144,19 @@ function App() {
   }, [dispatch]);
 
   const skipdatesFetch = useCallback(async () => {
+  
     try {
+      console.log("STARTING SKIPDATESFETCH")
       const token = window.localStorage.getItem("token");
       if (token) {
         const response = await axios.get("/api/entries/skipdates", {
           headers: {
             authorization: `Bearer ${token}`,
-          },
+          },   
         });
         dispatch(setSkipdates(response.data));
+        console.log(response.data)
+        console.log("ENDING SKIPDATEFETCH")
       }
     } catch (error) {
       console.error(error);
@@ -160,7 +165,8 @@ function App() {
 
   /** creates and saves reoccuring entries */
   const reoccurEntriesFetch = useCallback(async () => {
-    const token = window.localStorage.getItem("token");
+      console.log("STARTING REOCCURRINGFETCH")
+      const token = window.localStorage.getItem("token");
     if (token) {
       const entries = await axios.get("/api/entries", {
         headers: {
@@ -169,7 +175,10 @@ function App() {
       });
       const entryCopies = await makeEntryCopies(entries.data, skipdates);
       dispatch(setReoccurEntries(entryCopies));
+      console.log('thise are entry copies ',entryCopies)
+      console.log("ENDING REOCCORRUINGFETCH")
     }
+    
   }, [dispatch]);
 
   const theme = React.useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
@@ -179,9 +188,10 @@ function App() {
     accountsWithToken();
     goalsWithToken();
     entriesWithToken();
-    skipdatesFetch()
+    skipdatesFetch();
     reoccurEntriesFetch();
     dispatch(setDateSelector(todayDate));
+
 
     const existingPreference = localStorage.getItem("colorModeCookie");
     if (existingPreference) {
@@ -190,7 +200,7 @@ function App() {
       setMode("light");
       localStorage.setItem("colorModeCookie", "light");
     }
-  }, [accountsWithToken, dispatch, entriesWithToken, goalsWithToken, loginWithToken, reoccurEntriesFetch, todayDate, skipdatesFetch]);
+  }, [accountsWithToken, dispatch, entriesWithToken, goalsWithToken, loginWithToken, skipdatesFetch, reoccurEntriesFetch, todayDate]);
 
   return (
     <ColorModeContext.Provider value={colorMode}>
