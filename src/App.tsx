@@ -49,13 +49,13 @@ function App() {
             primary: {
               main: blueGrey[600],
             },
-            divider: blueGrey[700],
+            divider: blueGrey[200],
             background: {
-              paper: blueGrey[500],
+              paper: blueGrey[400],
             },
             text: {
-              primary: grey[900],
-              secondary: grey[700],
+              primary: grey[100],
+              secondary: grey[200],
             },
           }
         : {
@@ -66,7 +66,7 @@ function App() {
               paper: deepOrange[900],
             },
             text: {
-              primary: "#fff",
+              primary: grey[100],
               secondary: grey[500],
             },
           }),

@@ -2,7 +2,6 @@ import React from "react";
 import {
   VictoryBar,
   VictoryChart,
-  VictoryLabel,
   VictoryTheme,
   VictoryVoronoiContainer,
 } from "victory";
@@ -27,7 +26,7 @@ const ExampleGoalChart = (isActive: { isActive: boolean }) => {
         barRatio={10}
         domain={{ y: [0, 100] }}
         data={[{ x: "Progress To Primary Goal", y: 90 }]}
-        labelComponent={<VictoryLabel />}
+        
       />
     </VictoryChart>
   );
