@@ -11,6 +11,7 @@ import {
 import { RootState } from "../../store";
 import { useSelector, useDispatch } from "react-redux";
 import { setAccountSelector, setGoalSelector } from "../../store/themeSlice";
+import { AccountCircleOutlined } from "@mui/icons-material";
 
 const Selectors = () => {
   const dispatch = useDispatch();
@@ -47,7 +48,7 @@ const Selectors = () => {
             onChange={handleAccount}
           >
             {accounts.map((ele, id) => (
-              <MenuItem key={`${ele.id}` + id} value={ele.accountName}>
+              <MenuItem key={`${ele.id}` + id} value={ele.id}>
                 {ele.accountName}
               </MenuItem>
             ))}

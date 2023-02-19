@@ -13,10 +13,12 @@ import { RootState } from "../../store";
 import { setDateSelector } from "../../store/themeSlice";
 import { setReoccurEntries } from "../../store/reoccurEntriesSlice";
 import { setEntries } from "../../store/entriesSlice";
+import { setSkipdates } from "../../store/skipdatesSlice";
 import makeEntryCopies from "./../../helpers/makeEntryCopies";
 import { EntryAttributes } from "../../../server/db/models/Entry.model";
 import { SkipDateAttributes } from "./../../helpers/makeEntryCopies";
 import { blueGrey, deepOrange } from "@mui/material/colors";
+
 // import { update } from "lodash";
 
 const modalStyle = {
@@ -35,7 +37,7 @@ const modalStyle = {
 const Calendar = () => {
   const dispatch = useDispatch();
   const token = window.localStorage.getItem("token");
-  const theme = useTheme();
+  const themey = useTheme();
   const [id, setId] = useState<string>("");
   const [entryType, setEntryType] = useState<string>("");
   const [amount, setAmount] = useState<number>(0);
@@ -44,13 +46,16 @@ const Calendar = () => {
   const [note, setNote] = useState<string>("");
   const [start, setStart] = useState<any>(""); // should fix this with more appropriate data type
   const [frequency, setFrequency] = useState<string>("");
-
   const [modalOpen, setModalOpen] = useState(false);
 
   const reoccurEntries = useSelector(
     (state: RootState) => state.reoccurEntries.reoccurEntries
   );
   const user = useSelector((state: RootState) => state.user.user);
+  const theme = useSelector((state: RootState) => state.theme)
+  const skipdates = useSelector(
+    (state: RootState) => state.skipdates.skipdates
+  );
 
   const handleModalOpen = (selected: EventClickArg) => {
     setModalOpen(true);
@@ -117,7 +122,7 @@ const Calendar = () => {
     const updatedEntries = await axios.get("/api/entries", {
       headers: { Authorization: "Bearer " + token },
     });
-    const updatedEntryCopies = await makeEntryCopies(updatedEntries.data);
+    const updatedEntryCopies = await makeEntryCopies(updatedEntries.data, skipdates);
     dispatch(setEntries(updatedEntryCopies));
     dispatch(setReoccurEntries(updatedEntryCopies));
     handleModalClose();
@@ -131,7 +136,7 @@ const Calendar = () => {
       const updatedEntries: {data: EntryAttributes[]} = await axios.get("/api/entries", {
         headers: { Authorization: "Bearer " + token },
       });
-      const updatedEntryCopies = await makeEntryCopies(updatedEntries.data);
+      const updatedEntryCopies = await makeEntryCopies(updatedEntries.data, skipdates);
       const filteredEntries = updatedEntryCopies.filter(
         (entry: EntryAttributes) => entry.id !== id
       );
@@ -154,12 +159,12 @@ const Calendar = () => {
         const updatedEntries = await axios.get("/api/entries", {
           headers: { Authorization: "Bearer " + token },
         });
-        //grab skipdates GET 
-        let skipdates: { data: SkipDateAttributes[] } = await axios.get("/api/entries/skipdates", {
+        let returnedSkipdates: { data: SkipDateAttributes[] } = await axios.get("/api/entries/skipdates", {
           headers: { Authorization: "Bearer " + token },
         })
-        console.log("SKIPDATES IN CALENDAR", skipdates)
-        const updatedEntryCopies = await makeEntryCopies(updatedEntries.data, skipdates.data);
+        dispatch(setSkipdates(returnedSkipdates.data))
+        console.log("SKIPDATES IN CALENDAR", returnedSkipdates)
+        const updatedEntryCopies = await makeEntryCopies(updatedEntries.data, skipdates)
         dispatch(setEntries(updatedEntryCopies));
         dispatch(setReoccurEntries(updatedEntryCopies))
         handleModalClose()
@@ -197,7 +202,7 @@ const Calendar = () => {
           eventClick={handleModalOpen}
           moreLinkHint={"More Events if Clicked"}
           eventColor={
-            theme.palette.mode === "light" ? blueGrey[400] : deepOrange[900]
+            themey.palette.mode === "light" ? blueGrey[400] : deepOrange[900]
           }
           eventTextColor="white"
         />

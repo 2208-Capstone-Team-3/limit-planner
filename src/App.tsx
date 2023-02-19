@@ -5,7 +5,7 @@ import { Outlet } from "react-router-dom";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import axios from "axios";
 import { setUser } from "./store/userSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { blueGrey, deepOrange, grey } from "@mui/material/colors";
 import { setAccounts } from "./store/accountsSlice";
 import { setGoals } from "./store/goalsSlice";
@@ -13,6 +13,8 @@ import { setEntries } from "./store/entriesSlice";
 import makeEntryCopies from "./../src/helpers/makeEntryCopies";
 import { setReoccurEntries } from "./store/reoccurEntriesSlice";
 import { setDateSelector } from "./store/themeSlice";
+import { setSkipdates } from "./store/skipdatesSlice";
+import { RootState } from "./store";
 
 export const ColorModeContext = React.createContext({
   toggleColorMode: () => {},
@@ -24,6 +26,9 @@ function App() {
   const [mode, setMode] = React.useState<"light" | "dark">("light");
 
 
+  const skipdates = useSelector(
+    (state: RootState) => state.skipdates.skipdates
+  );
 
   const colorMode = React.useMemo(
     () => ({
@@ -137,6 +142,22 @@ function App() {
     }
   }, [dispatch]);
 
+  const skipdatesFetch = useCallback(async () => {
+    try {
+      const token = window.localStorage.getItem("token");
+      if (token) {
+        const response = await axios.get("/api/entries/skipdates", {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        });
+        dispatch(setSkipdates(response.data));
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }, [dispatch]);
+
   /** creates and saves reoccuring entries */
   const reoccurEntriesFetch = useCallback(async () => {
     const token = window.localStorage.getItem("token");
@@ -146,7 +167,7 @@ function App() {
           authorization: `Bearer ${token}`,
         },
       });
-      const entryCopies = await makeEntryCopies(entries.data);
+      const entryCopies = await makeEntryCopies(entries.data, skipdates);
       dispatch(setReoccurEntries(entryCopies));
     }
   }, [dispatch]);
@@ -158,6 +179,7 @@ function App() {
     accountsWithToken();
     goalsWithToken();
     entriesWithToken();
+    skipdatesFetch()
     reoccurEntriesFetch();
     dispatch(setDateSelector(todayDate));
 
@@ -168,7 +190,7 @@ function App() {
       setMode("light");
       localStorage.setItem("colorModeCookie", "light");
     }
-  }, [accountsWithToken, dispatch, entriesWithToken, goalsWithToken, loginWithToken, reoccurEntriesFetch, todayDate]);
+  }, [accountsWithToken, dispatch, entriesWithToken, goalsWithToken, loginWithToken, reoccurEntriesFetch, todayDate, skipdatesFetch]);
 
   return (
     <ColorModeContext.Provider value={colorMode}>
