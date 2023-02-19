@@ -14,7 +14,7 @@ const ProjectionsComponent = () => {
   const [projAmount, setProjAmount] = useState("0");
 
   const projectionAmount = useCallback(() => {
-    console.log("REOCCURRED ENTRIES PROJECTIONS HERE: ",reoccurEntries)
+    // console.log("REOCCURRED ENTRIES PROJECTIONS HERE: ",reoccurEntries)
     if (reoccurEntries.length) {
       let filtered = reoccurEntries.filter(
         (entry) =>

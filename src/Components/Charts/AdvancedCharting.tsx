@@ -34,11 +34,11 @@ const AdvancedCharting = () => {
   );
 
   const handleAccount = (ele: SelectChangeEvent) => {
-    dispatch(setAccountSelector(ele.target.value));
+    dispatch(setAccountSelector(JSON.parse(ele.target.value)));
   };
 
   const handleGoal = (ele: SelectChangeEvent) => {
-    dispatch(setGoalSelector(ele.target.value));
+    dispatch(setGoalSelector(JSON.parse(ele.target.value)));
   };
   const allGoals = goals.flat(Infinity).map((ele) => ele);
   const [chartSelected, setChartSelected] = useState<string | null>(null);
@@ -51,17 +51,17 @@ const AdvancedCharting = () => {
     <Grid2 container>
       <Grid2 container xs={2} direction="column">
         <Grid2 xs={12}>
-          <Box display={"flex"} sx={{placeContent: "center"}}>
-            <Typography  variant="h3">Selectors</Typography>
+          <Box display={"flex"} sx={{ placeContent: "center" }}>
+            <Typography variant="h3">Selectors</Typography>
           </Box>
         </Grid2>
-        <Divider sx={{marginBottom: 1}}/>
+        <Divider sx={{ marginBottom: 1 }} />
         <Grid2 xs={12}>
           <FormControl fullWidth>
             <InputLabel id={"chartSelectLabel"}>Chart Type</InputLabel>
             <Select
               labelId="chartSelectLabel"
-              value={chartSelected ?? undefined}
+              value={chartSelected ?? ""}
               renderValue={(ele) => <Typography>{ele}</Typography>}
               onChange={handleChartSelect}
             >
@@ -77,14 +77,30 @@ const AdvancedCharting = () => {
               key={"accountSelect"}
               fullWidth
               labelId="accountSelectLabel"
+              value={accountSelector ? JSON.stringify(accountSelector) : ""}
               id="accountSelect"
-              value={accountSelector ?? "Account"}
-              renderValue={(ele) => <Typography>{ele}</Typography>}
-              label="Account"
+              renderValue={(
+                ele:
+                  | {
+                      goals?: [] | undefined;
+                      entries?: [] | undefined;
+                      userId?: string | undefined;
+                      id?: string | undefined;
+                      accountType: string;
+                      accountName: string;
+                      institution: string;
+                      balance: number;
+                    }
+                  | string
+              ) => (
+                <Typography>
+                  {typeof ele === "string" ? JSON.parse(ele).accountName : ele.accountName}
+                </Typography>
+              )}
               onChange={handleAccount}
             >
               {accounts.map((ele, id) => (
-                <MenuItem key={`${ele.id}` + id} value={ele.accountName}>
+                <MenuItem key={`${ele.id}` + id} value={JSON.stringify(ele)}>
                   {ele.accountName}
                 </MenuItem>
               ))}
@@ -92,25 +108,39 @@ const AdvancedCharting = () => {
           </FormControl>
         </Grid2>
         <Grid2 xs={12}>
-          <FormControl fullWidth>
-            <InputLabel id="goalSelectLabel">Goal</InputLabel>
-            <Select
-              key={"goalSelect"}
-              fullWidth
-              labelId="goalSelectLabel"
-              id="goalSelect"
-              value={goalSelector ?? ""}
-              renderValue={(ele) => <Typography>{ele}</Typography>}
-              label="Goal"
-              onChange={handleGoal}
-            >
-              {allGoals.map((ele, id) => (
-                <MenuItem key={`${ele.id}` + id} value={ele.name}>
-                  {ele.name ?? "None"}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+        <FormControl fullWidth>
+          <InputLabel id="goalSelectLabel">Goal</InputLabel>
+          <Select
+            key={"goalSelect"}
+            fullWidth
+            labelId="goalSelectLabel"
+            id="goalSelect"
+            value={goalSelector ? JSON.stringify(goalSelector) : ""}
+            renderValue={(
+              ele:
+                | {
+                    id?: string | undefined;
+                    name: string;
+                    goalAmount: number;
+                    endDate: string | Date;
+                    victory: boolean;
+                  }
+                | string
+            ) => (
+              <Typography>
+                {typeof ele === "string" ? JSON.parse(ele).name : ele.name}
+              </Typography>
+            )}
+            label="Goal"
+            onChange={handleGoal}
+          >
+            {allGoals.map((ele, id) => (
+              <MenuItem key={`${ele.id}` + id} value={JSON.stringify(ele)}>
+                {ele.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
         </Grid2>
       </Grid2>
       <Divider orientation="vertical" flexItem sx={{ mr: "-1px" }} />
