@@ -176,7 +176,7 @@ const Calendar = () => {
       <Box>
         <FullCalendar
           // loading={() => reoccurEntries.length === 0}
-          // 
+          // calendar will not load if there are no entries.
           key={"Calendar"}
           plugins={[
             dayGridPlugin,
