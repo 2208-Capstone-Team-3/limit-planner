@@ -1,5 +1,5 @@
 import express, { Request, Response, NextFunction } from "express";
-import { Account, User } from "../db/index.js";
+import { Account, Skipdate, User } from "../db/index.js";
 import { AccountAttributes } from "../db/models/Account.model.js";
 import { UserAttributes } from "../db/models/User.model.js";
 import { authenticateUser } from "./helpers/authUserMiddleware.js";
@@ -35,6 +35,17 @@ router.get(
     }
   }
 );
+
+// TEST API ROUTE
+// BELOW WORKS AND DOES INCLUDE SKIPDATE
+router.get(
+  "/skipdates", 
+  async (req: Request, res: Response, next: NextFunction) => {
+    const foundUser = await Account.findAll({
+      include: [Skipdate]
+    });
+    res.send(foundUser)
+});
 
 router.get(
   "/:accountId",

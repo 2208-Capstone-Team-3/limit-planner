@@ -11,27 +11,30 @@ const ProjectionsComponent = () => {
   const theme = useSelector((state: RootState) => state.theme);
   const todayDate = useMemo(() => new Date(), []);
   const endDate = theme.theme.dateSelector;
-
   const [projAmount, setProjAmount] = useState("0");
 
   const projectionAmount = useCallback(() => {
-    let filtered = reoccurEntries.filter(
-      (entry) =>
-        new Date(entry.start).getTime() <= new Date(endDate).getTime() &&
-        new Date(entry.start).getTime() >= new Date(todayDate).getTime()
-    );
-    let mapped = filtered.map((entry) =>
-      entry.creditDebit === "Credit" ? entry.amount : entry.amount * -1
-    );
-    let reduced = mapped.reduce((accumulator, currentValue) => {
-      return accumulator + currentValue;
-    }, accounts[0].balance);
-    let sum = reduced.toLocaleString("en-US", {
-      style: "currency",
-      currency: "USD",
-    });
-
-    setProjAmount(sum);
+    console.log("REOCCURRED ENTRIES PROJECTIONS HERE: ",reoccurEntries)
+    if (reoccurEntries.length) {
+      let filtered = reoccurEntries.filter(
+        (entry) =>
+          new Date(entry.start).getTime() <= new Date(endDate).getTime() &&
+          new Date(entry.start).getTime() >= new Date(todayDate).getTime()
+      );
+      let mapped = filtered.map((entry) =>
+        entry.creditDebit === "Credit" ? entry.amount : entry.amount * -1
+      );
+      let reduced = mapped.reduce((accumulator, currentValue) => {
+        return accumulator + currentValue;
+      }, accounts[0].balance);
+      let sum = reduced.toLocaleString("en-US", {
+        style: "currency",
+        currency: "USD",
+      });
+  
+      setProjAmount(sum);
+    }
+    
   }, [accounts, endDate, reoccurEntries, todayDate]);
 
   useEffect(() => {

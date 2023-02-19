@@ -1,7 +1,6 @@
 import { VIRTUAL } from "sequelize";
 import db from "./db.js";
 import { Account, Entry, Goal, User, Skipdate } from "./index.js";
-import Chance from "chance";
 // const chance = new Chance();
 
 const entryData = [
@@ -143,6 +142,12 @@ const skipDatesEntry = [
   {
     skippeddate: new Date("2023-01-01"),
   },
+  {
+    skippeddate: new Date("2022-02-02"),
+  },
+  {
+    skippeddate: new Date("2023-03-03"),
+  },
 ];
 
 const seed = async () => {
@@ -168,8 +173,8 @@ const seed = async () => {
       await Promise.all(entryData.map((entry) => Entry.create(entry)));
 
     // -------------SKIPDATES---------------
-    console.log("adding skip dates");
-    const skipOne = await Skipdate.create(skipDatesEntry[0]);
+    console.log("adding skip dates")
+    const [skipOne, skipTwo, skipThree] = await Promise.all(skipDatesEntry.map((eachSkip) => Skipdate.create(eachSkip)));
 
     // let i = 0;
     // // const entryList = [];
@@ -222,8 +227,10 @@ const seed = async () => {
     //Entry.hasMany(SkipDates)
     //SkipDates.belongsTo(Entry)
     entryThree.addSkipdate(skipOne);
-    accountOne.addSkipdate(skipOne);
     userOne.addSkipdate(skipOne);
+    userOne.addSkipdate(skipTwo)
+    userOne.addSkipdate(skipThree)
+
   } catch (err) {
     console.log("error");
     console.log(err);
