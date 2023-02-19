@@ -11,6 +11,7 @@ import { addMonths, subMonths } from "date-fns";
 import { useTheme } from "@mui/material";
 import { blueGrey, deepOrange } from "@mui/material/colors";
 
+
 const MainLineChart = () => {
   const theme = useTheme();
   let entries = useSelector((state: RootState) => state.entries.entries);
