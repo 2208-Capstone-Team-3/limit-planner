@@ -309,7 +309,7 @@ function Landing() {
               </Container>
             </Grow>
             <Button
-              href="/createuser"
+              href="createuser"
               variant="contained"
               sx={{
                 fontSize: "5vh",

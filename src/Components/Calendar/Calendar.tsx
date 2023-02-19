@@ -2,7 +2,24 @@ import React, { BaseSyntheticEvent, useState } from "react";
 import axios from "axios";
 import "./calendar.css";
 import { useSelector, useDispatch } from "react-redux";
-import { Box, Modal, Skeleton, useTheme } from "@mui/material";
+import {
+  Box,
+  Button,
+  Container,
+  Divider,
+  FormControl,
+  FormLabel,
+  Input,
+  MenuItem,
+  Modal,
+  Paper,
+  Select,
+  SelectChangeEvent,
+  Skeleton,
+  TextField,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -17,6 +34,7 @@ import makeEntryCopies from "./../../helpers/makeEntryCopies";
 import { EntryAttributes } from "../../../server/db/models/Entry.model";
 import { SkipDateAttributes } from "./../../helpers/makeEntryCopies";
 import { blueGrey, deepOrange } from "@mui/material/colors";
+import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 // import { update } from "lodash";
 
 const modalStyle = {
@@ -25,7 +43,7 @@ const modalStyle = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 400,
-  bgcolor: "white",
+  bgcolor: "Primary",
   border: "2px solid #000",
   boxShadow: 24,
   p: 4,
@@ -72,7 +90,7 @@ const Calendar = () => {
     dispatch(setDateSelector(selected.endStr));
   };
 
-  const handleEntryTypeChange = (event: BaseSyntheticEvent) => {
+  const handleEntryTypeChange = (event: SelectChangeEvent) => {
     setEntryType(event.target.value);
   };
 
@@ -80,7 +98,7 @@ const Calendar = () => {
     setAmount(event.target.value);
   };
 
-  const handleCreditDebitChange = (event: BaseSyntheticEvent) => {
+  const handleCreditDebitChange = (event: SelectChangeEvent) => {
     setCreditDebit(event.target.value);
   };
 
@@ -96,10 +114,10 @@ const Calendar = () => {
     setStart(event.target.value);
   };
   const showUserInfo = () => {
-    console.log("entryId: ",id)
-    console.log("userId: ", user.id)
-    console.log("user object: ",user)
-  }
+    console.log("entryId: ", id);
+    console.log("userId: ", user.id);
+    console.log("user object: ", user);
+  };
 
   const updateEntry = async () => {
     const body = {
@@ -128,9 +146,12 @@ const Calendar = () => {
       await axios.delete(`/api/entries/${id}`, {
         headers: { Authorization: "Bearer " + token },
       });
-      const updatedEntries: {data: EntryAttributes[]} = await axios.get("/api/entries", {
-        headers: { Authorization: "Bearer " + token },
-      });
+      const updatedEntries: { data: EntryAttributes[] } = await axios.get(
+        "/api/entries",
+        {
+          headers: { Authorization: "Bearer " + token },
+        }
+      );
       const updatedEntryCopies = await makeEntryCopies(updatedEntries.data);
       const filteredEntries = updatedEntryCopies.filter(
         (entry: EntryAttributes) => entry.id !== id
@@ -140,29 +161,36 @@ const Calendar = () => {
       handleModalClose();
     } else {
       console.log("single button is clicked");
-      console.log("BEFORE ISOSTART START: ", start)
-        const isoStart = start.toISOString()
-      console.log("AFTER ISOSTRING: ",isoStart)
-        const databaseStart = isoStart.substring(0,10)
-      console.log("AFTER DATABASESTART CONVER: ",databaseStart)
-        const startDate = { 
-          skippeddate: databaseStart, 
-          userId: user.id, 
-          entryId: id }
-      console.log("startDate: ",startDate)
-        await axios.post("/api/entries/skipdates", startDate)
-        const updatedEntries = await axios.get("/api/entries", {
+      console.log("BEFORE ISOSTART START: ", start);
+      const isoStart = start.toISOString();
+      console.log("AFTER ISOSTRING: ", isoStart);
+      const databaseStart = isoStart.substring(0, 10);
+      console.log("AFTER DATABASESTART CONVER: ", databaseStart);
+      const startDate = {
+        skippeddate: databaseStart,
+        userId: user.id,
+        entryId: id,
+      };
+      console.log("startDate: ", startDate);
+      await axios.post("/api/entries/skipdates", startDate);
+      const updatedEntries = await axios.get("/api/entries", {
+        headers: { Authorization: "Bearer " + token },
+      });
+      //grab skipdates GET
+      let skipdates: { data: SkipDateAttributes[] } = await axios.get(
+        "/api/entries/skipdates",
+        {
           headers: { Authorization: "Bearer " + token },
-        });
-        //grab skipdates GET 
-        let skipdates: { data: SkipDateAttributes[] } = await axios.get("/api/entries/skipdates", {
-          headers: { Authorization: "Bearer " + token },
-        })
-        console.log("SKIPDATES IN CALENDAR", skipdates)
-        const updatedEntryCopies = await makeEntryCopies(updatedEntries.data, skipdates.data);
-        dispatch(setEntries(updatedEntryCopies));
-        dispatch(setReoccurEntries(updatedEntryCopies))
-        handleModalClose()
+        }
+      );
+      console.log("SKIPDATES IN CALENDAR", skipdates);
+      const updatedEntryCopies = await makeEntryCopies(
+        updatedEntries.data,
+        skipdates.data
+      );
+      dispatch(setEntries(updatedEntryCopies));
+      dispatch(setReoccurEntries(updatedEntryCopies));
+      handleModalClose();
     }
   };
 
@@ -208,50 +236,101 @@ const Calendar = () => {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={modalStyle}>
-          <div>
-            <label htmlFor="entry type">Entry type:</label>
-            <input
-              name="entry type"
-              value={entryType}
-              onChange={handleEntryTypeChange}
-            />
-          </div>
-          <div>
-            <label htmlFor="amount">Amount:</label>
-            <input name="amount" value={amount} onChange={handleAmountChange} />
-          </div>
-          <label htmlFor="credit/debit">Credit/Debit:</label>
-          <input
-            name="credit/debit"
-            value={creditDebit}
-            onChange={handleCreditDebitChange}
-          />
-          <div>
-            <label htmlFor="title">Tile:</label>
-            <input name="title" value={title} onChange={handleTitleChange} />
-          </div>
-          <div>
-            <label htmlFor="note">Note:</label>
-            <input name="note" value={note} onChange={handleNoteChange} />
-          </div>
-          <div>
-            <label htmlFor="start date">Start date:</label>
-            <input
-              name="start date"
-              value={start}
-              onChange={handleStartChange}
-            />
-          </div>
-          <button onClick={updateEntry}>Update</button>
-          <button onClick={deleteEntry} value="all">
-            Delete All  
-          </button>
-          <button onClick={deleteEntry} value="single">
-            Delete Single
-          </button>
-          <button onClick={showUserInfo}>Show userinfo button</button>
-        </Box>
+        <Paper sx={modalStyle}>
+          <Grid2 container spacing={1}>
+            <Grid2 xs={6}>
+              <FormControl fullWidth>
+                <FormLabel>Entry type:</FormLabel>
+                <Select
+                  name="entry type"
+                  value={entryType}
+                  renderValue={(ele) => <Typography>{ele}</Typography>}
+                  onChange={handleEntryTypeChange}
+                >
+                  <MenuItem value={"User"}>User</MenuItem>
+                  <MenuItem value={"API"}>API</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid2>
+            <Grid2 xs={6}>
+              <FormControl fullWidth>
+                <FormLabel>Amount:</FormLabel>
+                <TextField
+                  name="amount"
+                  value={amount}
+                  onChange={handleAmountChange}
+                />
+              </FormControl>
+            </Grid2>
+            <Grid2 xs={6}>
+              <FormControl fullWidth>
+                <FormLabel htmlFor="credit/debit">Credit/Debit:</FormLabel>
+                <Select
+                  name="credit/debit"
+                  value={creditDebit}
+                  renderValue={(ele) => <Typography>{ele}</Typography>}
+                  onChange={handleCreditDebitChange}
+                >
+                  <MenuItem value={"Credit"}>Credit</MenuItem>
+                  <MenuItem value={"Debit"}>Debit</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid2>
+            <Grid2 xs={6}>
+              <FormControl>
+                <FormLabel htmlFor="title">Title:</FormLabel>
+                <TextField
+                  name="title"
+                  value={title}
+                  onChange={handleTitleChange}
+                />
+              </FormControl>
+            </Grid2>
+            <Grid2 xs={6}>
+              <FormControl fullWidth>
+                <FormLabel htmlFor="note">Note:</FormLabel>
+                <TextField
+                  name="note"
+                  value={note}
+                  onChange={handleNoteChange}
+                />
+              </FormControl>
+            </Grid2>
+            <Grid2 xs={6}>
+              <FormControl fullWidth>
+                <FormLabel htmlFor="start date">Start date:</FormLabel>
+                <TextField
+                  name="start date"
+                  value={start}
+                  onChange={handleStartChange}
+                />
+              </FormControl>
+            </Grid2>
+          </Grid2>
+          <Divider sx={{mt: 1, mb: 1}}/>
+          <Grid2 container spacing={1}>
+            <Grid2 xs={6}>
+              <Button fullWidth variant="contained" onClick={updateEntry}>
+                Update
+              </Button>
+            </Grid2>
+            <Grid2 xs={6}>
+              <Button fullWidth variant="contained" onClick={deleteEntry} value="all">
+                Delete All
+              </Button>
+            </Grid2>
+            <Grid2 xs={6}>
+              <Button fullWidth variant="contained" onClick={deleteEntry} value="single">
+                Delete Single
+              </Button>
+            </Grid2>
+            <Grid2 xs={6}>
+              <Button fullWidth variant="contained" onClick={showUserInfo}>
+                Show userinfo
+              </Button>
+            </Grid2>
+          </Grid2>
+        </Paper>
       </Modal>
     </Box>
   );
