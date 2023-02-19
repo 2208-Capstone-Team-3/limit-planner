@@ -21,7 +21,7 @@ entryId?: string,
 accountId?: string,
 userId?: string,
 }
-const makeEntryCopies = async (entryData: EntryAttributes[], skipdates: SkipDateAttributes[] = [], duration?: number) => {
+const makeEntryCopies = async (entryData: EntryAttributes[], skipdates: SkipDateAttributes[]) => {
   let newEntries: EntryAttributes[] = [];
 
   await entryData.forEach((entry: EntryAttributes) => {
