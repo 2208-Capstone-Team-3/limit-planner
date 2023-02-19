@@ -59,7 +59,7 @@ const Selectors = () => {
                 | string
             ) => (
               <Typography>
-                {typeof ele === "string" ? JSON.parse(ele).accountName : ele}
+                {typeof ele === "string" ? JSON.parse(ele).accountName : ele.accountName}
               </Typography>
             )}
             onChange={handleAccount}
@@ -93,7 +93,7 @@ const Selectors = () => {
                 | string
             ) => (
               <Typography>
-                {typeof ele === "string" ? JSON.parse(ele).name : ele}
+                {typeof ele === "string" ? JSON.parse(ele).name : ele.name}
               </Typography>
             )}
             label="Goal"
