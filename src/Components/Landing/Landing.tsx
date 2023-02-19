@@ -113,20 +113,24 @@ function Landing() {
         key={"switcher"}
         onClick={colorMode.toggleColorMode}
       />
-      <Button
-        variant="contained"
+      <Box
+        gap={1}
         sx={{
+          display: "flex",
           ml: 1,
           position: "absolute",
           zIndex: 6,
           right: "2vw",
           top: "2vw",
         }}
-        href="login"
-        color="inherit"
       >
-        Login
-      </Button>
+        <Button color="primary" href="createuser" variant="contained">
+          <Typography variant="button">Sign-up</Typography>
+        </Button>
+        <Button variant="contained" href="login" color="primary">
+          <Typography variant="button">Login</Typography>
+        </Button>
+      </Box>
       <Swiper
         modules={[Mousewheel, EffectFade, Keyboard, Navigation, Lazy]}
         direction="vertical"

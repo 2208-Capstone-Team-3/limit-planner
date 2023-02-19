@@ -34,7 +34,7 @@ const AdvancedCharting = () => {
   );
 
   const handleAccount = (ele: SelectChangeEvent) => {
-    dispatch(setAccountSelector(ele.target.value));
+    dispatch(setAccountSelector(JSON.parse(ele.target.value)));
   };
 
   const handleGoal = (ele: SelectChangeEvent) => {
@@ -51,17 +51,17 @@ const AdvancedCharting = () => {
     <Grid2 container>
       <Grid2 container xs={2} direction="column">
         <Grid2 xs={12}>
-          <Box display={"flex"} sx={{placeContent: "center"}}>
-            <Typography  variant="h3">Selectors</Typography>
+          <Box display={"flex"} sx={{ placeContent: "center" }}>
+            <Typography variant="h3">Selectors</Typography>
           </Box>
         </Grid2>
-        <Divider sx={{marginBottom: 1}}/>
+        <Divider sx={{ marginBottom: 1 }} />
         <Grid2 xs={12}>
           <FormControl fullWidth>
             <InputLabel id={"chartSelectLabel"}>Chart Type</InputLabel>
             <Select
               labelId="chartSelectLabel"
-              value={chartSelected ?? undefined}
+              value={chartSelected ?? ""}
               renderValue={(ele) => <Typography>{ele}</Typography>}
               onChange={handleChartSelect}
             >
@@ -77,14 +77,30 @@ const AdvancedCharting = () => {
               key={"accountSelect"}
               fullWidth
               labelId="accountSelectLabel"
+              value={accountSelector ? JSON.stringify(accountSelector) : ""}
               id="accountSelect"
-              value={accountSelector ?? "Account"}
-              renderValue={(ele) => <Typography>{ele}</Typography>}
-              label="Account"
+              renderValue={(
+                ele:
+                  | {
+                      goals?: [] | undefined;
+                      entries?: [] | undefined;
+                      userId?: string | undefined;
+                      id?: string | undefined;
+                      accountType: string;
+                      accountName: string;
+                      institution: string;
+                      balance: number;
+                    }
+                  | string
+              ) => (
+                <Typography>
+                  {typeof ele === "string" ? JSON.parse(ele).accountName : ele}
+                </Typography>
+              )}
               onChange={handleAccount}
             >
               {accounts.map((ele, id) => (
-                <MenuItem key={`${ele.id}` + id} value={ele.accountName}>
+                <MenuItem key={`${ele.id}` + id} value={JSON.stringify(ele)}>
                   {ele.accountName}
                 </MenuItem>
               ))}
