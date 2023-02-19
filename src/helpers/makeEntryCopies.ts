@@ -20,18 +20,18 @@ accountId?: string,
 userId?: string,
 }
 
-const makeEntryCopies = async (entryData: EntryAttributes[], skipdates?: { data: SkipDateAttributes[] }, duration?: number) => {
-    const token = window.localStorage.getItem("token");
+const makeEntryCopies = async (entryData: EntryAttributes[], skipdates: SkipDateAttributes[] = [], duration?: number) => {
+    // const token = window.localStorage.getItem("token");
     
     //   console.log("SKIPDATES!!",skipdates)
   let newEntries: EntryAttributes[] = [];
 
-  entryData.forEach((entry: EntryAttributes) => {
+  await entryData.forEach((entry: EntryAttributes) => {
     let newDate = new Date(entry.start)
     // console.log("ENTRY.START DATE:", entry.start)
     //ENTRY.START IS this format 2023-02-11T00:00:00.000Z
 
-    const filtered = skipdates?.data.filter((date: SkipDateAttributes)=> {
+    const filtered = skipdates.filter((date: SkipDateAttributes)=> {
         return date.entryId === entry.id
     })
     const mapped = filtered?.map((date: SkipDateAttributes)=> {

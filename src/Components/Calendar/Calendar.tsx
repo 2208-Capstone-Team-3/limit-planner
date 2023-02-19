@@ -132,7 +132,7 @@ const Calendar = () => {
         headers: { Authorization: "Bearer " + token },
       });
       const updatedEntryCopies = await makeEntryCopies(updatedEntries.data);
-      const filteredEntries = await updatedEntryCopies.filter(
+      const filteredEntries = updatedEntryCopies.filter(
         (entry: EntryAttributes) => entry.id !== id
       );
       dispatch(setEntries(filteredEntries));
@@ -158,7 +158,8 @@ const Calendar = () => {
         let skipdates: { data: SkipDateAttributes[] } = await axios.get("/api/entries/skipdates", {
           headers: { Authorization: "Bearer " + token },
         })
-        const updatedEntryCopies = await makeEntryCopies(updatedEntries.data, skipdates);
+        console.log("SKIPDATES IN CALENDAR", skipdates)
+        const updatedEntryCopies = await makeEntryCopies(updatedEntries.data, skipdates.data);
         dispatch(setEntries(updatedEntryCopies));
         dispatch(setReoccurEntries(updatedEntryCopies))
         handleModalClose()
