@@ -12,7 +12,7 @@ import { RootState } from "../../store";
 
 const MainHistogram = () => {
   const theme = useTheme();
-  const entries = useSelector((state: RootState) => state.entries.entries);
+  const entries = useSelector((state: RootState) => state.theme.theme.filteredEntries);
   const data: { x: Date; y: number }[] = [];
   let total = 0;
 
@@ -33,7 +33,7 @@ const MainHistogram = () => {
   return (
     <VictoryChart
       theme={VictoryTheme.material}
-      padding={{top: 0, bottom: 60, left: 60, right : 0}}
+      padding={{top: 10, bottom: 30, left: 30, right : 0}}
       animate={{
         duration: 2000,
         onLoad: { duration: 1000 },
@@ -46,6 +46,7 @@ const MainHistogram = () => {
             })}, ${datum.y}`
           }
           theme={VictoryTheme.material}
+          voronoiPadding={{top: 10, bottom: 30, left: 30, right : 0}}
         />
       }
     >

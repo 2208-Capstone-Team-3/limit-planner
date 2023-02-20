@@ -140,13 +140,15 @@ const SingleAccount = () => {
           <Container>
             <Typography variant="h4">Recent activity</Typography>
             {entries.map((entry: any) => {
-              return (
-                entry.creditDebit==='Credit' ? 
+              return entry.creditDebit === "Credit" ? (
                 <Typography>
-                  + {new Date(entry.start).toDateString()} - {entry.title} - ${entry.amount}
-                  </Typography> : 
+                  + {new Date(entry.start).toDateString()} - {entry.title} - $
+                  {entry.amount}
+                </Typography>
+              ) : (
                 <Typography>
-                  - {new Date(entry.start).toDateString()} - {entry.title} - ${entry.amount}
+                  - {new Date(entry.start).toDateString()} - {entry.title} - $
+                  {entry.amount}
                 </Typography>
               );
             })}
@@ -158,15 +160,16 @@ const SingleAccount = () => {
               display: "flex",
               flexDirection: "column",
               gap: "30px",
-              placeItems: "center",
+              placeContent: "center",
             }}
           >
-            <Typography variant="h2">{account?.accountName}</Typography>
+            <Typography sx={{placeSelf: "center"}} variant="h2">
+              {account ? account.accountName : "No Account Available"}
+            </Typography>
             <Container
               sx={{
                 display: "flex",
                 flexDirection: "column",
-                gap: "30px",
                 placeItems: "center",
               }}
             >
@@ -177,7 +180,6 @@ const SingleAccount = () => {
               sx={{
                 display: "flex",
                 flexDirection: "column",
-                gap: "30px",
                 placeItems: "center",
               }}
             >

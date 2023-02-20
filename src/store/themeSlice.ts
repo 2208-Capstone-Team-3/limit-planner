@@ -4,8 +4,19 @@ interface initialStateType {
   theme: {
     homeDrawerOpen: boolean;
     dateSelector: Date | string;
-    accountSelector: string;
-    goalSelector: string;
+    accountSelector:     {
+      goals?: [];
+      entries?: [];
+      userId?: string;
+      id?: string;
+      accountType: string;
+      accountName: string;
+      institution: string;
+      balance: number;
+    } | null;
+    goalSelector: string | null;
+    filteredEntries:any[];
+    filteredGoals:any[];
   };
 }
 
@@ -13,8 +24,10 @@ const initialState: initialStateType = {
   theme: {
     homeDrawerOpen: true,
     dateSelector: "05-05-2023",
-    accountSelector: "",
-    goalSelector: "",
+    accountSelector: null,
+    goalSelector: null,
+    filteredEntries:[],
+    filteredGoals:[]
   },
 };
 
@@ -40,12 +53,20 @@ export const themeSlice = createSlice({
     setLightorDark: (state, action) => {
       localStorage.setItem("colorModeCookie", action.payload);
     },
+    setFilteredEntries: (state, action) => {
+      state.theme.filteredEntries = action.payload;
+    },
+    setFilteredGoals: (state, action) => {
+      state.theme.filteredGoals = action.payload;
+    },
     resetTheme: (state) => {
       state.theme = {
         homeDrawerOpen: true,
         dateSelector: new Date(),
-        accountSelector: "",
-        goalSelector: "",
+        accountSelector: null,
+        goalSelector: null,
+        filteredEntries:[],
+        filteredGoals:[]
       };
     },
   },
@@ -59,5 +80,7 @@ export const {
   setDateSelector,
   setAccountSelector,
   setGoalSelector,
+  setFilteredEntries,
+  setFilteredGoals
 } = themeSlice.actions;
 export default themeSlice.reducer;

@@ -1,8 +1,27 @@
-import React, { BaseSyntheticEvent, useState } from "react";
+import React, {
+  BaseSyntheticEvent,
+  useState,
+  useCallback,
+} from "react";
 import axios from "axios";
 import "./calendar.css";
 import { useSelector, useDispatch } from "react-redux";
-import { Box, Modal, Skeleton, useTheme } from "@mui/material";
+import {
+  Box,
+  Button,
+  Divider,
+  FormControl,
+  FormLabel,
+  MenuItem,
+  Modal,
+  Paper,
+  Select,
+  SelectChangeEvent,
+  Skeleton,
+  TextField,
+  Typography,
+  useTheme,
+} from "@mui/material";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -13,10 +32,12 @@ import { RootState } from "../../store";
 import { setDateSelector } from "../../store/themeSlice";
 import { setReoccurEntries } from "../../store/reoccurEntriesSlice";
 import { setEntries } from "../../store/entriesSlice";
+import { setSkipdates } from "../../store/skipdatesSlice";
 import makeEntryCopies from "./../../helpers/makeEntryCopies";
 import { EntryAttributes } from "../../../server/db/models/Entry.model";
 import { blueGrey, deepOrange } from "@mui/material/colors";
-import { update } from "lodash";
+import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
+// import { update } from "lodash";
 
 const modalStyle = {
   position: "absolute",
@@ -24,7 +45,7 @@ const modalStyle = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 400,
-  bgcolor: "white",
+  bgcolor: "Primary",
   border: "2px solid #000",
   boxShadow: 24,
   p: 4,
@@ -43,12 +64,18 @@ const Calendar = () => {
   const [note, setNote] = useState<string>("");
   const [start, setStart] = useState<any>(""); // should fix this with more appropriate data type
   const [frequency, setFrequency] = useState<string>("");
-
   const [modalOpen, setModalOpen] = useState(false);
-
   const reoccurEntries = useSelector(
     (state: RootState) => state.reoccurEntries.reoccurEntries
   );
+  const filteredEntries = useSelector(
+    (state: RootState) => state.theme.theme.filteredEntries
+  );
+  const user = useSelector((state: RootState) => state.user.user);
+  const skipdates = useSelector(
+    (state: RootState) => state.skipdates.skipdates
+  );
+  const entries = useSelector((state: RootState) => state.entries.entries);
 
   const handleModalOpen = (selected: EventClickArg) => {
     setModalOpen(true);
@@ -70,7 +97,7 @@ const Calendar = () => {
     dispatch(setDateSelector(selected.endStr));
   };
 
-  const handleEntryTypeChange = (event: BaseSyntheticEvent) => {
+  const handleEntryTypeChange = (event: SelectChangeEvent) => {
     setEntryType(event.target.value);
   };
 
@@ -78,7 +105,7 @@ const Calendar = () => {
     setAmount(event.target.value);
   };
 
-  const handleCreditDebitChange = (event: BaseSyntheticEvent) => {
+  const handleCreditDebitChange = (event: SelectChangeEvent) => {
     setCreditDebit(event.target.value);
   };
 
@@ -93,8 +120,13 @@ const Calendar = () => {
   const handleStartChange = (event: BaseSyntheticEvent) => {
     setStart(event.target.value);
   };
+  const showUserInfo = () => {
+    console.log("entryId: ", id);
+    console.log("userId: ", user.id);
+    console.log("user object: ", user);
+  };
 
-  const updateEntry = async () => {
+  const updateEntry = useCallback(async () => {
     const body = {
       entryType,
       amount,
@@ -104,57 +136,84 @@ const Calendar = () => {
       start,
       frequency,
     };
+
     await axios.put(`/api/entries/${id}`, body, {
       headers: { Authorization: "Bearer " + token },
     });
+
     const updatedEntries = await axios.get("/api/entries", {
       headers: { Authorization: "Bearer " + token },
     });
-    const updatedEntryCopies = makeEntryCopies(updatedEntries.data);
-    console.log(updatedEntryCopies);
+    const updatedEntryCopies = await makeEntryCopies(
+      updatedEntries.data,
+      skipdates
+    );
+
     dispatch(setEntries(updatedEntryCopies));
     dispatch(setReoccurEntries(updatedEntryCopies));
     handleModalClose();
-  };
+  }, [
+    amount,
+    creditDebit,
+    dispatch,
+    entryType,
+    frequency,
+    id,
+    note,
+    skipdates,
+    start,
+    title,
+    token,
+  ]);
 
-  const deleteEntry = async (event: BaseSyntheticEvent) => {
-    if (event.target.value === "all") {
-      await axios.delete(`/api/entries/${id}`, {
-        headers: { Authorization: "Bearer " + token },
-      });
-      const updatedEntries = await axios.get("/api/entries", {
-        headers: { Authorization: "Bearer " + token },
-      });
-      const updatedEntryCopies = makeEntryCopies(updatedEntries.data);
-      const filteredEntries = updatedEntryCopies.filter(
-        (entry: EntryAttributes) => entry.id !== id
-      );
-      dispatch(setReoccurEntries(filteredEntries));
-      handleModalClose();
-    } else {
-      console.log("single button is clicked");
-    }
-  };
-
-  const updateEntryDate = async(selected: any) => {
-    console.log('An entry was moved!');
-    // need to update the front end 'reocurrEntries' component
-    // when clickin on an Entry in the calendar, that particular 
-    // entry might not exist in the DB - it might just be a copy
-    // created for the front end. This function should update the
-    // backend if the instance exists in the DB, and then update
-    // the front end
-  };
+  const deleteEntry = useCallback(
+    async (event: BaseSyntheticEvent) => {
+      if (event.target.value === "all") {
+        await axios.delete(`/api/entries/${id}`, {
+          headers: { Authorization: "Bearer " + token },
+        });
+        const updatedEntries: { data: EntryAttributes[] } = await axios.get(
+          "/api/entries",
+          {
+            headers: { Authorization: "Bearer " + token },
+          }
+        );
+        dispatch(setEntries(updatedEntries.data));
+        const updatedEntryCopies = await makeEntryCopies(
+          updatedEntries.data,
+          skipdates
+        );
+        const filteredEntries = updatedEntryCopies.filter(
+          (entry: EntryAttributes) => entry.id !== id
+        );
+        dispatch(setEntries(filteredEntries));
+        dispatch(setReoccurEntries(filteredEntries));
+        handleModalClose();
+      } else {
+        const isoStart = start.toISOString();
+        const databaseStart = isoStart.substring(0, 10);
+        const startDate = {
+          skippeddate: databaseStart,
+          userId: user.id,
+          entryId: id,
+        };
+        await axios.post("/api/entries/skipdates", startDate);
+        dispatch(setSkipdates([...skipdates, startDate]));
+        const updatedEntryCopies = await makeEntryCopies(entries, skipdates);
+        dispatch(setReoccurEntries(updatedEntryCopies));
+        handleModalClose();
+      }
+    },
+    [dispatch, entries, id, skipdates, start, token, user.id]
+  );
 
   if (reoccurEntries.length === 0)
     return <Skeleton animation={"wave"} variant="rectangular" />;
-
   return (
     <Box>
       <Box>
         <FullCalendar
-          loading={() => reoccurEntries.length === 0}
-          key={"Calendar"}
+          key={"MainFullCalendar"}
           plugins={[
             dayGridPlugin,
             timeGridPlugin,
@@ -171,8 +230,8 @@ const Calendar = () => {
           selectable={true}
           selectMirror={true}
           dayMaxEvents={true}
-          initialEvents={reoccurEntries}
-          events={reoccurEntries}
+          events={{events: filteredEntries}}
+          eventDisplay="block"
           select={handleSelect}
           eventClick={handleModalOpen}
           eventDragStop={updateEntryDate}
@@ -189,49 +248,111 @@ const Calendar = () => {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={modalStyle}>
-          <div>
-            <label htmlFor="entry type">Entry type:</label>
-            <input
-              name="entry type"
-              value={entryType}
-              onChange={handleEntryTypeChange}
-            />
-          </div>
-          <div>
-            <label htmlFor="amount">Amount:</label>
-            <input name="amount" value={amount} onChange={handleAmountChange} />
-          </div>
-          <label htmlFor="credit/debit">Credit/Debit:</label>
-          <input
-            name="credit/debit"
-            value={creditDebit}
-            onChange={handleCreditDebitChange}
-          />
-          <div>
-            <label htmlFor="title">Tile:</label>
-            <input name="title" value={title} onChange={handleTitleChange} />
-          </div>
-          <div>
-            <label htmlFor="note">Note:</label>
-            <input name="note" value={note} onChange={handleNoteChange} />
-          </div>
-          <div>
-            <label htmlFor="start date">Start date:</label>
-            <input
-              name="start date"
-              value={start}
-              onChange={handleStartChange}
-            />
-          </div>
-          <button onClick={updateEntry}>Update</button>
-          <button onClick={deleteEntry} value="all">
-            Delete All
-          </button>
-          <button onClick={deleteEntry} value="single">
-            Delete Single
-          </button>
-        </Box>
+        <Paper sx={modalStyle}>
+          <Grid2 container spacing={1}>
+            <Grid2 xs={6}>
+              <FormControl fullWidth>
+                <FormLabel>Entry type:</FormLabel>
+                <Select
+                  name="entry type"
+                  value={entryType}
+                  renderValue={(ele) => <Typography>{ele}</Typography>}
+                  onChange={handleEntryTypeChange}
+                >
+                  <MenuItem value={"User"}>User</MenuItem>
+                  <MenuItem value={"API"}>API</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid2>
+            <Grid2 xs={6}>
+              <FormControl fullWidth>
+                <FormLabel>Amount:</FormLabel>
+                <TextField
+                  name="amount"
+                  value={amount}
+                  onChange={handleAmountChange}
+                />
+              </FormControl>
+            </Grid2>
+            <Grid2 xs={6}>
+              <FormControl fullWidth>
+                <FormLabel htmlFor="credit/debit">Credit/Debit:</FormLabel>
+                <Select
+                  name="credit/debit"
+                  value={creditDebit}
+                  renderValue={(ele) => <Typography>{ele}</Typography>}
+                  onChange={handleCreditDebitChange}
+                >
+                  <MenuItem value={"Credit"}>Credit</MenuItem>
+                  <MenuItem value={"Debit"}>Debit</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid2>
+            <Grid2 xs={6}>
+              <FormControl>
+                <FormLabel htmlFor="title">Title:</FormLabel>
+                <TextField
+                  name="title"
+                  value={title}
+                  onChange={handleTitleChange}
+                />
+              </FormControl>
+            </Grid2>
+            <Grid2 xs={6}>
+              <FormControl fullWidth>
+                <FormLabel htmlFor="note">Note:</FormLabel>
+                <TextField
+                  name="note"
+                  value={note}
+                  onChange={handleNoteChange}
+                />
+              </FormControl>
+            </Grid2>
+            <Grid2 xs={6}>
+              <FormControl fullWidth>
+                <FormLabel htmlFor="start date">Start date:</FormLabel>
+                <TextField
+                  name="start date"
+                  value={start}
+                  onChange={handleStartChange}
+                />
+              </FormControl>
+            </Grid2>
+          </Grid2>
+          <Divider sx={{ mt: 1, mb: 1 }} />
+          <Grid2 container spacing={1}>
+            <Grid2 xs={6}>
+              <Button fullWidth variant="contained" onClick={updateEntry}>
+                Update
+              </Button>
+            </Grid2>
+            <Grid2 xs={6}>
+              <Button
+                fullWidth
+                variant="contained"
+                onClick={deleteEntry}
+                value="all"
+              >
+                Delete All
+              </Button>
+            </Grid2>
+            <Grid2 xs={6}>
+              <Button
+                fullWidth
+                variant="contained"
+                onClick={deleteEntry}
+                value="single"
+              >
+                Delete Single
+              </Button>
+            </Grid2>
+            <Grid2 xs={6}>
+              <Button fullWidth variant="contained" onClick={showUserInfo}>
+                Show userinfo
+              </Button>
+            </Grid2>
+          </Grid2>
+        </Paper>
       </Modal>
     </Box>
   );

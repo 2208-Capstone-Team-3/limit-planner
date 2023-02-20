@@ -40,7 +40,6 @@ function LimitAppBar() {
     window.localStorage.removeItem("token");
     dispatch(resetUser());
     navigate("/");
-    window.location.reload();
   };
 
   const login = () => {
