@@ -12,7 +12,6 @@ import {
   BOOLEAN,
 } from "sequelize";
 import { SkipDateAttributes } from "./Skipdate.model.js";
-import { AccountAttributes } from "./Account.model.js";
 
 // order of InferAttributes & InferCreationAttributes is important.
 export interface EntryAttributes

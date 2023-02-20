@@ -1,4 +1,8 @@
-import React, { BaseSyntheticEvent, useState, useEffect } from "react";
+import React, {
+  BaseSyntheticEvent,
+  useState,
+  useCallback,
+} from "react";
 import axios from "axios";
 import "./calendar.css";
 import { useSelector, useDispatch } from "react-redux";
@@ -31,7 +35,6 @@ import { setEntries } from "../../store/entriesSlice";
 import { setSkipdates } from "../../store/skipdatesSlice";
 import makeEntryCopies from "./../../helpers/makeEntryCopies";
 import { EntryAttributes } from "../../../server/db/models/Entry.model";
-import { SkipDateAttributes } from "./../../helpers/makeEntryCopies";
 import { blueGrey, deepOrange } from "@mui/material/colors";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 // import { update } from "lodash";
@@ -52,7 +55,7 @@ const modalStyle = {
 const Calendar = () => {
   const dispatch = useDispatch();
   const token = window.localStorage.getItem("token");
-  const themey = useTheme();
+  const theme = useTheme();
   const [id, setId] = useState<string>("");
   const [entryType, setEntryType] = useState<string>("");
   const [amount, setAmount] = useState<number>(0);
@@ -62,7 +65,6 @@ const Calendar = () => {
   const [start, setStart] = useState<any>(""); // should fix this with more appropriate data type
   const [frequency, setFrequency] = useState<string>("");
   const [modalOpen, setModalOpen] = useState(false);
-
   const reoccurEntries = useSelector(
     (state: RootState) => state.reoccurEntries.reoccurEntries
   );
@@ -70,13 +72,10 @@ const Calendar = () => {
     (state: RootState) => state.theme.theme.filteredEntries
   );
   const user = useSelector((state: RootState) => state.user.user);
-  const theme = useSelector((state: RootState) => state.theme)
   const skipdates = useSelector(
     (state: RootState) => state.skipdates.skipdates
   );
-  const entries = useSelector(
-    (state: RootState) => state.entries.entries
-  );
+  const entries = useSelector((state: RootState) => state.entries.entries);
 
   const handleModalOpen = (selected: EventClickArg) => {
     setModalOpen(true);
@@ -127,7 +126,7 @@ const Calendar = () => {
     console.log("user object: ", user);
   };
 
-  const updateEntry = async () => {
+  const updateEntry = useCallback(async () => {
     const body = {
       entryType,
       amount,
@@ -137,60 +136,84 @@ const Calendar = () => {
       start,
       frequency,
     };
+
     await axios.put(`/api/entries/${id}`, body, {
       headers: { Authorization: "Bearer " + token },
     });
+
     const updatedEntries = await axios.get("/api/entries", {
       headers: { Authorization: "Bearer " + token },
     });
-    const updatedEntryCopies = await makeEntryCopies(updatedEntries.data, skipdates);
+    const updatedEntryCopies = await makeEntryCopies(
+      updatedEntries.data,
+      skipdates
+    );
+
     dispatch(setEntries(updatedEntryCopies));
     dispatch(setReoccurEntries(updatedEntryCopies));
     handleModalClose();
-  };
+  }, [
+    amount,
+    creditDebit,
+    dispatch,
+    entryType,
+    frequency,
+    id,
+    note,
+    skipdates,
+    start,
+    title,
+    token,
+  ]);
 
-  const deleteEntry = async (event: BaseSyntheticEvent) => {
-    if (event.target.value === "all") {
-      await axios.delete(`/api/entries/${id}`, {
-        headers: { Authorization: "Bearer " + token },
-      });
-      const updatedEntries: {data: EntryAttributes[]} = await axios.get("/api/entries", {
-        headers: { Authorization: "Bearer " + token },
-      });
-      dispatch(setEntries(updatedEntries.data))
-      const updatedEntryCopies = await makeEntryCopies(updatedEntries.data, skipdates);
-      const filteredEntries = updatedEntryCopies.filter(
-        (entry: EntryAttributes) => entry.id !== id
-      );
-      dispatch(setEntries(filteredEntries));
-      dispatch(setReoccurEntries(filteredEntries));
-      handleModalClose();
-    } else {
-        const isoStart = start.toISOString()
-        const databaseStart = isoStart.substring(0,10)
-        const startDate = { 
-          skippeddate: databaseStart, 
-          userId: user.id, 
-          entryId: id }
-        await axios.post("/api/entries/skipdates", startDate)
-        dispatch(setSkipdates([...skipdates, startDate]))
-        const updatedEntryCopies = await makeEntryCopies(entries, skipdates)
-        // dispatch(setEntries(updatedEntryCopies));
-        dispatch(setReoccurEntries(updatedEntryCopies))
-        handleModalClose()
-    }
-  };
+  const deleteEntry = useCallback(
+    async (event: BaseSyntheticEvent) => {
+      if (event.target.value === "all") {
+        await axios.delete(`/api/entries/${id}`, {
+          headers: { Authorization: "Bearer " + token },
+        });
+        const updatedEntries: { data: EntryAttributes[] } = await axios.get(
+          "/api/entries",
+          {
+            headers: { Authorization: "Bearer " + token },
+          }
+        );
+        dispatch(setEntries(updatedEntries.data));
+        const updatedEntryCopies = await makeEntryCopies(
+          updatedEntries.data,
+          skipdates
+        );
+        const filteredEntries = updatedEntryCopies.filter(
+          (entry: EntryAttributes) => entry.id !== id
+        );
+        dispatch(setEntries(filteredEntries));
+        dispatch(setReoccurEntries(filteredEntries));
+        handleModalClose();
+      } else {
+        const isoStart = start.toISOString();
+        const databaseStart = isoStart.substring(0, 10);
+        const startDate = {
+          skippeddate: databaseStart,
+          userId: user.id,
+          entryId: id,
+        };
+        await axios.post("/api/entries/skipdates", startDate);
+        dispatch(setSkipdates([...skipdates, startDate]));
+        const updatedEntryCopies = await makeEntryCopies(entries, skipdates);
+        dispatch(setReoccurEntries(updatedEntryCopies));
+        handleModalClose();
+      }
+    },
+    [dispatch, entries, id, skipdates, start, token, user.id]
+  );
 
-  if (reoccurEntries.length === null)
+  if (reoccurEntries.length === 0)
     return <Skeleton animation={"wave"} variant="rectangular" />;
-
   return (
     <Box>
       <Box>
         <FullCalendar
-          // loading={() => reoccurEntries.length === 0}
-          // calendar will not load if there are no entries.
-          key={"Calendar"}
+          key={"MainFullCalendar"}
           plugins={[
             dayGridPlugin,
             timeGridPlugin,
@@ -207,13 +230,13 @@ const Calendar = () => {
           selectable={true}
           selectMirror={true}
           dayMaxEvents={true}
-          initialEvents={filteredEntries}
-          events={filteredEntries}
+          events={{events: filteredEntries}}
+          eventDisplay="block"
           select={handleSelect}
           eventClick={handleModalOpen}
           moreLinkHint={"More Events if Clicked"}
           eventColor={
-            themey.palette.mode === "light" ? blueGrey[400] : deepOrange[900]
+            theme.palette.mode === "light" ? blueGrey[400] : deepOrange[900]
           }
           eventTextColor="white"
         />
@@ -295,7 +318,7 @@ const Calendar = () => {
               </FormControl>
             </Grid2>
           </Grid2>
-          <Divider sx={{mt: 1, mb: 1}}/>
+          <Divider sx={{ mt: 1, mb: 1 }} />
           <Grid2 container spacing={1}>
             <Grid2 xs={6}>
               <Button fullWidth variant="contained" onClick={updateEntry}>
@@ -303,12 +326,22 @@ const Calendar = () => {
               </Button>
             </Grid2>
             <Grid2 xs={6}>
-              <Button fullWidth variant="contained" onClick={deleteEntry} value="all">
+              <Button
+                fullWidth
+                variant="contained"
+                onClick={deleteEntry}
+                value="all"
+              >
                 Delete All
               </Button>
             </Grid2>
             <Grid2 xs={6}>
-              <Button fullWidth variant="contained" onClick={deleteEntry} value="single">
+              <Button
+                fullWidth
+                variant="contained"
+                onClick={deleteEntry}
+                value="single"
+              >
                 Delete Single
               </Button>
             </Grid2>

@@ -41,7 +41,6 @@ import axios from "axios";
 import { setUser } from "../../store/userSlice";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
-import MainLineChart from "../Charts/MainLineChart";
 import ExampleLineChart from "./ExampleCharts/ExampleLineChart";
 import ExampleGoalChart from "./ExampleCharts/ExampleGoalChart";
 import ExampleProjections from "./ExampleCharts/ExampleProjections";
@@ -70,7 +69,6 @@ function Landing() {
         dispatch(setUser(response.data));
 
         navigate("/home");
-        window.location.reload();
       }
     } catch (error) {
       console.error(error);

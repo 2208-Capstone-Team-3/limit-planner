@@ -5,7 +5,6 @@ import {
     InferAttributes,
     InferCreationAttributes,
   } from "sequelize";
-import themeSlice from "../store/themeSlice";
 
 
 export interface SkipDateAttributes
@@ -21,37 +20,36 @@ entryId?: string,
 accountId?: string,
 userId?: string,
 }
-  function dateCallBack(date: any): string{
-    date = new Date(String(date))
-    let year: number = date.getYear()
-    let month: number = date.getMonth()
-    let day: number = date.getDate()
-    return  String(year) + String(month) + String(day)
-  }
+  // function dateCallBack(date: any): string{
+  //   date = new Date(String(date))
+  //   let year: number = date.getYear()
+  //   let month: number = date.getMonth()
+  //   let day: number = date.getDate()
+  //   return  String(year) + String(month) + String(day)
+  // }
 
 
 const makeEntryCopies = async (entryData: EntryAttributes[], skipdates: SkipDateAttributes[] = [], duration?: number) => {
   let newEntries: EntryAttributes[] = [];
 
-  await entryData.forEach((entry: EntryAttributes) => {
+  entryData.forEach((entry: EntryAttributes) => {
     let newDate = new Date(entry.start)
     const filtered = skipdates.filter((date: SkipDateAttributes)=> {
         return date.entryId === entry.id
     })
-    const mapped = filtered.map((date: SkipDateAttributes)=> date.skippeddate
+    const mapped = filtered.map((date: SkipDateAttributes)=> new Date(date.skippeddate).toLocaleDateString("default")
     )
-    const strMapped = mapped.map(dateCallBack)
     
     if (entry.frequency === "Monthly") {
       for (let i = 0; i <= 12; i++) {
-        if (strMapped.includes(dateCallBack(subDays(newDate, 1).toISOString()))) {
-          console.log("we got one!!!")
+        if (mapped.includes(subDays(newDate, 1).toLocaleDateString("default"))) {
+          // console.log("we got one!!!")
             newDate = addMonths(newDate, 1)
             continue
         } else {
         let newEntry = structuredClone(entry);
         // console.log("BEFORE TURNED INTO ISO: ",newEntry.start)
-        newEntry.start = newDate.toISOString();
+        newEntry.start = new Date(newDate).toISOString();
         // console.log("AFTER TURNED INTO ISO", newEntry.start)
         
         newEntries = [...newEntries, newEntry];
@@ -61,12 +59,12 @@ const makeEntryCopies = async (entryData: EntryAttributes[], skipdates: SkipDate
     }
     if (entry.frequency === "Bi-Weekly") {
       for (let i = 0; i <= 26; i++) {
-        if (strMapped.includes(dateCallBack(subDays(newDate, 1).toISOString())))  {
+        if (mapped.includes(subDays(newDate, 1).toLocaleDateString()))  {
             newDate = addDays(newDate, 14)
             continue
         } else {
         let newEntry = structuredClone(entry);
-        newEntry.start = newDate.toISOString();
+        newEntry.start = new Date(newDate).toISOString();
         newEntries.push(newEntry)
         newDate = addDays(newDate, 14);
         }
@@ -74,13 +72,13 @@ const makeEntryCopies = async (entryData: EntryAttributes[], skipdates: SkipDate
     }
     if (entry.frequency === "Weekly") {
       for (let i = 0; i <= 52; i++) {
-        if (strMapped.includes(dateCallBack(subDays(newDate, 1).toISOString())))  {
-          console.log("we got one!!!")
+        if (mapped.includes(subDays(newDate, 1).toLocaleDateString("default")))  {
+          // console.log("we got one!!!")
             newDate = addDays(newDate, 7)
             continue
         } else {
         let newEntry = structuredClone(entry);
-        newEntry.start = newDate.toISOString();
+        newEntry.start = new Date(newDate).toISOString();
         newEntries.push(newEntry)
         newDate = addDays(newDate, 7);
         }
@@ -91,8 +89,8 @@ const makeEntryCopies = async (entryData: EntryAttributes[], skipdates: SkipDate
       newEntries.push(newEntry)
     }
   });
-  console.log("finished copying entries")
-  console.log("these are the new entries ",newEntries)
+  // console.log("finished copying entries")
+  console.log("these are the new entries ", newEntries)
   return newEntries;
   
 };
@@ -129,7 +127,7 @@ export default makeEntryCopies;
 //         } else {
 //         let newEntry = structuredClone(entry);
 //         // console.log("BEFORE TURNED INTO ISO: ",newEntry.start)
-//         newEntry.start = newDate.toISOString();
+//         newEntry.start = new Date(newDate).toISOString();
 //         // console.log("AFTER TURNED INTO ISO", newEntry.start)
         
 //         newEntries = [...newEntries, newEntry];
@@ -145,7 +143,7 @@ export default makeEntryCopies;
 //             newDate = addDays(newDate, 14)
 //         } else {
 //         let newEntry = structuredClone(entry);
-//         newEntry.start = newDate.toISOString();
+//         newEntry.start = new Date(newDate).toISOString();
 //         newEntries = [...newEntries, newEntry];
 //         newDate = addDays(newDate, 14);
 //       }
@@ -158,7 +156,7 @@ export default makeEntryCopies;
 //             newDate = addDays(newDate, 7)
 //         } else {
 //         let newEntry = structuredClone(entry);
-//         newEntry.start = newDate.toISOString();
+//         newEntry.start = new Date(newDate).toISOString();
 //         newEntries = [...newEntries, newEntry];
 //         newDate = addDays(newDate, 7);
 //       }

@@ -1,21 +1,25 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
-import { Box, CircularProgress, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { RootState } from "../../store";
 
 const ProjectionsComponent = () => {
-  const theme = useSelector((state: RootState) => state.theme);
   const filteredEntries = theme.theme.filteredEntries;
   const accountSelector = theme.theme.accountSelector;
+  // const theme = useTheme();
+  const reoccurEntries = useSelector(
+    (state: RootState) => state.reoccurEntries.reoccurEntries
+  );
+  const accounts = useSelector((state: RootState) => state.accounts.accounts);
+const dateSelector = useSelector((state: RootState) => state.theme.theme.dateSelector)
   const todayDate = useMemo(() => new Date(), []);
-  const endDate = theme.theme.dateSelector;
   const [projAmount, setProjAmount] = useState("0");
 
   const projectionAmount = useCallback(() => {
     if (filteredEntries.length) {
       let filtered = filteredEntries.filter(
         (entry) =>
-          new Date(entry.start).getTime() <= new Date(endDate).getTime() &&
+          new Date(entry.start).getTime() <= new Date(dateSelector).getTime() &&
           new Date(entry.start).getTime() >= new Date(todayDate).getTime()
       );
       let mapped = filtered.map((entry) =>
@@ -31,12 +35,11 @@ const ProjectionsComponent = () => {
   
       setProjAmount(sum);
     }
-    
-  }, [filteredEntries,endDate,todayDate,accountSelector]);
+  }, [accounts, dateSelector, reoccurEntries, todayDate]);
 
   useEffect(() => {
     projectionAmount();
-  }, [projectionAmount,theme]);
+  }, [projectionAmount]);
 
   const currentBalance = accountSelector?.balance.toLocaleString("en-US", {
     style: "currency",
@@ -55,13 +58,13 @@ const ProjectionsComponent = () => {
       sx={{ display: "flex", flexDirection: "column", placeItems: "center" }}
     >
       <Typography component={"h3"} variant="h4">Current Balance: {currentBalance}</Typography>
-      {new Date(endDate).toLocaleDateString() === new Date().toLocaleDateString() ? (
+      {new Date(dateSelector).toLocaleDateString() === new Date().toLocaleDateString() ? (
         <Typography component={"h3"} variant="h5">
           Click on date for projected balance
         </Typography>
       ) : (
         <Typography component={"h3"} variant="h5">{`Projected Balance for ${new Date(
-          endDate
+          dateSelector
         ).toLocaleDateString()} is: ${projAmount}`}</Typography>
       )}
     </Box>
