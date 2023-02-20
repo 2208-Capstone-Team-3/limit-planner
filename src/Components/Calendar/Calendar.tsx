@@ -27,7 +27,7 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
 import interactionPlugin from "@fullcalendar/interaction";
-import { DateSelectArg, EventClickArg } from "@fullcalendar/core";
+import { DateSelectArg, EventClickArg, EventDropArg } from "@fullcalendar/core";
 import { RootState } from "../../store";
 import { setDateSelector } from "../../store/themeSlice";
 import { setReoccurEntries } from "../../store/reoccurEntriesSlice";
@@ -204,7 +204,7 @@ const Calendar = () => {
     [dispatch, entries, id, skipdates, start, token, user.id]
   );
 
-  const updateDragEvent = async(selected: EventClickArg) => {
+  const updateDroppedEntry = async(selected: EventDropArg) => {
     const body = {
       entryType:selected.event.extendedProps.entryType,
       amount:selected.event.extendedProps.amount,
@@ -226,7 +226,6 @@ const Calendar = () => {
     );
     dispatch(setEntries(updatedEntryCopies));
     dispatch(setReoccurEntries(updatedEntryCopies));
-    handleModalClose();
   };
 
   if (reoccurEntries.length === 0)
@@ -256,7 +255,7 @@ const Calendar = () => {
           eventDisplay="block"
           select={handleSelect}
           eventClick={handleModalOpen}
-          eventDrop={updateDragEvent}
+          eventDrop={updateDroppedEntry}
           moreLinkHint={"More Events if Clicked"}
           eventColor={
             theme.palette.mode === "light" ? blueGrey[400] : deepOrange[900]
