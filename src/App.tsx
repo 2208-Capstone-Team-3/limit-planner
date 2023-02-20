@@ -12,7 +12,7 @@ import { setGoals } from "./store/goalsSlice";
 import { setEntries } from "./store/entriesSlice";
 import makeEntryCopies from "./../src/helpers/makeEntryCopies";
 import { setReoccurEntries } from "./store/reoccurEntriesSlice";
-import { setDateSelector } from "./store/themeSlice";
+import { setDateSelector, setFilteredEntries } from "./store/themeSlice";
 import { setSkipdates } from "./store/skipdatesSlice";
 import { RootState } from "./store";
 
@@ -27,6 +27,9 @@ function App() {
 
   const skipdates = useSelector(
     (state: RootState) => state.skipdates.skipdates
+  );
+  const reoccuringEntries = useSelector(
+    (state: RootState) => state.reoccurEntries.reoccurEntries
   );
 
   const colorMode = React.useMemo(
@@ -199,6 +202,7 @@ function App() {
 
   useEffect(() => {
     dispatch(setDateSelector(todayDate));
+    dispatch(setFilteredEntries(reoccuringEntries))
 
     const existingPreference = localStorage.getItem("colorModeCookie");
     if (existingPreference) {
@@ -207,7 +211,7 @@ function App() {
       setMode("light");
       localStorage.setItem("colorModeCookie", "light");
     }
-  }, [dispatch, todayDate]);
+  }, [dispatch, reoccuringEntries, todayDate]);
 
   return (
     <ColorModeContext.Provider value={colorMode}>

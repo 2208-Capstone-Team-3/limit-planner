@@ -9,8 +9,13 @@ import {
 } from "@mui/material";
 import { RootState } from "../../store";
 import { useSelector, useDispatch } from "react-redux";
-import { setAccountSelector, setGoalSelector, setFilteredEntries, setFilteredGoals } from "../../store/themeSlice";
-import { AccountCircleOutlined } from "@mui/icons-material";
+import {
+  setAccountSelector,
+  setGoalSelector,
+  setFilteredEntries,
+  setFilteredGoals,
+} from "../../store/themeSlice";
+import { AccountAttributes } from "../../../server/db/models/Account.model";
 
 const Selectors = () => {
   const dispatch = useDispatch();
@@ -31,9 +36,13 @@ const Selectors = () => {
   );
   const handleAccount = (ele: SelectChangeEvent) => {
     dispatch(setAccountSelector(JSON.parse(ele.target.value)));
-    const filteredEntries = reoccurEntries.filter(entry=>entry.accountId===JSON.parse(ele.target.value).id);
+    const filteredEntries = reoccurEntries.filter(
+      (entry) => entry.accountId === JSON.parse(ele.target.value).id
+    );
     dispatch(setFilteredEntries(filteredEntries));
-    const filteredGoals = allGoals.filter(goal=>goal.accountId===JSON.parse(ele.target.value).id);
+    const filteredGoals = allGoals.filter(
+      (goal) => goal.accountId === JSON.parse(ele.target.value).id
+    );
     dispatch(setFilteredGoals(filteredGoals));
   };
   const handleGoal = (ele: SelectChangeEvent) => {
@@ -51,22 +60,11 @@ const Selectors = () => {
             labelId="accountSelectLabel"
             value={accountSelector ? JSON.stringify(accountSelector) : ""}
             id="accountSelect"
-            renderValue={(
-              ele:
-                | {
-                    goals?: [] | undefined;
-                    entries?: [] | undefined;
-                    userId?: string | undefined;
-                    id?: string | undefined;
-                    accountType: string;
-                    accountName: string;
-                    institution: string;
-                    balance: number;
-                  }
-                | string
-            ) => (
+            renderValue={(ele: AccountAttributes | string) => (
               <Typography>
-                {typeof ele === "string" ? JSON.parse(ele).accountName : ele.accountName}
+                {typeof ele === "string"
+                  ? JSON.parse(ele).accountName
+                  : ele.accountName}
               </Typography>
             )}
             onChange={handleAccount}
