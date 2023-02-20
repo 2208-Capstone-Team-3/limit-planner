@@ -14,7 +14,7 @@ import { blueGrey, deepOrange } from "@mui/material/colors";
 
 const MainLineChart = () => {
   const theme = useTheme();
-  let entries = useSelector((state: RootState) => state.entries.entries);
+  const entries = useSelector((state: RootState) => state.theme.theme.filteredEntries);
 
   let dateSelector = useSelector(
     (state: RootState) => state.theme.theme.dateSelector

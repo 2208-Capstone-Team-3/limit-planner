@@ -4,19 +4,16 @@ import { Box, CircularProgress, Typography } from "@mui/material";
 import { RootState } from "../../store";
 
 const ProjectionsComponent = () => {
-  const reoccurEntries = useSelector(
-    (state: RootState) => state.reoccurEntries.reoccurEntries
-  );
-  const accounts = useSelector((state: RootState) => state.accounts.accounts);
   const theme = useSelector((state: RootState) => state.theme);
+  const filteredEntries = theme.theme.filteredEntries;
+  const accountSelector = theme.theme.accountSelector;
   const todayDate = useMemo(() => new Date(), []);
   const endDate = theme.theme.dateSelector;
   const [projAmount, setProjAmount] = useState("0");
 
   const projectionAmount = useCallback(() => {
-    // console.log("REOCCURRED ENTRIES PROJECTIONS HERE: ",reoccurEntries)
-    if (reoccurEntries.length) {
-      let filtered = reoccurEntries.filter(
+    if (filteredEntries.length) {
+      let filtered = filteredEntries.filter(
         (entry) =>
           new Date(entry.start).getTime() <= new Date(endDate).getTime() &&
           new Date(entry.start).getTime() >= new Date(todayDate).getTime()
@@ -26,7 +23,7 @@ const ProjectionsComponent = () => {
       );
       let reduced = mapped.reduce((accumulator, currentValue) => {
         return accumulator + currentValue;
-      }, accounts[0].balance);
+      }, accountSelector?.balance);
       let sum = reduced.toLocaleString("en-US", {
         style: "currency",
         currency: "USD",
@@ -35,18 +32,18 @@ const ProjectionsComponent = () => {
       setProjAmount(sum);
     }
     
-  }, [accounts, endDate, reoccurEntries, todayDate]);
+  }, [filteredEntries,endDate,todayDate,accountSelector]);
 
   useEffect(() => {
     projectionAmount();
-  }, [projectionAmount, theme]);
+  }, [projectionAmount,theme]);
 
-  const currentBalance = accounts[0].balance.toLocaleString("en-US", {
+  const currentBalance = accountSelector?.balance.toLocaleString("en-US", {
     style: "currency",
     currency: "USD",
   });
 
-  if (reoccurEntries.length === 0) return <CircularProgress />;
+  if (filteredEntries.length === 0) return <Typography>No account selected</Typography>;
   return (
     <Box
       sx={{ display: "flex", flexDirection: "column", placeItems: "center" }}

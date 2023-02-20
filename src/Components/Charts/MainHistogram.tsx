@@ -12,7 +12,7 @@ import { RootState } from "../../store";
 
 const MainHistogram = () => {
   const theme = useTheme();
-  const entries = useSelector((state: RootState) => state.entries.entries);
+  const entries = useSelector((state: RootState) => state.theme.theme.filteredEntries);
   const data: { x: Date; y: number }[] = [];
   let total = 0;
 

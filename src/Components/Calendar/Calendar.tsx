@@ -66,6 +66,9 @@ const Calendar = () => {
   const reoccurEntries = useSelector(
     (state: RootState) => state.reoccurEntries.reoccurEntries
   );
+  const filteredEntries = useSelector(
+    (state: RootState) => state.theme.theme.filteredEntries
+  );
   const user = useSelector((state: RootState) => state.user.user);
 
   const handleModalOpen = (selected: EventClickArg) => {
@@ -217,8 +220,8 @@ const Calendar = () => {
           selectable={true}
           selectMirror={true}
           dayMaxEvents={true}
-          initialEvents={reoccurEntries}
-          events={reoccurEntries}
+          initialEvents={filteredEntries}
+          events={filteredEntries}
           select={handleSelect}
           eventClick={handleModalOpen}
           moreLinkHint={"More Events if Clicked"}
