@@ -68,6 +68,9 @@ const Calendar = () => {
   const reoccurEntries = useSelector(
     (state: RootState) => state.reoccurEntries.reoccurEntries
   );
+  const filteredEntries = useSelector(
+    (state: RootState) => state.theme.theme.filteredEntries
+  );
   const user = useSelector((state: RootState) => state.user.user);
   const skipdates = useSelector(
     (state: RootState) => state.skipdates.skipdates
@@ -227,9 +230,8 @@ const Calendar = () => {
           selectable={true}
           selectMirror={true}
           dayMaxEvents={true}
-          events={{events: reoccurEntries}}
+          events={{events: filteredEntries}}
           eventDisplay="block"
-          // eventDidMount={()=> reoccurEntries}
           select={handleSelect}
           eventClick={handleModalOpen}
           moreLinkHint={"More Events if Clicked"}

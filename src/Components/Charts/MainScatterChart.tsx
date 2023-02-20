@@ -12,7 +12,7 @@ import { RootState } from "../../store";
 
 const MainScatterChart = () => {
   const theme = useTheme();
-  const entries = useSelector((state: RootState) => state.entries.entries);
+  const entries = useSelector((state: RootState) => state.theme.theme.filteredEntries);
   const data: { x: Date; y: number; amount: number }[] = [];
   let total = 0;
   entries

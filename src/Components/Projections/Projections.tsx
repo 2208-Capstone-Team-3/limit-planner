@@ -4,6 +4,8 @@ import { Box, Typography } from "@mui/material";
 import { RootState } from "../../store";
 
 const ProjectionsComponent = () => {
+  const filteredEntries = theme.theme.filteredEntries;
+  const accountSelector = theme.theme.accountSelector;
   // const theme = useTheme();
   const reoccurEntries = useSelector(
     (state: RootState) => state.reoccurEntries.reoccurEntries
@@ -14,8 +16,8 @@ const dateSelector = useSelector((state: RootState) => state.theme.theme.dateSel
   const [projAmount, setProjAmount] = useState("0");
 
   const projectionAmount = useCallback(() => {
-    if (reoccurEntries.length) {
-      let filtered = reoccurEntries.filter(
+    if (filteredEntries.length) {
+      let filtered = filteredEntries.filter(
         (entry) =>
           new Date(entry.start).getTime() <= new Date(dateSelector).getTime() &&
           new Date(entry.start).getTime() >= new Date(todayDate).getTime()
@@ -25,7 +27,7 @@ const dateSelector = useSelector((state: RootState) => state.theme.theme.dateSel
       );
       let reduced = mapped.reduce((accumulator, currentValue) => {
         return accumulator + currentValue;
-      }, accounts[0].balance);
+      }, accountSelector?.balance);
       let sum = reduced.toLocaleString("en-US", {
         style: "currency",
         currency: "USD",
@@ -39,12 +41,12 @@ const dateSelector = useSelector((state: RootState) => state.theme.theme.dateSel
     projectionAmount();
   }, [projectionAmount]);
 
-  const currentBalance = accounts[0].balance.toLocaleString("en-US", {
+  const currentBalance = accountSelector?.balance.toLocaleString("en-US", {
     style: "currency",
     currency: "USD",
   });
 
-  if (reoccurEntries.length === 0) { 
+  if (filteredEntries.length === 0) { 
     return (
     <Box>
       <Typography component={"h3"} variant="h4">Current Balance: {currentBalance} </Typography> 
