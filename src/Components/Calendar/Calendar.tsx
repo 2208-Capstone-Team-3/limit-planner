@@ -1,4 +1,4 @@
-import React, { BaseSyntheticEvent, useState } from "react";
+import React, { BaseSyntheticEvent, useState, useEffect } from "react";
 import axios from "axios";
 import "./calendar.css";
 import { useSelector, useDispatch } from "react-redux";
@@ -55,6 +55,9 @@ const Calendar = () => {
   const theme = useSelector((state: RootState) => state.theme)
   const skipdates = useSelector(
     (state: RootState) => state.skipdates.skipdates
+  );
+  const entries = useSelector(
+    (state: RootState) => state.entries.entries
   );
 
   const handleModalOpen = (selected: EventClickArg) => {
@@ -152,19 +155,12 @@ const Calendar = () => {
           userId: user.id, 
           entryId: id }
         await axios.post("/api/entries/skipdates", startDate)
-        const updatedEntries = await axios.get("/api/entries", {
-          headers: { Authorization: "Bearer " + token },
-        });
-        dispatch(setEntries(updatedEntries.data))
-        let returnedSkipdates: { data: SkipDateAttributes[] } = await axios.get("/api/entries/skipdates", {
-          headers: { Authorization: "Bearer " + token },
-        })
-        dispatch(setSkipdates(returnedSkipdates.data))
-        console.log("SKIPDATES IN CALENDAR", returnedSkipdates)
-        const updatedEntryCopies = await makeEntryCopies(updatedEntries.data, skipdates)
+        dispatch(setSkipdates([...skipdates, startDate]))
+        const updatedEntryCopies = await makeEntryCopies(entries, skipdates)
         // dispatch(setEntries(updatedEntryCopies));
         dispatch(setReoccurEntries(updatedEntryCopies))
         handleModalClose()
+        // window.location.reload()
     }
   };
 

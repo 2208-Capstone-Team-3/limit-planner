@@ -144,7 +144,6 @@ function App() {
   }, [dispatch]);
 
   const skipdatesFetch = useCallback(async () => {
-  
     try {
       console.log("STARTING SKIPDATESFETCH")
       const token = window.localStorage.getItem("token");
@@ -164,26 +163,30 @@ function App() {
   }, [dispatch]);
 
   /** creates and saves reoccuring entries */
-  const reoccurEntriesFetch = useCallback(async () => {
-      console.log("STARTING REOCCURRINGFETCH")
-      const token = window.localStorage.getItem("token");
-    if (token) {
-      const entries = await axios.get("/api/entries", {
-        headers: {
-          authorization: `Bearer ${token}`,
-        },
-      });
-      const entryCopies = await makeEntryCopies(entries.data, skipdates);
-      dispatch(setReoccurEntries(entryCopies));
-      console.log('thise are entry copies ',entryCopies)
-      console.log("ENDING REOCCORRUINGFETCH")
-    }
-    
-  }, [dispatch]);
+ 
 
   const theme = React.useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
 
   useEffect(() => {
+    const reoccurEntriesFetch = async () => {
+      try{
+        console.log("STARTING REOCCURRINGFETCH")
+        const token = window.localStorage.getItem("token");
+      if (token) {
+        const entries = await axios.get("/api/entries", {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        });
+        const entryCopies = await makeEntryCopies(entries.data, skipdates);
+        dispatch(setReoccurEntries(entryCopies)); 
+        console.log('thise are entry copies ',entryCopies)
+        console.log("ENDING REOCCORRUINGFETCH")
+      }
+      } catch(err) {
+        console.log(err)
+      }
+    }
     loginWithToken();
     accountsWithToken();
     goalsWithToken();
@@ -192,7 +195,6 @@ function App() {
     reoccurEntriesFetch();
     dispatch(setDateSelector(todayDate));
 
-
     const existingPreference = localStorage.getItem("colorModeCookie");
     if (existingPreference) {
       existingPreference === "light" ? setMode("light") : setMode("dark");
@@ -200,7 +202,7 @@ function App() {
       setMode("light");
       localStorage.setItem("colorModeCookie", "light");
     }
-  }, [accountsWithToken, dispatch, entriesWithToken, goalsWithToken, loginWithToken, skipdatesFetch, reoccurEntriesFetch, todayDate]);
+  }, [accountsWithToken, dispatch, entriesWithToken, goalsWithToken, loginWithToken, skipdatesFetch, todayDate, fetch, skipdates.length]);
 
   return (
     <ColorModeContext.Provider value={colorMode}>

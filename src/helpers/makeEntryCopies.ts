@@ -61,7 +61,6 @@ const makeEntryCopies = async (entryData: EntryAttributes[], skipdates: SkipDate
     }
     if (entry.frequency === "Bi-Weekly") {
       for (let i = 0; i <= 26; i++) {
-       
         if (strMapped.includes(dateCallBack(subDays(newDate, 1).toISOString())))  {
             newDate = addDays(newDate, 14)
             continue
