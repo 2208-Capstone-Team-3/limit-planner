@@ -1,4 +1,4 @@
-import React, { BaseSyntheticEvent, useState } from "react";
+import React, { BaseSyntheticEvent, useState, useEffect } from "react";
 import axios from "axios";
 import "./calendar.css";
 import { useSelector, useDispatch } from "react-redux";
@@ -28,6 +28,7 @@ import { RootState } from "../../store";
 import { setDateSelector } from "../../store/themeSlice";
 import { setReoccurEntries } from "../../store/reoccurEntriesSlice";
 import { setEntries } from "../../store/entriesSlice";
+import { setSkipdates } from "../../store/skipdatesSlice";
 import makeEntryCopies from "./../../helpers/makeEntryCopies";
 import { EntryAttributes } from "../../../server/db/models/Entry.model";
 import { SkipDateAttributes } from "./../../helpers/makeEntryCopies";
@@ -51,7 +52,7 @@ const modalStyle = {
 const Calendar = () => {
   const dispatch = useDispatch();
   const token = window.localStorage.getItem("token");
-  const theme = useTheme();
+  const themey = useTheme();
   const [id, setId] = useState<string>("");
   const [entryType, setEntryType] = useState<string>("");
   const [amount, setAmount] = useState<number>(0);
@@ -60,7 +61,6 @@ const Calendar = () => {
   const [note, setNote] = useState<string>("");
   const [start, setStart] = useState<any>(""); // should fix this with more appropriate data type
   const [frequency, setFrequency] = useState<string>("");
-
   const [modalOpen, setModalOpen] = useState(false);
 
   const reoccurEntries = useSelector(
@@ -70,6 +70,13 @@ const Calendar = () => {
     (state: RootState) => state.theme.theme.filteredEntries
   );
   const user = useSelector((state: RootState) => state.user.user);
+  const theme = useSelector((state: RootState) => state.theme)
+  const skipdates = useSelector(
+    (state: RootState) => state.skipdates.skipdates
+  );
+  const entries = useSelector(
+    (state: RootState) => state.entries.entries
+  );
 
   const handleModalOpen = (selected: EventClickArg) => {
     setModalOpen(true);
@@ -136,7 +143,7 @@ const Calendar = () => {
     const updatedEntries = await axios.get("/api/entries", {
       headers: { Authorization: "Bearer " + token },
     });
-    const updatedEntryCopies = await makeEntryCopies(updatedEntries.data);
+    const updatedEntryCopies = await makeEntryCopies(updatedEntries.data, skipdates);
     dispatch(setEntries(updatedEntryCopies));
     dispatch(setReoccurEntries(updatedEntryCopies));
     handleModalClose();
@@ -147,13 +154,11 @@ const Calendar = () => {
       await axios.delete(`/api/entries/${id}`, {
         headers: { Authorization: "Bearer " + token },
       });
-      const updatedEntries: { data: EntryAttributes[] } = await axios.get(
-        "/api/entries",
-        {
-          headers: { Authorization: "Bearer " + token },
-        }
-      );
-      const updatedEntryCopies = await makeEntryCopies(updatedEntries.data);
+      const updatedEntries: {data: EntryAttributes[]} = await axios.get("/api/entries", {
+        headers: { Authorization: "Bearer " + token },
+      });
+      dispatch(setEntries(updatedEntries.data))
+      const updatedEntryCopies = await makeEntryCopies(updatedEntries.data, skipdates);
       const filteredEntries = updatedEntryCopies.filter(
         (entry: EntryAttributes) => entry.id !== id
       );
@@ -161,48 +166,30 @@ const Calendar = () => {
       dispatch(setReoccurEntries(filteredEntries));
       handleModalClose();
     } else {
-      console.log("single button is clicked");
-      console.log("BEFORE ISOSTART START: ", start);
-      const isoStart = start.toISOString();
-      console.log("AFTER ISOSTRING: ", isoStart);
-      const databaseStart = isoStart.substring(0, 10);
-      console.log("AFTER DATABASESTART CONVER: ", databaseStart);
-      const startDate = {
-        skippeddate: databaseStart,
-        userId: user.id,
-        entryId: id,
-      };
-      console.log("startDate: ", startDate);
-      await axios.post("/api/entries/skipdates", startDate);
-      const updatedEntries = await axios.get("/api/entries", {
-        headers: { Authorization: "Bearer " + token },
-      });
-      //grab skipdates GET
-      let skipdates: { data: SkipDateAttributes[] } = await axios.get(
-        "/api/entries/skipdates",
-        {
-          headers: { Authorization: "Bearer " + token },
-        }
-      );
-      console.log("SKIPDATES IN CALENDAR", skipdates);
-      const updatedEntryCopies = await makeEntryCopies(
-        updatedEntries.data,
-        skipdates.data
-      );
-      dispatch(setEntries(updatedEntryCopies));
-      dispatch(setReoccurEntries(updatedEntryCopies));
-      handleModalClose();
+        const isoStart = start.toISOString()
+        const databaseStart = isoStart.substring(0,10)
+        const startDate = { 
+          skippeddate: databaseStart, 
+          userId: user.id, 
+          entryId: id }
+        await axios.post("/api/entries/skipdates", startDate)
+        dispatch(setSkipdates([...skipdates, startDate]))
+        const updatedEntryCopies = await makeEntryCopies(entries, skipdates)
+        // dispatch(setEntries(updatedEntryCopies));
+        dispatch(setReoccurEntries(updatedEntryCopies))
+        handleModalClose()
     }
   };
 
-  if (reoccurEntries.length === 0)
+  if (reoccurEntries.length === null)
     return <Skeleton animation={"wave"} variant="rectangular" />;
 
   return (
     <Box>
       <Box>
         <FullCalendar
-          loading={() => reoccurEntries.length === 0}
+          // loading={() => reoccurEntries.length === 0}
+          // calendar will not load if there are no entries.
           key={"Calendar"}
           plugins={[
             dayGridPlugin,
@@ -226,7 +213,7 @@ const Calendar = () => {
           eventClick={handleModalOpen}
           moreLinkHint={"More Events if Clicked"}
           eventColor={
-            theme.palette.mode === "light" ? blueGrey[400] : deepOrange[900]
+            themey.palette.mode === "light" ? blueGrey[400] : deepOrange[900]
           }
           eventTextColor="white"
         />

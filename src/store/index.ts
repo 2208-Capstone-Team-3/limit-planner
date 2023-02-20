@@ -6,6 +6,7 @@ import themeReducer from "./themeSlice";
 import accountsReducer from "./accountsSlice";
 import goalsReducer from "./goalsSlice";
 import reoccurEntriesReducer from "./reoccurEntriesSlice";
+import skipdatesReducer from "./skipdatesSlice";
 
 const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ const store = configureStore({
     accounts: accountsReducer,
     goals: goalsReducer,
     reoccurEntries: reoccurEntriesReducer,
+    skipdates: skipdatesReducer
   },
 });
 

@@ -5,7 +5,7 @@ import { Outlet } from "react-router-dom";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import axios from "axios";
 import { setUser } from "./store/userSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { blueGrey, deepOrange, grey } from "@mui/material/colors";
 import { setAccounts } from "./store/accountsSlice";
 import { setGoals } from "./store/goalsSlice";
@@ -13,6 +13,8 @@ import { setEntries } from "./store/entriesSlice";
 import makeEntryCopies from "./../src/helpers/makeEntryCopies";
 import { setReoccurEntries } from "./store/reoccurEntriesSlice";
 import { setDateSelector } from "./store/themeSlice";
+import { setSkipdates } from "./store/skipdatesSlice";
+import { RootState } from "./store";
 
 export const ColorModeContext = React.createContext({
   toggleColorMode: () => {},
@@ -22,8 +24,12 @@ function App() {
   const dispatch = useDispatch();
   const todayDate = useMemo(() => new Date().toString(), []);
   const [mode, setMode] = React.useState<"light" | "dark">("light");
+  // const [loading, setLoading] = React.useState<true |false>(true)
 
 
+  const skipdates = useSelector(
+    (state: RootState) => state.skipdates.skipdates
+  );
 
   const colorMode = React.useMemo(
     () => ({
@@ -137,27 +143,55 @@ function App() {
     }
   }, [dispatch]);
 
-  /** creates and saves reoccuring entries */
-  const reoccurEntriesFetch = useCallback(async () => {
-    const token = window.localStorage.getItem("token");
-    if (token) {
-      const entries = await axios.get("/api/entries", {
-        headers: {
-          authorization: `Bearer ${token}`,
-        },
-      });
-      const entryCopies = await makeEntryCopies(entries.data);
-      dispatch(setReoccurEntries(entryCopies));
+  const skipdatesFetch = useCallback(async () => {
+    try {
+      console.log("STARTING SKIPDATESFETCH")
+      const token = window.localStorage.getItem("token");
+      if (token) {
+        const response = await axios.get("/api/entries/skipdates", {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },   
+        });
+        dispatch(setSkipdates(response.data));
+        console.log(response.data)
+        console.log("ENDING SKIPDATEFETCH")
+      }
+    } catch (error) {
+      console.error(error);
     }
   }, [dispatch]);
+
+  /** creates and saves reoccuring entries */
+ 
 
   const theme = React.useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
 
   useEffect(() => {
+    const reoccurEntriesFetch = async () => {
+      try{
+        console.log("STARTING REOCCURRINGFETCH")
+        const token = window.localStorage.getItem("token");
+      if (token) {
+        const entries = await axios.get("/api/entries", {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        });
+        const entryCopies = await makeEntryCopies(entries.data, skipdates);
+        dispatch(setReoccurEntries(entryCopies)); 
+        console.log('thise are entry copies ',entryCopies)
+        console.log("ENDING REOCCORRUINGFETCH")
+      }
+      } catch(err) {
+        console.log(err)
+      }
+    }
     loginWithToken();
     accountsWithToken();
     goalsWithToken();
     entriesWithToken();
+    skipdatesFetch();
     reoccurEntriesFetch();
     dispatch(setDateSelector(todayDate));
 
@@ -168,7 +202,7 @@ function App() {
       setMode("light");
       localStorage.setItem("colorModeCookie", "light");
     }
-  }, [accountsWithToken, dispatch, entriesWithToken, goalsWithToken, loginWithToken, reoccurEntriesFetch, todayDate]);
+  }, [accountsWithToken, dispatch, entriesWithToken, goalsWithToken, loginWithToken, skipdatesFetch, todayDate, fetch, skipdates.length]);
 
   return (
     <ColorModeContext.Provider value={colorMode}>

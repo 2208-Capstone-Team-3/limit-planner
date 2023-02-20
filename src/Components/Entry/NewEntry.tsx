@@ -1,6 +1,6 @@
 import React, { useState, BaseSyntheticEvent } from "react";
 import axios from "axios";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Box,
   TextField,
@@ -19,6 +19,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
+import { RootState } from "../../store";
 
 const inputStyle = {
   width: "150px",
@@ -38,6 +39,10 @@ const NewEntry = ({ accountId }: props) => {
   const [allDay] = useState<boolean>(true);
   const [note, setNote] = useState<string>("");
   const [frequency, setFrequency] = useState<string>("");
+  const skipdates = useSelector(
+    (state: RootState) => state.skipdates.skipdates
+  );
+
 
   const handleAmountChange = (event: BaseSyntheticEvent) => {
     setAmount(event.target.value);
@@ -81,7 +86,7 @@ const NewEntry = ({ accountId }: props) => {
         headers: { Authorization: "Bearer " + token },
       });
       dispatch(setEntries(updatedEntries.data));
-      const updatedEntryCopies = makeEntryCopies(updatedEntries.data);
+      const updatedEntryCopies = makeEntryCopies(updatedEntries.data, skipdates);
       dispatch(setReoccurEntries(updatedEntryCopies));
     }
     setAmount(null);
