@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo } from "react";
+import React, { useEffect, useMemo } from "react";
 import "./App.css";
 import { CssBaseline, PaletteMode } from "@mui/material/";
 import { Outlet } from "react-router-dom";
@@ -24,8 +24,6 @@ function App() {
   const dispatch = useDispatch();
   const todayDate = useMemo(() => new Date().toString(), []);
   const [mode, setMode] = React.useState<"light" | "dark">("light");
-  // const [loading, setLoading] = React.useState<true |false>(true)
-
 
   const skipdates = useSelector(
     (state: RootState) => state.skipdates.skipdates
@@ -79,120 +77,127 @@ function App() {
     },
   });
 
-  const loginWithToken = useCallback(async () => {
-    try {
-      const token = window.localStorage.getItem("token");
-      if (token) {
-        const response = await axios.get("/api/auth", {
-          headers: {
-            authorization: `Bearer ${token}`,
-          },
-        });
-        dispatch(setUser(response.data));
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  }, [dispatch]);
-
-  const accountsWithToken = useCallback(async () => {
-    try {
-      const token = window.localStorage.getItem("token");
-      if (token) {
-        const response = await axios.get("/api/accounts", {
-          headers: {
-            authorization: `Bearer ${token}`,
-          },
-        });
-        dispatch(setAccounts(response.data));
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  }, [dispatch]);
-
-  const goalsWithToken = useCallback(async () => {
-    try {
-      const token = window.localStorage.getItem("token");
-      if (token) {
-        const response = await axios.get("/api/goals", {
-          headers: {
-            authorization: `Bearer ${token}`,
-          },
-        });
-        dispatch(setGoals(response.data));
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  }, [dispatch]);
-
-  const entriesWithToken = useCallback(async () => {
-    try {
-      const token = window.localStorage.getItem("token");
-      if (token) {
-        const response = await axios.get("/api/entries", {
-          headers: {
-            authorization: `Bearer ${token}`,
-          },
-        });
-        dispatch(setEntries(response.data));
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  }, [dispatch]);
-
-  const skipdatesFetch = useCallback(async () => {
-    try {
-      console.log("STARTING SKIPDATESFETCH")
-      const token = window.localStorage.getItem("token");
-      if (token) {
-        const response = await axios.get("/api/entries/skipdates", {
-          headers: {
-            authorization: `Bearer ${token}`,
-          },   
-        });
-        dispatch(setSkipdates(response.data));
-        console.log(response.data)
-        console.log("ENDING SKIPDATEFETCH")
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  }, [dispatch]);
-
   /** creates and saves reoccuring entries */
- 
 
   const theme = React.useMemo(() => createTheme(getDesignTokens(mode)), [mode]);
 
   useEffect(() => {
-    const reoccurEntriesFetch = async () => {
-      try{
-        console.log("STARTING REOCCURRINGFETCH")
+    const skipdatesFetch = async () => {
+      try {
         const token = window.localStorage.getItem("token");
-      if (token) {
-        const entries = await axios.get("/api/entries", {
-          headers: {
-            authorization: `Bearer ${token}`,
-          },
-        });
-        const entryCopies = await makeEntryCopies(entries.data, skipdates);
-        dispatch(setReoccurEntries(entryCopies)); 
-        console.log('thise are entry copies ',entryCopies)
-        console.log("ENDING REOCCORRUINGFETCH")
+        if (token) {
+          const response = await axios.get("/api/entries/skipdates", {
+            headers: {
+              authorization: `Bearer ${token}`,
+            },
+          });
+          dispatch(setSkipdates(response.data));
+        }
+      } catch (error) {
+        console.error(error);
       }
-      } catch(err) {
-        console.log(err)
-      }
-    }
-    loginWithToken();
-    accountsWithToken();
-    goalsWithToken();
-    entriesWithToken();
+    };
     skipdatesFetch();
+  }, [dispatch]);
+
+  useEffect(() => {
+    const reoccurEntriesFetch = async () => {
+      try {
+        const token = window.localStorage.getItem("token");
+        if (token) {
+          const entries = await axios.get("/api/entries", {
+            headers: {
+              authorization: `Bearer ${token}`,
+            },
+          });
+          const entryCopies = await makeEntryCopies(entries.data, skipdates);
+          dispatch(setReoccurEntries(entryCopies));
+          return entryCopies;
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    };
     reoccurEntriesFetch();
+  }, [dispatch, skipdates]);
+
+  useEffect(() => {
+    const loginWithToken = async () => {
+      try {
+        const token = window.localStorage.getItem("token");
+        if (token) {
+          const response = await axios.get("/api/auth", {
+            headers: {
+              authorization: `Bearer ${token}`,
+            },
+          });
+          dispatch(setUser(response.data));
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    loginWithToken();
+  }, [dispatch]);
+
+  useEffect(() => {
+    const accountsWithToken = async () => {
+      try {
+        const token = window.localStorage.getItem("token");
+        if (token) {
+          const response = await axios.get("/api/accounts", {
+            headers: {
+              authorization: `Bearer ${token}`,
+            },
+          });
+          dispatch(setAccounts(response.data));
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    accountsWithToken();
+  }, [dispatch]);
+
+  useEffect(() => {
+    const goalsWithToken = async () => {
+      try {
+        const token = window.localStorage.getItem("token");
+        if (token) {
+          const response = await axios.get("/api/goals", {
+            headers: {
+              authorization: `Bearer ${token}`,
+            },
+          });
+          dispatch(setGoals(response.data));
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    goalsWithToken();
+  }, [dispatch]);
+
+  useEffect(() => {
+    const entriesWithToken = async () => {
+      try {
+        const token = window.localStorage.getItem("token");
+        if (token) {
+          const response = await axios.get("/api/entries", {
+            headers: {
+              authorization: `Bearer ${token}`,
+            },
+          });
+          dispatch(setEntries(response.data));
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    entriesWithToken();
+  }, [dispatch]);
+
+  useEffect(() => {
     dispatch(setDateSelector(todayDate));
 
     const existingPreference = localStorage.getItem("colorModeCookie");
@@ -202,7 +207,7 @@ function App() {
       setMode("light");
       localStorage.setItem("colorModeCookie", "light");
     }
-  }, [accountsWithToken, dispatch, entriesWithToken, goalsWithToken, loginWithToken, skipdatesFetch, todayDate, fetch, skipdates.length]);
+  }, [dispatch, todayDate]);
 
   return (
     <ColorModeContext.Provider value={colorMode}>

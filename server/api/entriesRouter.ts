@@ -9,51 +9,58 @@ const router = express.Router();
 // TEST API
 // api/entries/skipdates
 router.get(
-  "/skipdates", authenticateUser,
+  "/skipdates",
+  authenticateUser,
   async (req: Request, res: Response, next: NextFunction) => {
-    const user = req.body.user
-    if (user) {
-      console.log("USER EXIST")
-      console.log(user)
-      console.log("THIS IS THE USERS ID ",user.id)
-      console.log("!!!!!!!")
-      const foundSkip = await Skipdate.findAll({
+    try {
+      const user = req.body.user;
+      if (user) {
+        const foundSkip = await Skipdate.findAll({
           where: {
-            userId: user.id
-          }
-        })
-      console.log("WE ARE GOOD")
-      res.send(foundSkip)
-    } else {
-      res.send("WE ARE NOT GOOD")
+            userId: user.id,
+          },
+        });
+        res.send(foundSkip);
+      }
+    } catch (err) {
+      res.sendStatus(404);
+      next(err);
     }
-});
+  }
+);
 
 router.get(
-  "/allskipdates", authenticateUser,
+  "/allskipdates",
+  authenticateUser,
   async (req: Request, res: Response, next: NextFunction) => {
-   const allSkips = await Skipdate.findAll()
-   res.send(allSkips)
-});
+    try {
+      const allSkips = await Skipdate.findAll();
+      res.send(allSkips);
+    } catch (err) {
+      res.sendStatus(404);
+      next(err);
+    }
+  }
+);
 
 router.post(
   "/skipdates",
   async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
-      const { skippeddate, userId, entryId } = req.body
-    const createdSkip = await Skipdate.create({ skippeddate })
-    const foundUser = await User.findByPk(userId)
-    const foundEntry = await Entry.findByPk(entryId)
-    foundUser?.addSkipdate(createdSkip)
-    foundEntry?.addSkipdate(createdSkip)
-    console.log("POST ROUTE WORKS WOOOO")
-    res.send(200)
-  } catch (err) {
-    console.log(err)
-    res.sendStatus(404)
-    next(err)
+      const { skippeddate, userId, entryId } = req.body;
+      const createdSkip = await Skipdate.create({ skippeddate });
+      const foundUser = await User.findByPk(userId);
+      const foundEntry = await Entry.findByPk(entryId);
+      foundUser?.addSkipdate(createdSkip);
+      foundEntry?.addSkipdate(createdSkip);
+      res.send(200);
+    } catch (err) {
+      console.error(err);
+      res.sendStatus(404);
+      next(err);
+    }
   }
-});
+);
 
 router.get(
   "/:entryId",
@@ -86,7 +93,7 @@ router.get(
         const foundUserAccounts: AccountAttributes[] | null =
           await Account.findAll({
             where: { userId: foundEntry?.id },
-            include: [Entry]
+            include: [Entry],
           });
         if (!foundUserAccounts) {
           res.sendStatus(404);
