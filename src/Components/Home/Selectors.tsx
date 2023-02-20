@@ -11,28 +11,36 @@ import {
 } from "@mui/material";
 import { RootState } from "../../store";
 import { useSelector, useDispatch } from "react-redux";
-import { setAccountSelector, setGoalSelector } from "../../store/themeSlice";
+import { setAccountSelector, setGoalSelector, setFilteredEntries, setFilteredGoals } from "../../store/themeSlice";
 
 const Selectors = () => {
   const dispatch = useDispatch();
   let accounts = useSelector((state: RootState) => state.accounts.accounts);
   let goals = useSelector((state: RootState) => state.goals.goals);
+  const allGoals = goals.flat(Infinity).map((ele) => ele);
+  const reoccurEntries = useSelector(
+    (state: RootState) => state.reoccurEntries.reoccurEntries
+  );
   let accountSelector = useSelector(
     (state: RootState) => state.theme.theme.accountSelector
   );
   let goalSelector = useSelector(
     (state: RootState) => state.theme.theme.goalSelector
   );
-
+  let filteredGoals = useSelector(
+    (state: RootState) => state.theme.theme.filteredGoals
+  );
   const handleAccount = (ele: SelectChangeEvent) => {
     dispatch(setAccountSelector(JSON.parse(ele.target.value)));
+    const filteredEntries = reoccurEntries.filter(entry=>entry.accountId===JSON.parse(ele.target.value).id);
+    dispatch(setFilteredEntries(filteredEntries));
+    const filteredGoals = allGoals.filter(goal=>goal.accountId===JSON.parse(ele.target.value).id);
+    dispatch(setFilteredGoals(filteredGoals));
   };
-
   const handleGoal = (ele: SelectChangeEvent) => {
     dispatch(setGoalSelector(JSON.parse(ele.target.value)));
   };
 
-  const allGoals = goals.flat(Infinity).map((ele) => ele);
   return (
     <Grid2 container padding={1}>
       <Grid2 xs={6} paddingRight={1}>
@@ -99,7 +107,7 @@ const Selectors = () => {
             label="Goal"
             onChange={handleGoal}
           >
-            {allGoals.map((ele, id) => (
+            {filteredGoals.map((ele, id) => (
               <MenuItem key={`${ele.id}` + id} value={JSON.stringify(ele)}>
                 {ele.name}
               </MenuItem>
