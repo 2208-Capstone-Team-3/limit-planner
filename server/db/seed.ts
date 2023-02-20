@@ -53,7 +53,7 @@ const entryData = [
     note: "Bought coffee",
     start: new Date("2023-02-09"),
     allDay: true,
-    frequency: "Weekly",
+    frequency: "Monthly",
   },
   {
     entryType: "API",
@@ -84,6 +84,16 @@ const entryData = [
     start: new Date("2023-02-15"),
     allDay: true,
     frequency: "Monthly",
+  },
+  {
+    entryType: "User",
+    amount: 2000.0,
+    creditDebit: "Credit",
+    title: "Bi-Weekly Paycheck",
+    note: "Got paid today!",
+    start: new Date("2023-01-13"),
+    allDay: true,
+    frequency: "Bi-Weekly",
   },
 ];
 
@@ -121,6 +131,19 @@ const userData = [
     avatarUrl: null,
     isAdmin: false,
   },
+  {
+    password: "123",
+    username: "guest2",
+    firstName: "Pam",
+    lastName: "Pamerson",
+    fullName: new VIRTUAL(),
+    phoneNum: "58358349538",
+    email: "guest2person@gmail.com",
+    address: "123 Place Ave, Asheville, NC",
+    birthday: new Date("051299"),
+    avatarUrl: null,
+    isAdmin: false,
+  },
   
 ];
 const accountData = [
@@ -136,6 +159,12 @@ const accountData = [
     institution: "HSBC",
     balance: 60000.0,
   },
+  {
+    accountType: "checking",
+    accountName: "HSBC Checking account",
+    institution: "HSBC",
+    balance: 6000.0,
+  },
 ];
 
 const skipDatesEntry = [
@@ -148,6 +177,9 @@ const skipDatesEntry = [
   {
     skippeddate: new Date("2023-03-03"),
   },
+  {
+    skippeddate: new Date("2023-02-23"),
+  },
 ];
 
 const seed = async () => {
@@ -156,25 +188,25 @@ const seed = async () => {
     // --------------USERS--------------
 
     console.log("adding users");
-    const [userOne] = await Promise.all(
+    const [userOne, userTwo] = await Promise.all(
       userData.map((user) => User.create(user))
     );
 
     // --------------ACCOUNTS--------------
 
     console.log("adding accounts");
-    const [accountOne, accountTwo] =
+    const [accountOne, accountTwo, accountThree] =
       await Promise.all(accountData.map((account) => Account.create(account)));
 
     // --------------ENTRIES--------------
 
     console.log("adding entries");
-    const [entryOne, entryTwo, entryThree, entryFour, entryFive, entrySix, entrySeven, entryEight] =
+    const [entryOne, entryTwo, entryThree, entryFour, entryFive, entrySix, entrySeven, entryEight, entryNine] =
       await Promise.all(entryData.map((entry) => Entry.create(entry)));
 
     // -------------SKIPDATES---------------
     console.log("adding skip dates")
-    const [skipOne, skipTwo, skipThree] = await Promise.all(skipDatesEntry.map((eachSkip) => Skipdate.create(eachSkip)));
+    const [skipOne, skipTwo, skipThree, skipFour] = await Promise.all(skipDatesEntry.map((eachSkip) => Skipdate.create(eachSkip)));
 
     // let i = 0;
     // // const entryList = [];
@@ -205,6 +237,7 @@ const seed = async () => {
     // Account.belongsTo(User)
     userOne.addAccount(accountOne);
     userOne.addAccount(accountTwo);
+    userTwo.addAccount(accountThree)
 
 
     // Account.hasMany(Entry);
@@ -217,6 +250,7 @@ const seed = async () => {
     accountOne.addEntry(entrySix);
     accountOne.addEntry(entrySeven);
     accountTwo.addEntry(entryEight);
+    accountThree.addEntry(entryNine)
  
     // Account.hasMany(Goal);
     // Goal.belongsTo(Account);
@@ -227,9 +261,11 @@ const seed = async () => {
     //Entry.hasMany(SkipDates)
     //SkipDates.belongsTo(Entry)
     entryThree.addSkipdate(skipOne);
+    entryNine.addSkipdate(skipFour)
     userOne.addSkipdate(skipOne);
     userOne.addSkipdate(skipTwo)
     userOne.addSkipdate(skipThree)
+    userTwo.addSkipdate(skipFour)
 
   } catch (err) {
     console.log("error");

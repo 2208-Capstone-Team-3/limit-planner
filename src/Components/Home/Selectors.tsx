@@ -12,6 +12,7 @@ import {
 import { RootState } from "../../store";
 import { useSelector, useDispatch } from "react-redux";
 import { setAccountSelector, setGoalSelector } from "../../store/themeSlice";
+import { AccountCircleOutlined } from "@mui/icons-material";
 
 const Selectors = () => {
   const dispatch = useDispatch();
