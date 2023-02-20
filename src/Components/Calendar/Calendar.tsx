@@ -136,11 +136,9 @@ const Calendar = () => {
       start,
       frequency,
     };
-
     await axios.put(`/api/entries/${id}`, body, {
       headers: { Authorization: "Bearer " + token },
     });
-
     const updatedEntries = await axios.get("/api/entries", {
       headers: { Authorization: "Bearer " + token },
     });
@@ -148,7 +146,6 @@ const Calendar = () => {
       updatedEntries.data,
       skipdates
     );
-
     dispatch(setEntries(updatedEntryCopies));
     dispatch(setReoccurEntries(updatedEntryCopies));
     handleModalClose();
@@ -207,6 +204,31 @@ const Calendar = () => {
     [dispatch, entries, id, skipdates, start, token, user.id]
   );
 
+  const updateDragEvent = async(selected: EventClickArg) => {
+    const body = {
+      entryType:selected.event.extendedProps.entryType,
+      amount:selected.event.extendedProps.amount,
+      creditDebit:selected.event.extendedProps.creditDebit,
+      title:selected.event.title,
+      note:selected.event.extendedProps.note,
+      start:selected.event.start,
+      frequency:selected.event.extendedProps.frequency,
+    };
+    await axios.put(`/api/entries/${selected.event.id}`, body, {
+      headers: { Authorization: "Bearer " + token },
+    });
+    const updatedEntries = await axios.get("/api/entries", {
+      headers: { Authorization: "Bearer " + token },
+    });
+    const updatedEntryCopies = await makeEntryCopies(
+      updatedEntries.data,
+      skipdates
+    );
+    dispatch(setEntries(updatedEntryCopies));
+    dispatch(setReoccurEntries(updatedEntryCopies));
+    handleModalClose();
+  };
+
   if (reoccurEntries.length === 0)
     return <Skeleton animation={"wave"} variant="rectangular" />;
   return (
@@ -234,7 +256,7 @@ const Calendar = () => {
           eventDisplay="block"
           select={handleSelect}
           eventClick={handleModalOpen}
-          eventDragStop={updateEntryDate}
+          eventDrop={updateDragEvent}
           moreLinkHint={"More Events if Clicked"}
           eventColor={
             theme.palette.mode === "light" ? blueGrey[400] : deepOrange[900]
