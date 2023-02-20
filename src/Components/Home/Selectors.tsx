@@ -1,7 +1,8 @@
-import React from "react";
+import React, { SyntheticEvent } from "react";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import {
   FormControl,
+  FormLabel,
   InputLabel,
   MenuItem,
   Select,
@@ -25,12 +26,13 @@ const Selectors = () => {
   );
 
   const handleAccount = (ele: SelectChangeEvent) => {
-    dispatch(setAccountSelector(ele.target.value));
+    dispatch(setAccountSelector(JSON.parse(ele.target.value)));
   };
 
   const handleGoal = (ele: SelectChangeEvent) => {
-    dispatch(setGoalSelector(ele.target.value));
+    dispatch(setGoalSelector(JSON.parse(ele.target.value)));
   };
+
   const allGoals = goals.flat(Infinity).map((ele) => ele);
   return (
     <Grid2 container padding={1}>
@@ -41,14 +43,30 @@ const Selectors = () => {
             key={"accountSelect"}
             fullWidth
             labelId="accountSelectLabel"
+            value={accountSelector ? JSON.stringify(accountSelector) : ""}
             id="accountSelect"
-            value={accountSelector ?? "Account"}
-            renderValue={(ele) => <Typography>{ele}</Typography>}
-            label="Account"
+            renderValue={(
+              ele:
+                | {
+                    goals?: [] | undefined;
+                    entries?: [] | undefined;
+                    userId?: string | undefined;
+                    id?: string | undefined;
+                    accountType: string;
+                    accountName: string;
+                    institution: string;
+                    balance: number;
+                  }
+                | string
+            ) => (
+              <Typography>
+                {typeof ele === "string" ? JSON.parse(ele).accountName : ele.accountName}
+              </Typography>
+            )}
             onChange={handleAccount}
           >
             {accounts.map((ele, id) => (
-              <MenuItem key={`${ele.id}` + id} value={ele.id}>
+              <MenuItem key={`${ele.id}` + id} value={JSON.stringify(ele)}>
                 {ele.accountName}
               </MenuItem>
             ))}
@@ -63,14 +81,28 @@ const Selectors = () => {
             fullWidth
             labelId="goalSelectLabel"
             id="goalSelect"
-            value={goalSelector ?? ""}
-            renderValue={(ele) => <Typography>{ele}</Typography>}
+            value={goalSelector ? JSON.stringify(goalSelector) : ""}
+            renderValue={(
+              ele:
+                | {
+                    id?: string | undefined;
+                    name: string;
+                    goalAmount: number;
+                    endDate: string | Date;
+                    victory: boolean;
+                  }
+                | string
+            ) => (
+              <Typography>
+                {typeof ele === "string" ? JSON.parse(ele).name : ele.name}
+              </Typography>
+            )}
             label="Goal"
             onChange={handleGoal}
           >
             {allGoals.map((ele, id) => (
-              <MenuItem key={`${ele.id}` + id} value={ele.name}>
-                {ele.name ?? "None"}
+              <MenuItem key={`${ele.id}` + id} value={JSON.stringify(ele)}>
+                {ele.name}
               </MenuItem>
             ))}
           </Select>
