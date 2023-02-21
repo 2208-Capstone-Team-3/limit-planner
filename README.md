@@ -1,46 +1,56 @@
-# Getting Started with Create React App
+# Limit Financial Planner
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This Single-Page Web App was the result of a team of Software Engineers looking to solve the problem of financial visualization and goal planning for individuals new to managing their finances. 
 
-## Available Scripts
+## Created With
 
-In the project directory, you can run:
+This application was created using the following Languages, Technologies, and Libraries:
 
-### `npm start`
+### `TypeScript`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+While the whole of the team had little to no experience with TypeScript, it is an important language to learn as it combines the adaptability of ECMAScript(JavaScript) with the surety and intentionality of a typed language. All members rose to the challenge and were able to not only learn TypeScript but were able to implement it in the creation of a complex web app.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### `Reactjs`
 
-### `npm test`
+React is the central library used for our app. Allowing for a declarative, component-based design, React allowed us as a team to focus on features and customization rather than boiler-plate code.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### `ReactRouter`
 
-### `npm run build`
+ReactRouter allows for client-side routing. This allows for a single-page application to feel like a more traditional routed site. It also allows for quick and easy access to specific parts of the app that the user might need.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### `Reduxjs/Toolkit`
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Redux allows for a consistent, predictable state container throughout our app. This prevents locally-scoped state issues that might effect other segment of the app.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### `Many More!`
 
-### `npm run eject`
+Our application uses many dependencies that are central to the creation of the many disparate parts; The full listing can be viewed in our package.json; however,below, you can also find many central ones listed:
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+    "@fullcalendar/react": "^6.1.4",
+    "@mui/material": "^5.11.9",
+    "animate.css": "^4.1.1",
+    "axios": "^1.3.3",
+    "bcrypt": "^5.1.0",
+    "chance": "^1.1.10",
+    "concurrently": "^7.6.0",
+    "d3": "^7.8.2",
+    "date-fns": "^2.29.3",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
+    "morgan": "^1.10.0",
+    "pg": "^8.9.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "5.0.1",
+    "react-transition-group": "^4.4.5",
+    "sequelize": "^6.28.0",
+    "swiper": "^8.4.7",
+    "victory": "^36.6.8",
 
 ## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+If you are interested in reaching out to any of the principal programmers who created the app, you will find their profiles linked below:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+https://www.linkedin.com/in/kolbywolf/
+https://www.linkedin.com/in/jack-padalino-5b743826/
+https://www.linkedin.com/in/stephen-werbeck/
+https://www.linkedin.com/in/yifanchen289/
