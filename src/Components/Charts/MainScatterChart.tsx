@@ -30,6 +30,7 @@ const MainScatterChart = () => {
 
   return (
     <VictoryChart
+    standalone
       theme={VictoryTheme.material}
       key={"ScatterChartContainer"}
       padding={{top: 10, bottom: 30, left: 30, right : 0}}
@@ -41,6 +42,7 @@ const MainScatterChart = () => {
       }
     >
       <VictoryScatter
+      standalone
         name="ScatterChart"
         key={"MainScatterChart"}
         size={({ datum }) =>

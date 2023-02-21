@@ -32,6 +32,7 @@ const MainHistogram = () => {
 
   return (
     <VictoryChart
+    standalone
       theme={VictoryTheme.material}
       padding={{top: 10, bottom: 30, left: 30, right : 0}}
       animate={{
@@ -51,6 +52,7 @@ const MainHistogram = () => {
       }
     >
       <VictoryHistogram
+      standalone
         style={{
           data: {
             fill: () =>

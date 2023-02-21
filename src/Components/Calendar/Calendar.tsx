@@ -1,8 +1,4 @@
-import React, {
-  BaseSyntheticEvent,
-  useState,
-  useCallback,
-} from "react";
+import React, { BaseSyntheticEvent, useState, useCallback } from "react";
 import axios from "axios";
 import "./calendar.css";
 import { useSelector, useDispatch } from "react-redux";
@@ -204,15 +200,15 @@ const Calendar = () => {
     [dispatch, entries, id, skipdates, start, token, user.id]
   );
 
-  const updateDraggedEntry = async(selected: EventDropArg) => {
+  const updateDraggedEntry = async (selected: EventDropArg) => {
     const body = {
-      entryType:selected.event.extendedProps.entryType,
-      amount:selected.event.extendedProps.amount,
-      creditDebit:selected.event.extendedProps.creditDebit,
-      title:selected.event.title,
-      note:selected.event.extendedProps.note,
-      start:selected.event.start,
-      frequency:selected.event.extendedProps.frequency,
+      entryType: selected.event.extendedProps.entryType,
+      amount: selected.event.extendedProps.amount,
+      creditDebit: selected.event.extendedProps.creditDebit,
+      title: selected.event.title,
+      note: selected.event.extendedProps.note,
+      start: selected.event.start,
+      frequency: selected.event.extendedProps.frequency,
     };
     await axios.put(`/api/entries/${selected.event.id}`, body, {
       headers: { Authorization: "Bearer " + token },
@@ -251,7 +247,7 @@ const Calendar = () => {
           selectable={true}
           selectMirror={true}
           dayMaxEvents={true}
-          events={{events: filteredEntries}}
+          events={{ events: filteredEntries }}
           eventDisplay="block"
           select={handleSelect}
           eventClick={handleModalOpen}

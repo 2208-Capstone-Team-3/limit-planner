@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Box, Typography } from "@mui/material";
 import { RootState } from "../../store";
-import { setProjection } from '../../store/themeSlice';
+import { setProjection } from "../../store/themeSlice";
 
 const ProjectionsComponent = () => {
   const dispatch = useDispatch();
@@ -56,7 +56,7 @@ const ProjectionsComponent = () => {
     dateSelector,
     filteredEntries,
     todayDate,
-    dispatch
+    dispatch,
   ]);
 
   useEffect(() => {
@@ -69,26 +69,26 @@ const ProjectionsComponent = () => {
         currency: "USD",
       })
     : allAccountBalance.toLocaleString("en-US", {
-      style: "currency",
-      currency: "USD",
-    });
+        style: "currency",
+        currency: "USD",
+      });
 
-    if (new Date(dateSelector).getTime() < new Date(todayDate).getTime()) {
-      return (
-        <Box>
-          <Typography component={"h3"} variant="h4">
-            {`Current Balance: ${currentBalance}`}
-          </Typography>
-          <Typography component={"h3"} variant="h5">
-            Please select a future date
-          </Typography>
-        </Box>
-      );
-    }
+  if (new Date(dateSelector).getTime() < new Date(todayDate).getTime()) {
+    return (
+      <Box sx={{ display: "flex", flexDirection: "column", placeItems: "center"}}>
+        <Typography component={"h3"} variant="h4">
+          {`Current Balance: ${currentBalance}`}
+        </Typography>
+        <Typography component={"h3"} variant="h5">
+          Please select a future date.
+        </Typography>
+      </Box>
+    );
+  }
 
   if (filteredEntries.length === 0) {
     return (
-      <Box>
+      <Box sx={{ display: "flex", flexDirection: "column", placeItems: "center",}}>
         <Typography component={"h3"} variant="h4">
           {`Current Balance: ${currentBalance}`}
         </Typography>
@@ -100,7 +100,7 @@ const ProjectionsComponent = () => {
   }
   return (
     <Box
-      sx={{ display: "flex", flexDirection: "column", placeItems: "center" }}
+      sx={{ display: "flex", flexDirection: "column", placeItems: "center", placeContent: "center" }}
     >
       <Typography component={"h3"} variant="h4">
         {`Current Balance: ${currentBalance}`}

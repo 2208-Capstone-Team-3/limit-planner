@@ -21,6 +21,7 @@ const MainGoalPercentageChart = () => {
 
   return (
     <VictoryChart
+    standalone
       theme={VictoryTheme.material}
       padding={{ top: 10, bottom: 30, left: 30, right: 0 }}
       name={"GoalChart"}
@@ -36,6 +37,7 @@ const MainGoalPercentageChart = () => {
       }
     >
       <VictoryBar
+      standalone
         style={{
           data: {
             fill: () =>
