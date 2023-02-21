@@ -50,7 +50,15 @@ Our application uses many dependencies that are central to the creation of the m
 
 If you are interested in reaching out to any of the principal programmers who created the app, you will find their profiles linked below:
 
+### Kolby Wolf
+
 https://www.linkedin.com/in/kolbywolf/
+
+### Jack Padalino
 https://www.linkedin.com/in/jack-padalino-5b743826/
+
+### Stephen Werbeck
 https://www.linkedin.com/in/stephen-werbeck/
+
+### Yifan Chen
 https://www.linkedin.com/in/yifanchen289/
