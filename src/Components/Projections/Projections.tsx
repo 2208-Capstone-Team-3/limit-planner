@@ -63,7 +63,10 @@ const ProjectionsComponent = () => {
         style: "currency",
         currency: "USD",
       })
-    : allAccountBalance;
+    : allAccountBalance.toLocaleString("en-US", {
+      style: "currency",
+      currency: "USD",
+    });
 
   if (filteredEntries.length === 0) {
     return (

@@ -12,7 +12,16 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { RootState } from "../../store";
 import { resetUser, userInitialStateType } from "../../store/userSlice";
-import { Switch, useTheme } from "@mui/material";
+import {
+  Button,
+  ButtonGroup,
+  Divider,
+  Fade,
+  Paper,
+  Popper,
+  Switch,
+  useTheme,
+} from "@mui/material";
 import lightLogo from "../../resources/LimitName.svg";
 import darkLogo from "../../resources/ad-logo.svg";
 import icarusLogo from "../../resources/logo.svg";
@@ -21,6 +30,8 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { setHomeDrawerOpen } from "../../store/themeSlice";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import PopupState, { bindToggle, bindPopper } from "material-ui-popup-state";
 
 function LimitAppBar() {
   const homeDrawerOpen: boolean = useSelector(
@@ -94,7 +105,7 @@ function LimitAppBar() {
         </IconButton>
         <Link href="/home">
           <Avatar
-          alt="Limit Logo"
+            alt="Limit Logo"
             variant="square"
             src={theme.palette.mode === "light" ? lightLogo : darkLogo}
             sx={{
@@ -178,7 +189,10 @@ function LimitAppBar() {
                 key={"switcher"}
                 onClick={colorMode.toggleColorMode}
               />
-              <Typography key={"ColorModeSwitchText"} className="ColorModeSwitchText">
+              <Typography
+                key={"ColorModeSwitchText"}
+                className="ColorModeSwitchText"
+              >
                 {theme.palette.mode === "light" ? "Light" : "Dark"}
               </Typography>
             </MenuItem>
@@ -194,6 +208,39 @@ function LimitAppBar() {
               </Typography>
             </Link>
           )}
+        </Box>
+        <Divider orientation="vertical" sx={{ padding: 1 }} />
+        <Box
+          sx={{ display: "flex", placeItems: "center" }}
+          paddingRight={3}
+          paddingLeft={2}
+        >
+          <PopupState variant="popover" popupId="addNewDataPopUp">
+            {(popupState) => (
+              <Box>
+                <IconButton {...bindToggle(popupState)}>
+                  <AddCircleOutlineIcon />
+                </IconButton>
+                <Popper
+                  {...bindPopper(popupState)}
+                  transition
+                  sx={{ paddingTop: 2 }}
+                >
+                  {({ TransitionProps }) => (
+                    <Fade {...TransitionProps} timeout={450}>
+                      <Paper>
+                        <ButtonGroup orientation="vertical">
+                          <Button href="/home/newaccount" variant="contained" >New Account</Button>
+                          <Button href="/home/accounts" variant="contained" >New Goal</Button>
+                          <Button href="/home/accounts" variant="contained" >New Entry</Button>
+                        </ButtonGroup>
+                      </Paper>
+                    </Fade>
+                  )}
+                </Popper>
+              </Box>
+            )}
+          </PopupState>
         </Box>
       </Box>
     </AppBar>
