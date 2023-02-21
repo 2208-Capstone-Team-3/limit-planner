@@ -204,7 +204,7 @@ const Calendar = () => {
     [dispatch, entries, id, skipdates, start, token, user.id]
   );
 
-  const updateDroppedEntry = async(selected: EventDropArg) => {
+  const updateDraggedEntry = async(selected: EventDropArg) => {
     const body = {
       entryType:selected.event.extendedProps.entryType,
       amount:selected.event.extendedProps.amount,
@@ -255,7 +255,7 @@ const Calendar = () => {
           eventDisplay="block"
           select={handleSelect}
           eventClick={handleModalOpen}
-          eventDrop={updateDroppedEntry}
+          eventDrop={updateDraggedEntry}
           moreLinkHint={"More Events if Clicked"}
           eventColor={
             theme.palette.mode === "light" ? blueGrey[400] : deepOrange[900]
