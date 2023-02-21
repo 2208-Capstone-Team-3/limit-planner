@@ -6,7 +6,7 @@ import { Account, Entry, Goal, User, Skipdate } from "./index.js";
 const entryData = [
   {
     entryType: "User",
-    amount: 2000.0,
+    amount: 2000.00,
     creditDebit: "Credit",
     title: "Bi-Weekly Paycheck",
     note: "Got paid today!",
@@ -16,7 +16,7 @@ const entryData = [
   },
   {
     entryType: "User",
-    amount: 100.0,
+    amount: 100.00,
     creditDebit: "Debit",
     title: "Monthly Electricity Bill",
     note: "Paid ConEd",
@@ -26,7 +26,7 @@ const entryData = [
   },
   {
     entryType: "API",
-    amount: 150.0,
+    amount: 150.00,
     creditDebit: "Debit",
     title: "Weekly Grocery Shopping",
     note: "Bought groceries",
@@ -36,7 +36,7 @@ const entryData = [
   },
   {
     entryType: "API",
-    amount: 1.0,
+    amount: 1.50,
     creditDebit: "Debit",
     title: "Daily coffee",
     note: "Bought coffee",
@@ -47,7 +47,7 @@ const entryData = [
 
   {
     entryType: "API",
-    amount: 30000,
+    amount: 1000.00,
     creditDebit: "Debit",
     title: "mortgage",
     note: "Bought coffee",
@@ -57,7 +57,7 @@ const entryData = [
   },
   {
     entryType: "API",
-    amount: 1000.0,
+    amount: 1000.00,
     creditDebit: "Debit",
     title: "rent",
     note: "paid rent",
@@ -67,7 +67,7 @@ const entryData = [
   },
   {
     entryType: "API",
-    amount: 400.0,
+    amount: 400.00,
     creditDebit: "Debit",
     title: "savings",
     note: "moved money into savings account",
@@ -77,7 +77,7 @@ const entryData = [
   },
   {
     entryType: "API",
-    amount: 400.0,
+    amount: 400.00,
     creditDebit: "Credit",
     title: "savings",
     note: "moved money into savings account",
@@ -87,7 +87,7 @@ const entryData = [
   },
   {
     entryType: "User",
-    amount: 2000.0,
+    amount: 2000.00,
     creditDebit: "Credit",
     title: "Bi-Weekly Paycheck",
     note: "Got paid today!",
@@ -102,16 +102,12 @@ const goalData = [
   {
     name: "Buy a car",
     goalAmount: 15000,
-    // startAmount: 2,
-    // startDate: new Date("2022-10-05"),
     endDate: new Date("2023-05-07"),
     victory: false,
   },
   {
-    name: "Retirement",
-    goalAmount: 100000000,
-    // startAmount: 7000,
-    // startDate: new Date("2022-06-05"),
+    name: "Vacation",
+    goalAmount: 5000,
     endDate: new Date("2023-09-12"),
     victory: true,
   },
@@ -151,19 +147,19 @@ const accountData = [
     accountType: "checking",
     accountName: "HSBC Checking account",
     institution: "HSBC",
-    balance: 6000.0,
+    balance: 3000.0,
   },
   {
     accountType: "savings",
     accountName: "HSBC Savings account",
     institution: "HSBC",
-    balance: 60000.0,
+    balance: 20000.0,
   },
   {
     accountType: "checking",
     accountName: "HSBC Checking account",
     institution: "HSBC",
-    balance: 6000.0,
+    balance: 3000.0,
   },
 ];
 
