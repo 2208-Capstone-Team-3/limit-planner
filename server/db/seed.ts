@@ -47,10 +47,10 @@ const entryData = [
 
   {
     entryType: "API",
-    amount: 1000.00,
+    amount: 3000.0,
     creditDebit: "Debit",
     title: "mortgage",
-    note: "Bought coffee",
+    note: "Paid Mortgage",
     start: new Date("2023-02-09"),
     allDay: true,
     frequency: "Monthly",
