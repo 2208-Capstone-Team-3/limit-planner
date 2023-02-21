@@ -14,9 +14,17 @@ interface initialStateType {
       institution: string;
       balance: number;
     } | null;
-    goalSelector: string | null;
+    goalSelector: {
+      id?: string;
+      accountId?: string;
+      name: string;
+      goalAmount: number;
+      endDate: Date;
+      victory: boolean;
+    } | null;
     filteredEntries:any[];
     filteredGoals:any[];
+    projection:number;
   };
 }
 
@@ -27,7 +35,8 @@ const initialState: initialStateType = {
     accountSelector: null,
     goalSelector: null,
     filteredEntries:[],
-    filteredGoals:[]
+    filteredGoals:[],
+    projection:0
   },
 };
 
@@ -59,6 +68,9 @@ export const themeSlice = createSlice({
     setFilteredGoals: (state, action) => {
       state.theme.filteredGoals = action.payload;
     },
+    setProjection: (state, action) => {
+      state.theme.projection = action.payload;
+    },
     resetTheme: (state) => {
       state.theme = {
         homeDrawerOpen: true,
@@ -66,7 +78,8 @@ export const themeSlice = createSlice({
         accountSelector: null,
         goalSelector: null,
         filteredEntries:[],
-        filteredGoals:[]
+        filteredGoals:[],
+        projection:0
       };
     },
   },
@@ -81,6 +94,7 @@ export const {
   setAccountSelector,
   setGoalSelector,
   setFilteredEntries,
-  setFilteredGoals
+  setFilteredGoals,
+  setProjection,
 } = themeSlice.actions;
 export default themeSlice.reducer;

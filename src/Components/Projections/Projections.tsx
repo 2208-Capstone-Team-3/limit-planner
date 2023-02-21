@@ -1,9 +1,11 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Box, Typography } from "@mui/material";
 import { RootState } from "../../store";
+import { setProjection } from '../../store/themeSlice';
 
 const ProjectionsComponent = () => {
+  const dispatch = useDispatch();
   const filteredEntries = useSelector(
     (state: RootState) => state.theme.theme.filteredEntries
   );
@@ -37,6 +39,8 @@ const ProjectionsComponent = () => {
         accountSelector ? accountSelector.balance : allAccountBalance
       );
 
+      dispatch(setProjection(reduced));
+
       let sum = reduced
         ? reduced.toLocaleString("en-US", {
             style: "currency",
@@ -52,6 +56,7 @@ const ProjectionsComponent = () => {
     dateSelector,
     filteredEntries,
     todayDate,
+    dispatch
   ]);
 
   useEffect(() => {
