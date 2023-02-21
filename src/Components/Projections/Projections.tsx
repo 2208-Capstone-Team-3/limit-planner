@@ -68,6 +68,19 @@ const ProjectionsComponent = () => {
       currency: "USD",
     });
 
+    if (new Date(dateSelector).getTime() < new Date(todayDate).getTime()) {
+      return (
+        <Box>
+          <Typography component={"h3"} variant="h4">
+            {`Current Balance: ${currentBalance}`}
+          </Typography>
+          <Typography component={"h3"} variant="h5">
+            Please select a future date
+          </Typography>
+        </Box>
+      );
+    }
+
   if (filteredEntries.length === 0) {
     return (
       <Box>
