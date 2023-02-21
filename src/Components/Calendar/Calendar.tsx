@@ -339,8 +339,8 @@ const Calendar = () => {
           <Divider sx={{ mt: 1, mb: 1 }} />
           <Grid2 container spacing={1}>
             <Grid2 xs={6}>
-              <Button fullWidth variant="contained" onClick={updateEntry}>
-                Update
+              <Button fullWidth variant="contained" onClick={deleteEntry} value="single">
+                Delete Single
               </Button>
             </Grid2>
             <Grid2 xs={6}>
@@ -353,19 +353,9 @@ const Calendar = () => {
                 Delete All
               </Button>
             </Grid2>
-            <Grid2 xs={6}>
-              <Button
-                fullWidth
-                variant="contained"
-                onClick={deleteEntry}
-                value="single"
-              >
-                Delete Single
-              </Button>
-            </Grid2>
-            <Grid2 xs={6}>
-              <Button fullWidth variant="contained" onClick={showUserInfo}>
-                Show userinfo
+            <Grid2 xs={12}>
+              <Button size="large" variant="contained" onClick={updateEntry}>
+                Update
               </Button>
             </Grid2>
           </Grid2>
