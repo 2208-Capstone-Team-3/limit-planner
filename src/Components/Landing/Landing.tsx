@@ -8,10 +8,11 @@ import {
   Box,
   Button,
   Container,
+  Divider,
   Grow,
-  IconButton,
   Paper,
   Switch,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import lightBackground from "../../resources/lightBackground.mp4";
@@ -20,7 +21,14 @@ import summitWoman from "../../resources/summitWoman.jpeg";
 import growMoney from "../../resources/growMoney.jpeg";
 import techBackground from "../../resources/techBackground.png";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Mousewheel, EffectFade, Keyboard, Navigation, Lazy } from "swiper";
+import {
+  Mousewheel,
+  EffectFade,
+  Keyboard,
+  Navigation,
+  Lazy,
+  A11y,
+} from "swiper";
 import "swiper/css";
 import "swiper/css/effect-fade";
 import "swiper/css/mousewheel";
@@ -33,6 +41,9 @@ import axios from "axios";
 import { setUser } from "../../store/userSlice";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
 import LightModeIcon from "@mui/icons-material/LightMode";
+import ExampleLineChart from "./ExampleCharts/ExampleLineChart";
+import ExampleGoalChart from "./ExampleCharts/ExampleGoalChart";
+import ExampleProjections from "./ExampleCharts/ExampleProjections";
 
 function usePhotometer<Type>(lightRet: Type, darkRet: Type): Type {
   const theme = useTheme();
@@ -58,7 +69,6 @@ function Landing() {
         dispatch(setUser(response.data));
 
         navigate("/home");
-        window.location.reload();
       }
     } catch (error) {
       console.error(error);
@@ -110,25 +120,29 @@ function Landing() {
             color="primary"
           />
         }
-        key={"switcher"}
+        key={"colorSwitcher"}
         onClick={colorMode.toggleColorMode}
       />
-      <Button
-        variant="contained"
+      <Box
+        gap={1}
         sx={{
+          display: "flex",
           ml: 1,
           position: "absolute",
           zIndex: 6,
           right: "2vw",
           top: "2vw",
         }}
-        href="login"
-        color="inherit"
       >
-        Login
-      </Button>
+        <Button color="primary" href="createuser" variant="contained">
+          <Typography variant="button">Sign-up</Typography>
+        </Button>
+        <Button variant="contained" href="login" color="primary">
+          <Typography variant="button">Login</Typography>
+        </Button>
+      </Box>
       <Swiper
-        modules={[Mousewheel, EffectFade, Keyboard, Navigation, Lazy]}
+        modules={[Mousewheel, EffectFade, Keyboard, Navigation, Lazy, A11y]}
         direction="vertical"
         keyboard
         navigation={{
@@ -143,7 +157,9 @@ function Landing() {
         roundLengths
         speed={600}
         createElements
+        a11y={{ enabled: true }}
         lazy
+
       >
         <SwiperSlide tabIndex={0} key="slide1">
           <Box
@@ -163,40 +179,53 @@ function Landing() {
               src={usePhotometer(lightLogo, darkLogo)}
               alt="Limit Icarus over sun backdrop"
             />
-            <KeyboardArrowDown
-              className="swiper-button-next animate__animated animate__heartBeat animate__infinite"
+            <Box
               sx={{
-                fontSize: "10vh",
                 position: "fixed",
                 top: "90vh",
               }}
-            />
+            >
+              <Tooltip
+                title="Click Here to Learn More!"
+                describeChild
+                arrow
+                TransitionComponent={Grow}
+                TransitionProps={{ appear: true, timeout: 600 }}
+              >
+                <KeyboardArrowDown
+                  className="swiper-button-next animate__animated animate__heartBeat animate__infinite"
+                  sx={{
+                    fontSize: "10vh",
+                  }}
+                />
+              </Tooltip>
+            </Box>
           </Box>
         </SwiperSlide>
         <SwiperSlide tabIndex={1} key="slide2">
-          <Box
-            key={"landing-second-box"}
-            minHeight="100vh"
-            maxHeight="100vh"
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              placeContent: "center center",
-              placeItems: "center center",
-              backgroundImage: `url(${summitWoman})`,
-              backgroundSize: "cover",
-            }}
-          >
-            <KeyboardArrowUp
-              className="swiper-button-prev"
+          {({ isActive }) => (
+            <Box
+              key={"landing-second-box"}
+              minHeight="100vh"
+              maxHeight="100vh"
               sx={{
-                fontSize: "10vh",
-                position: "fixed",
-                top: "1vh",
+                display: "flex",
+                flexDirection: "row",
+                placeContent: "center center",
+                placeItems: "center center",
+                backgroundImage: `url(${summitWoman})`,
+                backgroundSize: "cover",
               }}
-            />
-            <Grow in {...{ timeout: 3000 }}>
-              <Container>
+            >
+              <KeyboardArrowUp
+                className="swiper-button-prev"
+                sx={{
+                  fontSize: "10vh",
+                  position: "fixed",
+                  top: "1vh",
+                }}
+              />{ isActive &&
+                <Container>
                 <Paper
                   key={"second-box-content"}
                   variant="elevation"
@@ -205,45 +234,58 @@ function Landing() {
                     placeContent: "center",
                   }}
                 >
-                  <Typography variant="h2">
+                  <Box
+                    padding={1}
+                    sx={{ display: "flex", flexDirection: "column" }}
+                  >
+                    <Typography variant="h3">
                     Limit Your Stress! Not Your Goals.
-                  </Typography>
+                    </Typography>
+                    <Divider sx={{ padding: 1 }} />
+                    <Typography fontSize={"2em"} variant="body1">
+                     Financial planning is hard; there are many variables to keep track of. Limit allows you to input the numbers, and we do the math!
+                    </Typography>
+                  </Box>
+                  <Box>
+
+                  <ExampleProjections />
+                  </Box>
                 </Paper>
-              </Container>
-            </Grow>
-            <KeyboardArrowDown
-              className="swiper-button-next animate__animated animate__heartBeat animate__infinite"
-              sx={{
-                fontSize: "10vh",
-                position: "fixed",
-                top: "90vh",
-              }}
-            />
-          </Box>
+              </Container>}
+              <KeyboardArrowDown
+                className="swiper-button-next animate__animated animate__heartBeat animate__infinite"
+                sx={{
+                  fontSize: "10vh",
+                  position: "fixed",
+                  top: "90vh",
+                }}
+              />
+            </Box>
+          )}
         </SwiperSlide>
         <SwiperSlide id="thirdSlide" tabIndex={2} key="slide3">
-          <Box
-            key={"landing-third-box"}
-            minHeight="100vh"
-            maxHeight="100vh"
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              placeContent: "center center",
-              placeItems: "center center",
-              backgroundImage: `url(${growMoney})`,
-              backgroundSize: "cover",
-            }}
-          >
-            <KeyboardArrowUp
-              className="swiper-button-prev"
+          {({ isActive }) => (
+            <Box
+              key={"landing-third-box"}
+              minHeight="100vh"
+              maxHeight="100vh"
               sx={{
-                fontSize: "10vh",
-                position: "fixed",
-                top: "1vh",
+                display: "flex",
+                flexDirection: "row",
+                placeContent: "center center",
+                placeItems: "center center",
+                backgroundImage: `url(${growMoney})`,
+                backgroundSize: "cover",
               }}
-            />
-            <Grow in {...{ timeout: 3000 }}>
+            >
+              <KeyboardArrowUp
+                className="swiper-button-prev"
+                sx={{
+                  fontSize: "10vh",
+                  position: "fixed",
+                  top: "1vh",
+                }}
+              />{ isActive &&
               <Container>
                 <Paper
                   key={"third-box-content"}
@@ -253,45 +295,56 @@ function Landing() {
                     placeContent: "center",
                   }}
                 >
-                  <Typography variant="h2">
-                    Grow your finances to reach your goals!
-                  </Typography>
+                  <Box
+                    padding={1}
+                    sx={{ display: "flex", flexDirection: "column" }}
+                  >
+                    <Typography variant="h3">
+                      Grow your finances to reach your goals!
+                    </Typography>
+                    <Divider sx={{ padding: 1 }} />
+                    <Typography fontSize={"2em"} variant="body1">
+                      We help you track your financial goals. That way you can keep your eyes on the prize!
+                    </Typography>
+                  </Box>
+                  <ExampleGoalChart isActive={isActive} />
                 </Paper>
-              </Container>
-            </Grow>
-            <KeyboardArrowDown
-              className="swiper-button-next animate__animated animate__heartBeat animate__infinite"
-              sx={{
-                fontSize: "10vh",
-                position: "fixed",
-                top: "90vh",
-              }}
-            />
-          </Box>
+              </Container>}
+              <KeyboardArrowDown
+                className="swiper-button-next animate__animated animate__heartBeat animate__infinite"
+                sx={{
+                  fontSize: "10vh",
+                  position: "fixed",
+                  top: "90vh",
+                }}
+              />
+            </Box>
+          )}
         </SwiperSlide>
         <SwiperSlide id="fourthSlide" tabIndex={2} key="slide4">
-          <Box
-            key={"landing-fourth-box"}
-            minHeight="100vh"
-            maxHeight="100vh"
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              placeContent: "center center",
-              placeItems: "center center",
-              backgroundImage: `url(${techBackground})`,
-              backgroundSize: "cover",
-            }}
-          >
-            <KeyboardArrowUp
-              className="swiper-button-prev"
+          {({ isActive }) => (
+            <Box
+              key={"landing-fourth-box"}
+              minHeight="100vh"
+              maxHeight="100vh"
+              gap={2}
               sx={{
-                fontSize: "10vh",
-                position: "fixed",
-                top: "1vh",
+                display: "flex",
+                flexDirection: "column",
+                placeContent: "center center",
+                placeItems: "center center",
+                backgroundImage: `url(${techBackground})`,
+                backgroundSize: "cover",
               }}
-            />
-            <Grow in {...{ timeout: 3000 }}>
+            >
+              <KeyboardArrowUp
+                className="swiper-button-prev"
+                sx={{
+                  fontSize: "10vh",
+                  position: "fixed",
+                  top: "1vh",
+                }}
+              />{ isActive &&
               <Container>
                 <Paper
                   key={"fourth-box-content"}
@@ -301,25 +354,40 @@ function Landing() {
                     placeContent: "center",
                   }}
                 >
-                  <Typography variant="h2">
-                    Use advanced analytics to monitor your progress and reach
-                    your goal.
-                  </Typography>
+                  <Box
+                    padding={1}
+                    sx={{ display: "flex", flexDirection: "column" }}
+                  >
+                    <Typography variant="h3">
+                      Use advanced analytics to monitor your progress and reach
+                      your goal.
+                    </Typography>
+                    <Divider sx={{ padding: 1 }} />
+                    <Typography fontSize={"2em"} variant="body1">
+                      We put advanced visualization tools at your fingertips to
+                      help conceptualize your financial picture.
+                    </Typography>
+                  </Box>
+                  <ExampleLineChart isActive={isActive} />
                 </Paper>
-              </Container>
-            </Grow>
-            <Button
-              href="/createuser"
-              variant="contained"
-              sx={{
-                fontSize: "5vh",
-                position: "fixed",
-                top: "80vh",
-              }}
-            >
-              Sign-up Today!
-            </Button>
-          </Box>
+              </Container>}
+              <Box
+                sx={{
+                  fontSize: "5vh",
+                }}
+              >
+                <Button
+                  href="createuser"
+                  variant="contained"
+                  sx={{
+                    fontSize: "5vh",
+                  }}
+                >
+                  Sign-up Today!
+                </Button>
+              </Box>
+            </Box>
+          )}
         </SwiperSlide>
       </Swiper>
     </Box>

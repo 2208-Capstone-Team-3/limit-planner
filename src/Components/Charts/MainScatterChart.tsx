@@ -12,7 +12,7 @@ import { RootState } from "../../store";
 
 const MainScatterChart = () => {
   const theme = useTheme();
-  const entries = useSelector((state: RootState) => state.entries.entries);
+  const entries = useSelector((state: RootState) => state.theme.theme.filteredEntries);
   const data: { x: Date; y: number; amount: number }[] = [];
   let total = 0;
   entries
@@ -30,6 +30,7 @@ const MainScatterChart = () => {
 
   return (
     <VictoryChart
+    standalone
       theme={VictoryTheme.material}
       key={"ScatterChartContainer"}
       padding={{top: 10, bottom: 30, left: 30, right : 0}}
@@ -41,6 +42,7 @@ const MainScatterChart = () => {
       }
     >
       <VictoryScatter
+      standalone
         name="ScatterChart"
         key={"MainScatterChart"}
         size={({ datum }) =>

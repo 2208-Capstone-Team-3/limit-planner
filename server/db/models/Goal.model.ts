@@ -18,6 +18,7 @@ export interface GoalAttributes
     InferCreationAttributes<GoalAttributes>
   > {
   id?: string;
+  accountId?: string;
   name: string;
   goalAmount: number;
   // startAmount: number;

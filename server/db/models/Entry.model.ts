@@ -12,7 +12,6 @@ import {
   BOOLEAN,
 } from "sequelize";
 import { SkipDateAttributes } from "./Skipdate.model.js";
-import { AccountAttributes } from "./Account.model.js";
 
 // order of InferAttributes & InferCreationAttributes is important.
 export interface EntryAttributes
@@ -28,7 +27,7 @@ export interface EntryAttributes
     creditDebit: string
     title: string;
     note:string;
-    start: Date | string;
+    start: string | Date;
     allDay: boolean;
     frequency:string;
 }

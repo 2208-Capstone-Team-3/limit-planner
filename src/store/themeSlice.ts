@@ -4,8 +4,27 @@ interface initialStateType {
   theme: {
     homeDrawerOpen: boolean;
     dateSelector: Date | string;
-    accountSelector: string;
-    goalSelector: string | null;
+    accountSelector:     {
+      goals?: [];
+      entries?: [];
+      userId?: string;
+      id?: string;
+      accountType: string;
+      accountName: string;
+      institution: string;
+      balance: number;
+    } | null;
+    goalSelector: {
+      id?: string;
+      accountId?: string;
+      name: string;
+      goalAmount: number;
+      endDate: Date;
+      victory: boolean;
+    } | null;
+    filteredEntries:any[];
+    filteredGoals:any[];
+    projection:number;
   };
 }
 
@@ -13,8 +32,11 @@ const initialState: initialStateType = {
   theme: {
     homeDrawerOpen: true,
     dateSelector: "05-05-2023",
-    accountSelector: "",
+    accountSelector: null,
     goalSelector: null,
+    filteredEntries:[],
+    filteredGoals:[],
+    projection:0
   },
 };
 
@@ -40,12 +62,24 @@ export const themeSlice = createSlice({
     setLightorDark: (state, action) => {
       localStorage.setItem("colorModeCookie", action.payload);
     },
+    setFilteredEntries: (state, action) => {
+      state.theme.filteredEntries = action.payload;
+    },
+    setFilteredGoals: (state, action) => {
+      state.theme.filteredGoals = action.payload;
+    },
+    setProjection: (state, action) => {
+      state.theme.projection = action.payload;
+    },
     resetTheme: (state) => {
       state.theme = {
         homeDrawerOpen: true,
         dateSelector: new Date(),
-        accountSelector: "",
+        accountSelector: null,
         goalSelector: null,
+        filteredEntries:[],
+        filteredGoals:[],
+        projection:0
       };
     },
   },
@@ -59,5 +93,8 @@ export const {
   setDateSelector,
   setAccountSelector,
   setGoalSelector,
+  setFilteredEntries,
+  setFilteredGoals,
+  setProjection,
 } = themeSlice.actions;
 export default themeSlice.reducer;

@@ -4,6 +4,7 @@ export interface goalsInitialStateType {
   goals: [
     {
       id?: string;
+      accountId?:string
       name: string;
       goalAmount: number;
       // startAmount: number;

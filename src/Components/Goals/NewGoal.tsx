@@ -9,10 +9,6 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 
-const inputStyle = {
-  width: "150px",
-};
-
 interface props {
   accountId: string | undefined;
 }
@@ -68,12 +64,12 @@ const NewGoal = ({ accountId }: props) => {
     <Box
       sx={{ display: "flex", flexDirection: "column", placeItems: "center" }}
     >
-      <Grid2 container sx={{ padding: "5%", gap: 1, placeContent: "center" }}>
+      <Grid2 container spacing={1} sx={{ padding: "5%", gap: 1, placeContent: "center" }}>
         {/* input for Credit/Debit */}
         <Grid2 xs={3}>
-          <FormControl sx={inputStyle}>
+          <FormControl fullWidth >
             <TextField
-              sx={inputStyle}
+              
               id="outlined-basic"
               label="Amount"
               variant="outlined"
@@ -84,7 +80,7 @@ const NewGoal = ({ accountId }: props) => {
         </Grid2>
         {/* input for start date */}
         <Grid2 xs={3}>
-          <FormControl sx={inputStyle}>
+          <FormControl fullWidth >
             <LocalizationProvider dateAdapter={AdapterDayjs}>
               <DesktopDatePicker
                 label="End Date"
@@ -92,7 +88,7 @@ const NewGoal = ({ accountId }: props) => {
                 value={endDate}
                 onChange={handleEndDateChange}
                 renderInput={(params) => (
-                  <TextField {...params} sx={inputStyle} />
+                  <TextField {...params}  />
                 )}
               />
             </LocalizationProvider>
@@ -100,9 +96,9 @@ const NewGoal = ({ accountId }: props) => {
         </Grid2>
         {/* input for name */}
         <Grid2 xs={3}>
-          <FormControl sx={inputStyle}>
+          <FormControl fullWidth >
             <TextField
-              sx={inputStyle}
+              
               id="outlined-basic"
               label="Name"
               variant="outlined"

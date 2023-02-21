@@ -15,6 +15,7 @@ import {
   Identifier,
 } from "sequelize";
 import { AccountAttributes } from "./Account.model.js";
+import { EntryAttributes } from "./Entry.model.js";
 import { PlaceType } from "../../../src/Components/UserCreation/UserGoogleLocation.js";
 import { JWT } from "../../api/helpers/superSecret.js";
 import { SkipDateAttributes } from "./Skipdate.model.js";
@@ -28,6 +29,7 @@ export interface UserAttributes
   addGoal(goal: GoalAttributes): unknown;
   accounts?: [];
   goals?: [];
+  addEntry(entry: EntryAttributes): unknown
   addAccount(account: AccountAttributes): unknown;
   addSkipdate(skipdate: SkipDateAttributes): unknown;
   id?: string;
