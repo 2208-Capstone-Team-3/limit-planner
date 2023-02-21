@@ -51,8 +51,8 @@ function LimitAppBar() {
   const navUserAccount = () => {
     navigate("/account");
   };
-  const navUserGoals = () => {
-    navigate("/goals");
+  const navUserSubscription = () => {
+    navigate("/subscription");
   };
 
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -70,7 +70,7 @@ function LimitAppBar() {
     if (e.target.innerHTML === "Account" || e.target.id === "Account")
       navUserAccount();
     if (e.target.innerHTML === "Subscription" || e.target.id === "Subscription")
-      navUserGoals();
+      navUserSubscription();
     setAnchorElUser(null);
   };
 
