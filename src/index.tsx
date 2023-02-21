@@ -23,6 +23,7 @@ import ErrorBoundary from "./Components/ErrorBoundary/ErrorBoundary";
 import AdvancedCharting from "./Components/Charts/AdvancedCharting";
 import Goals from "./Components/Goals/Goals";
 import SingleGoal from "./Components/Goals/SingleGoal";
+import NewAccount from "./Components/Accounts/NewAccount";
 
 const userTokenTestTrue = async () => {
   try {
@@ -78,6 +79,10 @@ const router = createBrowserRouter([
           {
             path: "",
             element: <HomeBasePortal />,
+          },
+          {
+            path: "newaccount",
+            element: <NewAccount />,
           },
           {
             path: "accounts",
