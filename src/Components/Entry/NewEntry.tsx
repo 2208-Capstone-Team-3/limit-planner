@@ -85,8 +85,11 @@ const NewEntry = ({ accountId }: props) => {
       const updatedEntries = await axios.get("/api/entries", {
         headers: { Authorization: "Bearer " + token },
       });
-      dispatch(setEntries(updatedEntries.data));
-      const updatedEntryCopies = makeEntryCopies(updatedEntries.data, skipdates);
+      const updatedEntryCopies = await makeEntryCopies(
+        updatedEntries.data,
+        skipdates
+      );
+      dispatch(setEntries(updatedEntryCopies));
       dispatch(setReoccurEntries(updatedEntryCopies));
     }
     setAmount(null);
