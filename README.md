@@ -61,4 +61,4 @@ https://www.linkedin.com/in/jack-padalino-5b743826/
 https://www.linkedin.com/in/stephen-werbeck/
 
 ### Yifan Chen
-https://www.linkedin.com/in/yifanchen289/
+https://www.linkedin.com/in/yifanchen931/
