@@ -6,6 +6,8 @@ This Single-Page Web App was the result of a team of Software Engineers looking 
 
 ![image](https://github.com/2208-Capstone-Team-3/limit-planner/assets/97137486/34d9d994-f573-44a3-9d43-25e08d72149e)
 
+Users are able to set financial goals and track spending activity across multiipe accounts:
+
 ![image](https://github.com/2208-Capstone-Team-3/limit-planner/assets/97137486/b2cbf3cc-e589-462c-8d56-cb8c44fca7d5)
 
 ## Created With
