@@ -2,7 +2,7 @@
 
 ![image](https://github.com/2208-Capstone-Team-3/limit-planner/assets/97137486/e5d925c5-4bfb-4148-9e8b-8b72e1686404)
 
-This Single-Page Web App was the result of a team of Software Engineers looking to solve the problem of financial visualization and goal planning for individuals new to managing their finances.
+This Single-Page Web App offers users a more visual way to take control of their finances:
 
 ![image](https://github.com/2208-Capstone-Team-3/limit-planner/assets/97137486/34d9d994-f573-44a3-9d43-25e08d72149e)
 
